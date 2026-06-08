@@ -1,4 +1,4 @@
-import { createHashRouter } from 'react-router-dom';
+import { createBrowserRouter } from 'react-router-dom';
 import type { RouteObject } from 'react-router-dom';
 import App from '../App';
 import NotFound from '../pages/NotFound';
@@ -23,51 +23,51 @@ export const routes: RouteObject[] = [
         element: <LandingLayout />,
         children: [
           {
-            path: '/',
+            index: true,
             Component: Landing,
           },
         ],
       },
       {
+        path: 'app',
         element: <MainLayout />,
         children: [
           {
-            path: '/app',
+            index: true,
             Component: Feed,
           },
           {
-            path: '/app/search',
+            path: 'search',
             Component: Search,
           },
           {
-            path: '/app/profile/:userId',
+            path: 'profile/:userId',
             Component: Profile,
           },
           {
-            path: '/app/dialogs',
+            path: 'dialogs',
             Component: Dialogs,
           },
           {
-            path: '/app/dialogs/:dialogId',
+            path: 'dialogs/:dialogId',
             Component: Chat,
           },
         ],
       },
-      
       {
+        path: 'auth',
         element: <AuthLayout />,
         children: [
           {
-            path: '/auth/login',
+            path: 'login',
             Component: Login,
           },
           {
-            path: '/auth/register',
+            path: 'register',
             Component: Register,
           },
         ],
       },
-
       {
         path: '*',
         Component: NotFound,
@@ -76,6 +76,6 @@ export const routes: RouteObject[] = [
   },
 ];
 
-const router = createHashRouter(routes);
+const router = createBrowserRouter(routes);
 
 export default router;

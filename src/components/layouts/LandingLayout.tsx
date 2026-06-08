@@ -1,8 +1,11 @@
+import { Box } from "@mui/material";
+import { Outlet } from "react-router-dom";
+
 const LandingLayout = () => {
   return (
-    <div>
-      <h1>Welcome to the Landing Page</h1>
-    </div>
+    <Box>
+      <Outlet />
+    </Box>
   );
 };
 

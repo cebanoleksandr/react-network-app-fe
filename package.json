@@ -16,6 +16,7 @@
     "@mui/material": "^9.0.1",
     "@tailwindcss/vite": "^4.3.0",
     "axios": "^1.17.0",
+    "framer-motion": "^12.40.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^7.17.0",
@@ -33,6 +34,7 @@
     "globals": "^17.6.0",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
-    "vite": "^8.0.12"
+    "vite": "^8.0.12",
+    "vite-plugin-svgr": "^5.2.0"
   }
 }
