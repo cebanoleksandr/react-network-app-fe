@@ -1,13 +1,13 @@
 import { useTranslation } from "react-i18next";
 
-const Search = () => {
+const Games = () => {
   const { t } = useTranslation();
 
   return (
     <div>
-      <h1>{t("pages.search")}</h1>
+      <h1>{t("pages.games")}</h1>
     </div>
   );
 };
 
-export default Search;
+export default Games;

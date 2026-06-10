@@ -1,18 +1,33 @@
 import { Box } from "@mui/material";
+import { 
+  AccountCircle, 
+  RssFeed, 
+  Chat, 
+  People, 
+  Group, 
+  PhotoCamera, 
+  MusicNote, 
+  VideoLibrary, 
+  SportsEsports,
+  Settings as SettingsIcon,
+} from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 import type { ISidebarItem } from "./types";
 import SidebarItem from "./SidebarItem";
 
 const Sidebar = () => {
+  const { t } = useTranslation();
+
   const menuItems: ISidebarItem[] = [
-    { label: "Profile", path: "/app/profile" },
-    { label: "Feed", path: "/app", end: true },
-    { label: "Dialogs", path: "/app/dialogs" },
-    { label: "People", path: "/app/people" },
-    { label: "Groups", path: "/app/groups" },
-    { label: "Photos", path: "/app/photos" },
-    { label: "Music", path: "/app/music" },
-    { label: "Video", path: "/app/video" },
-    { label: "Games", path: "/app/games" },
+    { label: t("sidebar.profile"), path: "/app/profile/1", icon: AccountCircle },
+    { label: t("sidebar.feed"), path: "/app", end: true, icon: RssFeed },
+    { label: t("sidebar.dialogs"), path: "/app/dialogs", icon: Chat },
+    { label: t("sidebar.people"), path: "/app/people", icon: People },
+    { label: t("sidebar.groups"), path: "/app/groups", icon: Group },
+    { label: t("sidebar.photos"), path: "/app/photos", icon: PhotoCamera },
+    { label: t("sidebar.music"), path: "/app/music", icon: MusicNote },
+    { label: t("sidebar.video"), path: "/app/video", icon: VideoLibrary },
+    { label: t("sidebar.games"), path: "/app/games", icon: SportsEsports },
   ];
 
   return (
@@ -28,6 +43,10 @@ const Sidebar = () => {
       {menuItems.map((item) => (
         <SidebarItem key={item.path} menuItem={item} />
       ))}
+
+      <Box sx={{ height: '1px', bgcolor: 'divider', my: 2 }}></Box>
+
+      <SidebarItem menuItem={{ label: t("sidebar.settings"), path: "/app/settings", icon: SettingsIcon }} />
     </Box>
   );
 };

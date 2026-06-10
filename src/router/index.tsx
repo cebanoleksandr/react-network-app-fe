@@ -7,12 +7,20 @@ import Feed from '../pages/Feed';
 import Profile from '../pages/Profile';
 import Dialogs from '../pages/Dialogs';
 import Chat from '../pages/Chat';
-import Login from '../pages/Login';
-import Register from '../pages/Register';
+import Login from '../pages/auth/Login';
+import Register from '../pages/auth/Register';
 import MainLayout from '../components/layouts/MainLayout';
 import AuthLayout from '../components/layouts/AuthLayout';
 import LandingLayout from '../components/layouts/LandingLayout';
 import Landing from '../pages/Landing';
+import People from '../pages/People';
+import Groups from '../pages/Groups';
+import Photos from '../pages/Photos';
+import Music from '../pages/Music';
+import Video from '../pages/Video';
+import Games from '../pages/Games';
+import Settings from '../pages/Settings';
+import ResetPassword from '../pages/auth/ResetPassword';
 
 export const routes: RouteObject[] = [
   {
@@ -41,6 +49,34 @@ export const routes: RouteObject[] = [
             Component: Search,
           },
           {
+            path: 'people',
+            Component: People,
+          },
+          {
+            path: 'groups',
+            Component: Groups,
+          },
+          {
+            path: 'photos',
+            Component: Photos,
+          },
+          {
+            path: 'music',
+            Component: Music,
+          },
+          {
+            path: 'video',
+            Component: Video,
+          },
+          {
+            path: 'games',
+            Component: Games,
+          },
+          {
+            path: 'settings',
+            Component: Settings,
+          },
+          {
             path: 'profile/:userId',
             Component: Profile,
           },
@@ -66,6 +102,10 @@ export const routes: RouteObject[] = [
             path: 'register',
             Component: Register,
           },
+          {
+            path: 'reset-password',
+            Component: ResetPassword,
+          }
         ],
       },
       {

@@ -12,9 +12,11 @@ import {
   Typography
 } from "@mui/material";
 import { Search as SearchIcon, KeyboardArrowDown as ArrowDownIcon } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 import FaviconIcon from '../../assets/icons/gemini-svg.svg?react';
 
 const Header = () => {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
 
@@ -45,6 +47,7 @@ const Header = () => {
           <SvgIcon
             component={FaviconIcon}
             inheritViewBox
+            sx={{ fontSize: "40px" }}
           />
         </Box>
 
@@ -52,7 +55,7 @@ const Header = () => {
           <TextField
             variant="outlined"
             size="small"
-            placeholder="Search..."
+            placeholder={t("header.search")}
             slotProps={{
               input: {
                 startAdornment: (
@@ -100,12 +103,12 @@ const Header = () => {
             }}
           >
             <Avatar 
-              alt="User Name" 
+              alt={t("header.user_avatar_alt")} 
               src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80"
               sx={{ width: 32, height: 32 }}
             />
             <Typography variant="body2" sx={{ display: { xs: 'none', sm: 'block' } }}>
-              Alex
+              {t("header.default_user_name")}
             </Typography>
           </Button>
 
@@ -139,10 +142,10 @@ const Header = () => {
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
-            <MenuItem onClick={handleMenuClose}>Мій профіль</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Налаштування</MenuItem>
+            <MenuItem onClick={handleMenuClose}>{t("header.my_profile")}</MenuItem>
+            <MenuItem onClick={handleMenuClose}>{t("header.settings")}</MenuItem>
             <MenuItem onClick={handleMenuClose} sx={{ color: 'error.main' }}>
-              Вийти
+              {t("header.logout")}
             </MenuItem>
           </Menu>
         </Box>

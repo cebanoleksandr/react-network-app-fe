@@ -1,13 +1,13 @@
 import { useTranslation } from "react-i18next";
 
-const Search = () => {
+const Video = () => {
   const { t } = useTranslation();
 
   return (
     <div>
-      <h1>{t("pages.search")}</h1>
+      <h1>{t("pages.video")}</h1>
     </div>
   );
 };
 
-export default Search;
+export default Video;

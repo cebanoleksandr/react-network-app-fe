@@ -12,7 +12,7 @@ export interface Media {
   id: string;
   url: string;
   thumbnailUrl: string | null;
-  type: 'IMAGE' | 'VIDEO';
+  type: 'IMAGE' | 'VIDEO' | 'AUDIO';
 }
 
 export interface Post {

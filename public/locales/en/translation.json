@@ -1,0 +1,46 @@
+{
+  "sidebar": {
+    "profile": "Profile",
+    "feed": "Feed",
+    "dialogs": "Dialogs",
+    "people": "People",
+    "groups": "Groups",
+    "photos": "Photos",
+    "music": "Music",
+    "video": "Video",
+    "games": "Games",
+    "settings": "Settings"
+  },
+  "header": {
+    "search": "Search...",
+    "my_profile": "My Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "user_avatar_alt": "User Avatar",
+    "default_user_name": "Alex"
+  },
+  "landing": {
+    "welcome": "Welcome to the Landing Page"
+  },
+  "login": {
+    "title": "Login Page"
+  },
+  "register": {
+    "title": "Register Page"
+  },
+  "pages": {
+    "games": "Games",
+    "groups": "Groups",
+    "music": "Music",
+    "people": "People",
+    "photos": "Photos",
+    "settings": "Settings",
+    "video": "Video",
+    "feed": "Feed Page",
+    "dialogs": "Dialogs Page",
+    "chat": "Chat Page",
+    "search": "Search Page",
+    "not_found": "404 - Not Found",
+    "profile": "Profile Page"
+  }
+}
