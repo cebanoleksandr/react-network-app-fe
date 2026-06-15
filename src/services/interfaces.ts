@@ -22,6 +22,8 @@ export interface Post {
   updatedAt: string;
   user: User;
   media: Media[];
+  commentsCount: number;
+  isLiked: boolean;
 }
 
 export interface Comment {
@@ -55,4 +57,44 @@ export interface UpdateProfileDto {
   lastName?: string;
   avatarUrl?: string;
   bio?: string;
+}
+
+export class RegisterCredentials {
+  email: string;
+  username: string;
+  password: string;
+  firstName?: string;
+  lastName?: string;
+}
+
+export class LoginCredentials {
+  email: string;
+  password: string;
+}
+
+export interface ToggleBookmarkResponse {
+  bookmarked: boolean;
+  message: string;
+}
+
+export interface UploadUrlResponse {
+  uploadUrl: string;
+  path: string;
+}
+
+export interface ToggleLikeResponse {
+  liked: boolean;
+  message: string;
+}
+
+export interface GetLikesResponse {
+  count: number;
+  likes: Like[];
+}
+
+export interface Like {
+  id: string;
+  user: User;
+  post: Post;
+  createdAt: Date;
 }

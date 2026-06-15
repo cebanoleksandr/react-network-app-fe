@@ -1,22 +1,58 @@
-import type { FC } from "react";
-import { Box, Typography, Avatar, TextField, Button } from "@mui/material";
+import { type FC, useState, useEffect } from "react";
+import { Box, Typography, Avatar, TextField, Button, CircularProgress } from "@mui/material";
 import { motion } from "framer-motion";
+import { PostsService } from "../../../services/posts.service";
+import type { Comment } from "../../../services/interfaces";
 
 interface ICommentsProps {
   postId: string;
 }
 
 const PostComments: FC<ICommentsProps> = ({ postId }) => {
-  // Тут буде твоя майбутня логіка отримання коментарів з API
-  // Для прикладу додамо мокові дані
-  const mockComments = [
-    { id: "1", user: { name: "Ivan Dobronravov", avatar: "" }, text: "Крутий пост! Чекаю на продовження." },
-    { id: "2", user: { name: "Anna Kovalenko", avatar: "" }, text: "Дуже гарні фото, на що знімали?" },
-    { id: "3", user: { name: "Ivan Dobronravov", avatar: "" }, text: "Крутий пост! Чекаю на продовження." },
-    { id: "4", user: { name: "Anna Kovalenko", avatar: "" }, text: "Дуже гарні фото, на що знімали?" },
-    { id: "5", user: { name: "Ivan Dobronravov", avatar: "" }, text: "Крутий пост! Чекаю на продовження." },
-    { id: "6", user: { name: "Anna Kovalenko", avatar: "" }, text: "Дуже гарні фото, на що знімали?" },
-  ];
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [commentText, setCommentText] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      setIsLoading(true);
+      try {
+        const data = await PostsService.getComments(postId);
+        setComments(data);
+      } catch (error) {
+        console.error("Помилка завантаження коментарів:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchComments();
+  }, [postId]);
+
+  const handleAddComment = async () => {
+    if (!commentText.trim()) return;
+
+    setIsSubmitting(true);
+    try {
+      const newComment = await PostsService.addComment(postId, commentText);
+      
+      setComments((prev) => [...prev, newComment]); 
+      
+      setCommentText("");
+    } catch (error) {
+      console.error("Помилка при додаванні коментаря:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleAddComment();
+    }
+  };
 
   return (
     <Box
@@ -38,10 +74,20 @@ const PostComments: FC<ICommentsProps> = ({ postId }) => {
           size="small"
           placeholder="Напишіть коментар..."
           variant="outlined"
+          value={commentText}
+          onChange={(e) => setCommentText(e.target.value)}
+          onKeyDown={handleKeyDown}
+          disabled={isSubmitting}
           sx={{ '& .MuiOutlinedInput-root': { borderRadius: '20px' } }}
         />
-        <Button variant="contained" size="small" sx={{ borderRadius: '20px', textTransform: 'none' }}>
-          OK
+        <Button 
+          variant="contained" 
+          size="small" 
+          onClick={handleAddComment}
+          disabled={isSubmitting || !commentText.trim()}
+          sx={{ borderRadius: '20px', textTransform: 'none', minWidth: '60px' }}
+        >
+          {isSubmitting ? <CircularProgress size={20} color="inherit" /> : "OK"}
         </Button>
       </Box>
 
@@ -53,15 +99,29 @@ const PostComments: FC<ICommentsProps> = ({ postId }) => {
         overflowY: "auto",
         scrollbarWidth: "thin",
       }}>
-        {mockComments.map((comment) => (
-          <Box key={comment.id} sx={{ display: "flex", gap: 1.5, alignItems: "flex-start" }}>
-            <Avatar src={comment.user.avatar} sx={{ width: 32, height: 32 }} />
-            <Box sx={{ bgcolor: "#F0F2F5", p: "8px 12px", borderRadius: "12px", maxWidth: "85%" }}>
-              <Typography sx={{ fontSize: 13, fontWeight: 600 }}>{comment.user.name}</Typography>
-              <Typography sx={{ fontSize: 13, color: "#1C1F23" }}>{comment.text}</Typography>
-            </Box>
+        {isLoading ? (
+          <Box sx={{ display: "flex", justifyContent: "center", py: 2 }}>
+            <CircularProgress size={24} />
           </Box>
-        ))}
+        ) : comments.length === 0 ? (
+          <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center", py: 1 }}>
+            Коментарів поки немає. Будьте першим!
+          </Typography>
+        ) : (
+          comments.map((comment) => (
+            <Box key={comment.id} sx={{ display: "flex", gap: 1.5, alignItems: "flex-start" }}>
+              <Avatar src={comment.user?.avatarUrl} sx={{ width: 32, height: 32 }} />
+              <Box sx={{ bgcolor: "#F0F2F5", p: "8px 12px", borderRadius: "12px", maxWidth: "85%" }}>
+                <Typography sx={{ fontSize: 13, fontWeight: 600 }}>
+                  {comment.user?.firstName} {comment.user?.lastName}
+                </Typography>
+                <Typography sx={{ fontSize: 13, color: "#1C1F23" }}>
+                  {comment.text}
+                </Typography>
+              </Box>
+            </Box>
+          ))
+        )}
       </Box>
     </Box>
   );

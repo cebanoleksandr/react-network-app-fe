@@ -18,10 +18,14 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff, PersonAddOutlined as PersonAddOutlinedIcon } from "@mui/icons-material";
 import { registerSchema, type RegisterFormData } from "./registerSchema";
+import { AuthService } from "../../services/auth.service";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const navigate = useNavigate();
 
   const {
     control,
@@ -30,7 +34,9 @@ const RegisterPage = () => {
   } = useForm<RegisterFormData>({
     resolver: yupResolver(registerSchema) as Resolver<RegisterFormData>,
     defaultValues: {
-      fullName: "",
+      username: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -40,9 +46,16 @@ const RegisterPage = () => {
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
-      console.log("Валідні дані реєстрації:", data);
-      // Імітація запиту на бекенд (наприклад, реєстрація користувача)
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await AuthService.register({
+        email: data.email,
+        password: data.password,
+        username: data.username,
+        firstName: data.firstName,
+        lastName: data.lastName,
+      });
+
+      localStorage.setItem('network-token', response.accessToken);
+      navigate('/app');
     } catch (error) {
       console.error(error);
     }
@@ -63,7 +76,7 @@ const RegisterPage = () => {
           <Box
             sx={{
               m: 1,
-              bgcolor: "success.main", // Зелений колір акценту для реєстрації
+              bgcolor: "success.main",
               color: "white",
               borderRadius: "50%",
               width: 40,
@@ -82,9 +95,9 @@ const RegisterPage = () => {
 
           <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ width: "100%" }}>
             
-            {/* Поле Повне Ім'я */}
+            {/* Поле Username */}
             <Controller
-              name="fullName"
+              name="username"
               control={control}
               render={({ field }) => (
                 <TextField
@@ -92,18 +105,63 @@ const RegisterPage = () => {
                   margin="normal"
                   required
                   fullWidth
-                  id="fullName"
-                  label="Ім'я та прізвище"
-                  autoComplete="name"
+                  id="username"
+                  label="Юзернейм"
+                  autoComplete="username"
                   autoFocus
-                  error={!!errors.fullName}
-                  helperText={errors.fullName?.message}
+                  error={!!errors.username}
+                  helperText={errors.username?.message}
                   slotProps={{
                     input: { sx: { borderRadius: "8px" } }
                   }}
                 />
               )}
             />
+
+            {/* Контейнер для Імені та Прізвища в один рядок для економії місця */}
+            <Box sx={{ display: "flex", gap: 2 }}>
+              <Controller
+                name="firstName"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="firstName"
+                    label="Ім'я"
+                    autoComplete="given-name"
+                    error={!!errors.firstName}
+                    helperText={errors.firstName?.message}
+                    slotProps={{
+                      input: { sx: { borderRadius: "8px" } }
+                    }}
+                  />
+                )}
+              />
+
+              <Controller
+                name="lastName"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="lastName"
+                    label="Прізвище"
+                    autoComplete="family-name"
+                    error={!!errors.lastName}
+                    helperText={errors.lastName?.message}
+                    slotProps={{
+                      input: { sx: { borderRadius: "8px" } }
+                    }}
+                  />
+                )}
+              />
+            </Box>
 
             {/* Поле Email */}
             <Controller
@@ -230,7 +288,7 @@ const RegisterPage = () => {
               type="submit"
               fullWidth
               variant="contained"
-              color="success" // Зелена кнопка для гармонії з іконкою
+              color="success"
               disabled={isSubmitting}
               sx={{ mt: 3, mb: 2, py: 1.2, borderRadius: "8px", textTransform: "none", fontSize: "16px", fontWeight: 600 }}
             >

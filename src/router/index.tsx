@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, redirect } from 'react-router-dom';
 import type { RouteObject } from 'react-router-dom';
 import App from '../App';
 import NotFound from '../pages/NotFound';
@@ -22,6 +22,18 @@ import Games from '../pages/Games';
 import Settings from '../pages/Settings';
 import ResetPassword from '../pages/auth/ResetPassword';
 
+const loader = () => {
+  const token = localStorage.getItem("network-token");
+  if (!token) return redirect("/auth/login");
+  return null;
+}
+
+const authLoader = () => {
+  const token = localStorage.getItem("network-token");
+  if (token) return redirect("/app");
+  return null;
+}
+
 export const routes: RouteObject[] = [
   {
     path: '/',
@@ -38,7 +50,8 @@ export const routes: RouteObject[] = [
       },
       {
         path: 'app',
-        element: <MainLayout />,
+        Component: MainLayout,
+        loader,
         children: [
           {
             index: true,
@@ -93,6 +106,7 @@ export const routes: RouteObject[] = [
       {
         path: 'auth',
         element: <AuthLayout />,
+        loader: authLoader,
         children: [
           {
             path: 'login',

@@ -1,15 +1,15 @@
 import { useState, useRef, useEffect } from "react";
-import { Avatar, Box, TextField, IconButton, Typography } from "@mui/material";
-import { 
-  AddAPhotoOutlined as AddAPhotoIcon,
-  VideoCameraFrontOutlined as VideoCallIcon,
-  LibraryMusicOutlined as LibraryMusicIcon,
+import { Avatar, Box, IconButton, Typography, Switch, CircularProgress } from "@mui/material";
+import {
   Add as AddIcon,
   ChevronLeft as ChevronLeftIcon,
-  ChevronRight as ChevronRightIcon
+  ChevronRight as ChevronRightIcon,
 } from '@mui/icons-material';
 import type { Post } from "../services/interfaces";
 import PostList from "../components/business/posts/PostList";
+import FilterMenu from "../components/business/posts/FilterMenu";
+import CreatePostBlock from "../components/business/posts/CreatePostBlock";
+import { PostsService } from "../services/posts.service";
 
 const dummyStories = [
   { id: 1, name: 'Дмитро', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&q=80' },
@@ -30,134 +30,40 @@ const dummyStories = [
   { id: 16, name: 'Олена', avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=80&q=80' },
 ];
 
-const dummyPosts: Post[] = [
-  {
-    id: "post-1",
-    caption: "Створив новий напівпрозорий хедер з ефектом розмиття (blur) за допомогою Material UI! Оцініть дизайн у коментарях. 🚀 #reactjs #materialui #webdesign",
-    createdAt: "2026-06-08T14:30:00Z",
-    updatedAt: "2026-06-08T14:35:00Z",
-    user: {
-      id: "user-101",
-      email: "alex.dmitrenko@example.com",
-      username: "alex_dev",
-      avatarUrl: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80",
-      bio: "Frontend Engineer | React & TypeScript enthusiast",
-      firstName: "Олексій",
-      lastName: "Дмитренко"
-    },
-    media: [
-      {
-        id: "media-1",
-        url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
-        thumbnailUrl: null,
-        type: "IMAGE"
-      }
-    ]
-  },
-  {
-    id: "post-2",
-    caption: "Короткий туторіал, як правильно налаштувати `slotProps` замість застарілого `InputProps` у нових версіях MUI v6. Дивіться демо-відео. 🎥",
-    createdAt: "2026-06-08T11:15:00Z",
-    updatedAt: "2026-06-08T11:15:00Z",
-    user: {
-      id: "user-102",
-      email: "anna.kovalenko@example.com",
-      username: "anna_codes",
-      avatarUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80",
-      bio: "UI/UX Designer & Mobile Developer",
-      firstName: "Анна",
-      lastName: "Коваленко"
-    },
-    media: [
-      {
-        id: "media-2",
-        url: "https://www.w3schools.com/html/mov_bbb.mp4",
-        thumbnailUrl: "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80",
-        type: "VIDEO"
-      }
-    ]
-  },
-  {
-    id: "post-3",
-    caption: "Записав новий подкаст про тренди фронтенд-розробки, використання i18next та архітектуру сучасних SPA додатків. Слухайте прямо тут! 🎧👇",
-    createdAt: "2026-06-07T18:00:00Z",
-    updatedAt: "2026-06-07T18:22:00Z",
-    user: {
-      id: "user-103",
-      email: "ivan.p@example.com",
-      username: "ivan_p",
-      avatarUrl: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=100&q=80",
-      bio: null,
-      firstName: "Іван",
-      lastName: null
-    },
-    media: [
-      {
-        id: "media-3",
-        url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
-        thumbnailUrl: null,
-        type: "AUDIO"
-      }
-    ]
-  },
-  {
-    id: "post-4",
-    caption: "Просто гарний сонячний день у горах. Всім продуктивного тижня та чистого коду без багів! 🌲⛰️",
-    createdAt: "2026-06-06T09:00:00Z",
-    updatedAt: "2026-06-06T09:00:00Z",
-    user: {
-      id: "user-104",
-      email: "kateryna.shev@example.com",
-      username: "katya_travel",
-      avatarUrl: null, // Користувач без аватарки (для тестування дефолтних ініціалів у MUI Avatar)
-      bio: "Traveler & Lifestyle blogger",
-      firstName: "Катерина",
-      lastName: "Шевченко"
-    },
-    media: [
-      {
-        id: "media-4_1",
-        url: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80",
-        thumbnailUrl: null,
-        type: "IMAGE"
-      },
-      {
-        id: "media-4_2",
-        url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80",
-        thumbnailUrl: null,
-        type: "IMAGE"
-      }
-    ]
-  },
-  {
-    id: "post-5",
-    caption: null,
-    createdAt: "2026-06-05T21:40:00Z",
-    updatedAt: "2026-06-05T21:40:00Z",
-    user: {
-      id: "user-105",
-      email: "incognito@example.com",
-      username: "anonymous",
-      avatarUrl: null,
-      bio: null,
-      firstName: null,
-      lastName: null
-    },
-    media: [
-      {
-        id: "media-5",
-        url: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80",
-        thumbnailUrl: null,
-        type: "IMAGE"
-      }
-    ]
-  }
-];
-
 const Feed = () => {
   const scrollContainerRef = useRef(null);
   const [showLeftBtn, setShowLeftBtn] = useState(false);
   const [showRightBtn, setShowRightBtn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [page] = useState(1);
+
+  const getPosts = async () => {
+    try {
+      const response = await PostsService.getFeed(page);
+      setPosts(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const loadData = async () => {
+    setIsLoading(true);
+    try {
+      await getPosts();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      void loadData();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   const checkScrollLimits = () => {
     if (scrollContainerRef.current) {
@@ -203,48 +109,7 @@ const Feed = () => {
           flexDirection: 'column'
         }}
       >
-        <Box
-          sx={{
-            p: '10px 20px',
-            border: '1px solid #DCE1E5',
-            borderRadius: '8px',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05)',
-            bgcolor: 'white',
-            mb: '16px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 2,
-            flexShrink: 0
-          }}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexGrow: 1 }}>
-            <Avatar 
-              alt='ava'
-              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80"
-              sx={{ width: 32, height: 32 }}
-            />
-            <TextField
-              fullWidth
-              variant="outlined"
-              size="small"
-              placeholder='What is new?'
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  width: '100%',
-                  "& fieldset": { borderColor: "transparent" },
-                  "&:hover fieldset": { borderColor: "transparent" },
-                  "&.Mui-focused fieldset": { borderColor: "transparent" },
-                },
-              }}
-            />
-          </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <IconButton><AddAPhotoIcon /></IconButton>
-            <IconButton><VideoCallIcon /></IconButton>
-            <IconButton><LibraryMusicIcon /></IconButton>
-          </Box>
-        </Box>
+        <CreatePostBlock onPostCreated={getPosts} />
 
         <Box
           sx={{
@@ -321,10 +186,38 @@ const Feed = () => {
         </Box>
 
         <Box sx={{ flexGrow: 1, minHeight: 0 }}>
-          <PostList posts={dummyPosts} />
+          {isLoading ? (
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', minHeight: '200px' }}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            <PostList posts={posts} />
+          )}
         </Box>
       </Box>
-      <Box sx={{ width: '200px', flexShrink: 0 }}>FILTER</Box>
+      <Box sx={{ width: '280px', flexShrink: 0 }}>
+        <FilterMenu />
+
+        <Box
+          sx={{
+            p: '4px',
+            border: '1px solid #DCE1E5',
+            borderRadius: '8px',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05)',
+            bgcolor: 'white',
+            my: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}
+        >
+          <Typography>
+            🔥 Interesting first
+          </Typography>
+
+          <Switch />
+        </Box>
+      </Box>
     </Box>
   );
 };

@@ -1,5 +1,5 @@
 import { AxiosError, type InternalAxiosRequestConfig } from 'axios';
-import { api, getAccessToken, setAccessToken } from './';
+import { api } from './';
 
 interface FailedRequest {
   resolve: (token: string | null) => void;
@@ -12,7 +12,7 @@ interface RefreshResponse {
 
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = getAccessToken();
+    const token = localStorage.getItem('network-token');
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -61,7 +61,7 @@ api.interceptors.response.use(
         const response = await api.post<RefreshResponse>('/auth/refresh');
         const { accessToken } = response.data;
 
-        setAccessToken(accessToken);
+        localStorage.setItem('network-token', accessToken);
         processQueue(null, accessToken);
 
         if (originalRequest.headers) {
@@ -71,7 +71,7 @@ api.interceptors.response.use(
       } catch (refreshError) {
         const axiosError = refreshError as AxiosError;
         processQueue(axiosError, null);
-        setAccessToken(null);
+        localStorage.removeItem('network-token');
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;

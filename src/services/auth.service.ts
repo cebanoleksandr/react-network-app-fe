@@ -1,25 +1,18 @@
-import { api, setAccessToken } from './';
-import type { AuthResponse } from './interfaces';
+import { api } from './';
+import type { AuthResponse, LoginCredentials, RegisterCredentials } from './interfaces';
 
 export const AuthService = {
-  async register(data: Record<string, string>): Promise<AuthResponse> {
+  async register(data: RegisterCredentials): Promise<AuthResponse> {
     const response = await api.post<AuthResponse>('/auth/register', data);
-    if (response.data.accessToken) {
-      setAccessToken(response.data.accessToken);
-    }
     return response.data;
   },
 
-  async login(data: Record<string, string>): Promise<AuthResponse> {
+  async login(data: LoginCredentials): Promise<AuthResponse> {
     const response = await api.post<AuthResponse>('/auth/login', data);
-    if (response.data.accessToken) {
-      setAccessToken(response.data.accessToken);
-    }
     return response.data;
   },
 
   async logout(): Promise<void> {
     await api.post<void>('/auth/logout');
-    setAccessToken(null);
   },
 };

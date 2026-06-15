@@ -15,9 +15,13 @@ import {
 } from "@mui/material";
 import { Visibility, VisibilityOff, LockOutlined as LockOutlinedIcon } from "@mui/icons-material";
 import { loginSchema, type LoginFormData } from "./loginSchema";
+import { AuthService } from "../../services/auth.service";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
 
   const { 
     control, 
@@ -33,8 +37,13 @@ const LoginPage = () => {
 
   const onSubmit = async (data: LoginFormData) => {
     try {
-      console.log("Валідні дані форми:", data);
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await AuthService.login({
+        email: data.email,
+        password: data.password,
+      });
+      
+      localStorage.setItem('network-token', response.accessToken);
+      navigate('/app');
     } catch (error) {
       console.error(error);
     }
@@ -71,8 +80,6 @@ const LoginPage = () => {
           </Typography>
 
           <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ width: "100%" }}>
-            
-            {/* Поле Email */}
             <Controller
               name="email"
               control={control}
@@ -95,7 +102,6 @@ const LoginPage = () => {
               )}
             />
 
-            {/* Поле Password */}
             <Controller
               name="password"
               control={control}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { 
   alpha, 
   Box, 
@@ -14,11 +14,37 @@ import {
 import { Search as SearchIcon, KeyboardArrowDown as ArrowDownIcon } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import FaviconIcon from '../../assets/icons/gemini-svg.svg?react';
+import LogoutPopup from "../popups/LogoutPopup";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { UsersService } from "../../services/users.service";
+import { setUserAC } from "../../store/userSlice";
 
 const Header = () => {
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isLogoutPopupOpen, setIsLogoutPopupOpen] = useState(false);
+
+  const { item: me } = useAppSelector(state => state.user);
+
   const isMenuOpen = Boolean(anchorEl);
+
+  const navigate = useNavigate();
+    
+  const dispatch = useAppDispatch();
+    
+  const getMe = async () => {
+    try {
+      const response = await UsersService.getMe();
+      dispatch(setUserAC(response));
+    } catch (error) {
+      console.error('Помилка авторизації:', error);
+    }
+  }
+    
+  useEffect(() => {
+    getMe();
+  }, []);
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -27,6 +53,16 @@ const Header = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
+  const handleSignOut = () => {
+    localStorage.removeItem('network-token');
+    navigate('/auth/login');
+  }
+
+  const onLogout = () => {
+    setIsLogoutPopupOpen(true);
+    handleMenuClose();
+  }
 
   return (
     <Box
@@ -104,11 +140,11 @@ const Header = () => {
           >
             <Avatar 
               alt={t("header.user_avatar_alt")} 
-              src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80"
+              src={me?.avatarUrl}
               sx={{ width: 32, height: 32 }}
             />
             <Typography variant="body2" sx={{ display: { xs: 'none', sm: 'block' } }}>
-              {t("header.default_user_name")}
+              {me?.firstName} {me?.lastName}
             </Typography>
           </Button>
 
@@ -144,13 +180,18 @@ const Header = () => {
           >
             <MenuItem onClick={handleMenuClose}>{t("header.my_profile")}</MenuItem>
             <MenuItem onClick={handleMenuClose}>{t("header.settings")}</MenuItem>
-            <MenuItem onClick={handleMenuClose} sx={{ color: 'error.main' }}>
+            <MenuItem onClick={onLogout} sx={{ color: 'error.main' }}>
               {t("header.logout")}
             </MenuItem>
           </Menu>
         </Box>
-
       </Box>
+
+      <LogoutPopup
+        isVisible={isLogoutPopupOpen}
+        onClose={() => setIsLogoutPopupOpen(false)}
+        onLogout={handleSignOut}
+      />
     </Box>
   );
 };

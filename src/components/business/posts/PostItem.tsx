@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Avatar, Box, Typography, IconButton, Portal, Menu, MenuItem } from "@mui/material"
 import { 
   MoreHoriz as MoreHorizIcon, 
@@ -11,7 +11,8 @@ import {
   ErrorOutlineOutlined as ErrorOutlineOutlinedIcon,
   FavoriteBorderOutlined as FavoriteBorderOutlinedIcon,
   ModeCommentOutlined as ModeCommentOutlinedIcon,
-  ReplyOutlined as ReplyOutlinedIcon
+  ReplyOutlined as ReplyOutlinedIcon,
+  Favorite as FavoriteIcon
 } from '@mui/icons-material';
 import { motion, AnimatePresence } from "framer-motion";
 import type { Post } from "../../../services/interfaces";
@@ -19,6 +20,7 @@ import type { FC, MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import PostComments from "./PostComments";
 import PostSharePopover from "./PostSharePopover";
+import { PostsService } from "../../../services/posts.service";
 
 interface IProps {
   post: Post;
@@ -30,7 +32,31 @@ const PostItem: FC<IProps> = ({ post }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [showComments, setShowComments] = useState<boolean>(false);
   const [shareAnchorEl, setShareAnchorEl] = useState<null | HTMLElement>(null);
+  const [likesCount, setLikesCount] = useState(0);
+  const [isLiked, setIsLiked] = useState(post.isLiked);
   const isMenuOpen = Boolean(anchorEl);
+
+  const getLikes = async () => {
+    try {
+      const response = await PostsService.getLikes(post.id);
+      setLikesCount(response.count);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    const getLikes = async () => {
+      try {
+        const response = await PostsService.getLikes(post.id);
+        setLikesCount(response.count);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    getLikes();
+  }, [post.id]);
 
   const onOpenProfile = (profileId: string) => {
     navigate(`/app/profile/${profileId}`);
@@ -43,6 +69,16 @@ const PostItem: FC<IProps> = ({ post }) => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
+  const handleToggleLike = async () => {
+    try {
+      await PostsService.toggleLike(post.id);
+      getLikes();
+      setIsLiked(!isLiked);
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   const handleEdit = () => {
     console.log("Редагувати пост:", post.id);
@@ -74,11 +110,11 @@ const PostItem: FC<IProps> = ({ post }) => {
   };
 
   const handleShareOpen = (event: MouseEvent<HTMLButtonElement>) => {
-    setShareAnchorEl(event.currentTarget); // <--- Відкриваємо share при кліку
+    setShareAnchorEl(event.currentTarget);
   };
 
   const handleShareClose = () => {
-    setShareAnchorEl(null); // <--- Закриваємо share
+    setShareAnchorEl(null);
   };
 
   return (
@@ -216,14 +252,18 @@ const PostItem: FC<IProps> = ({ post }) => {
       )}
 
       <Box sx={{ pt: 1, borderTop: '1px solid #EAEAEA', display: 'flex', alignItems: 'center', gap: 3 }}>
-        <IconButton>
-          <FavoriteBorderOutlinedIcon sx={{ mr: 1 }} />
-          <Typography>1.2K</Typography>
+        <IconButton onClick={handleToggleLike} sx={{ color: isLiked ? '#E64646' : '' }}>
+          {isLiked ? (
+            <FavoriteIcon sx={{ mr: 1 }} />
+          ) : (
+            <FavoriteBorderOutlinedIcon sx={{ mr: 1 }} />
+          )}          
+          <Typography>{likesCount}</Typography>
         </IconButton>
 
         <IconButton onClick={handleToggleComments} sx={{ color: showComments ? '#1976d2' : '' }}>
           <ModeCommentOutlinedIcon sx={{ mr: 1 }} />
-          <Typography>45</Typography>
+          {!!post.commentsCount && <Typography>{post.commentsCount}</Typography>}
         </IconButton>
 
         <IconButton onClick={handleShareOpen} sx={{ color: shareAnchorEl ? '#1976d2' : '' }}>
@@ -233,7 +273,7 @@ const PostItem: FC<IProps> = ({ post }) => {
       </Box>
 
       <PostSharePopover
-        postId={post.id} 
+        postId={post.id}
         anchorEl={shareAnchorEl} 
         onClose={handleShareClose} 
       />

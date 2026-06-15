@@ -1,10 +1,19 @@
 import * as yup from "yup";
 
 export const registerSchema = yup.object({
-  fullName: yup
+  username: yup
     .string()
-    .required("Ім'я та прізвище є обов'язковими")
-    .min(3, "Ім'я має містити мінімум 3 символи"),
+    .required("Юзернейм є обов'язковим")
+    .min(3, "Юзернейм має містити мінімум 3 символи")
+    .matches(/^[a-zA-Z0-9_]+$/, "Тільки латиниця, цифри та підкреслення"),
+  firstName: yup
+    .string()
+    .required("Ім'я є обов'язковим")
+    .min(2, "Ім'я має містити мінімум 2 символи"),
+  lastName: yup
+    .string()
+    .required("Прізвище є обов'язковим")
+    .min(2, "Прізвище має містити мінімум 2 символи"),
   email: yup
     .string()
     .required("Електронна пошта є обов'язковою")

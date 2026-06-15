@@ -1,16 +1,8 @@
 import axios from 'axios';
 import { api } from './';
-import type { PaginatedResponse, Post, ToggleFollowResponse, User } from './interfaces';
+import type { Comment, GetLikesResponse, PaginatedResponse, Post, ToggleBookmarkResponse, ToggleFollowResponse, ToggleLikeResponse, UploadUrlResponse, User } from './interfaces';
 
-interface UploadUrlResponse {
-  uploadUrl: string;
-  path: string;
-}
-
-interface ToggleLikeResponse {
-  liked: boolean;
-  message: string;
-}
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 
 export const PostsService = {
   async getFeed(page = 1, limit = 10): Promise<PaginatedResponse<Post>> {
@@ -20,34 +12,42 @@ export const PostsService = {
     return response.data;
   },
 
-  async createPost(caption: string, file: File | null): Promise<Post> {
-    let mediaData: { url: string; type: 'IMAGE' | 'VIDEO' }[] | null = null;
+  async createPost(caption: string, files: File[]): Promise<Post> {
+    let mediaData: { url: string; type: 'IMAGE' | 'VIDEO' | 'AUDIO' }[] = [];
 
-    if (file) {
-      const urlResponse = await api.post<UploadUrlResponse>('/media/upload-url', {
-        fileName: file.name,
-        fileType: file.type,
-      });
+    if (files.length > 0) {
+      mediaData = await Promise.all(
+        files.map(async (file) => {
+          const urlResponse = await api.post<UploadUrlResponse>('/media/upload-url', {
+            fileName: file.name,
+            fileType: file.type,
+          });
 
-      const { uploadUrl, path } = urlResponse.data;
+          const { uploadUrl, path } = urlResponse.data;
 
-      await axios.put<void>(uploadUrl, file, {
-        headers: {
-          'Content-Type': file.type,
-        },
-      });
+          await axios.put<void>(uploadUrl, file, {
+            headers: {
+              'Content-Type': file.type,
+            },
+          });
 
-      const publicUrl = `https://YOUR_SUPABASE_PROJECT_ID.supabase.co/storage/v1/object/public/social-media/${path}`;
+          const publicUrl = `https://${supabaseUrl}.supabase.co/storage/v1/object/public/network/${path}`;
 
-      mediaData = [{
-        url: publicUrl,
-        type: file.type.startsWith('video/') ? 'VIDEO' : 'IMAGE',
-      }];
+          let mediaType: 'IMAGE' | 'VIDEO' | 'AUDIO' = 'IMAGE';
+          if (file.type.startsWith('video/')) mediaType = 'VIDEO';
+          if (file.type.startsWith('audio/')) mediaType = 'AUDIO';
+
+          return {
+            url: publicUrl,
+            type: mediaType,
+          };
+        })
+      );
     }
 
     const postResponse = await api.post<Post>('/posts', {
       caption,
-      media: mediaData || [],
+      media: mediaData,
     });
 
     return postResponse.data;
@@ -55,6 +55,11 @@ export const PostsService = {
 
   async toggleLike(postId: string): Promise<ToggleLikeResponse> {
     const response = await api.post<ToggleLikeResponse>(`/posts/${postId}/like`);
+    return response.data;
+  },
+
+  async getLikes(postId: string): Promise<GetLikesResponse> {
+    const response = await api.get<GetLikesResponse>(`/posts/${postId}/likes`);
     return response.data;
   },
 
@@ -80,6 +85,18 @@ export const PostsService = {
 
   async getFollowing(userId: string): Promise<User[]> {
     const response = await api.get<User[]>(`/users/${userId}/following`);
+    return response.data;
+  },
+
+  async toggleBookmark(postId: string): Promise<ToggleBookmarkResponse> {
+    const response = await api.post<ToggleBookmarkResponse>(`/posts/${postId}/bookmark`);
+    return response.data;
+  },
+
+  async getBookmarkedPosts(page = 1, limit = 10): Promise<PaginatedResponse<Post>> {
+    const response = await api.get<PaginatedResponse<Post>>('/posts/bookmarked/all', {
+      params: { page, limit },
+    });
     return response.data;
   },
 };

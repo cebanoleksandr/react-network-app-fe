@@ -7,11 +7,15 @@ import './services/interceptors.ts'
 import { RouterProvider } from 'react-router-dom'
 import router from './router/index.tsx'
 import './i18n'
+import { Provider } from 'react-redux'
+import { store } from './store/store.ts'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeProvider theme={theme}>
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </Provider>
   </StrictMode>,
 )
