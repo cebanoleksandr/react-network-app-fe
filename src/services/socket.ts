@@ -4,7 +4,6 @@ import type { ServerToClientEvents, ClientToServerEvents, Message } from './inte
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
 
 class SocketService {
-  // Явно указываем типы для сервера и клиента вместо any
   public socket: Socket<ServerToClientEvents, ClientToServerEvents> | null = null;
 
   connect(token: string): void {
@@ -28,13 +27,42 @@ class SocketService {
     this.socket?.emit('sendMessage', { chatId, senderId, content });
   }
 
-  // Аргумент callback теперь строго принимает объект типа Message
+  // --- ИЗМЕНЕНО: теперь методы принимают конкретный callback ---
   onNewMessage(callback: (message: Message) => void): void {
     this.socket?.on('newMessage', callback);
   }
 
-  offNewMessage(): void {
-    this.socket?.off('newMessage');
+  offNewMessage(callback: (message: Message) => void): void {
+    this.socket?.off('newMessage', callback);
+  }
+
+  onMessagesRead(callback: (data: { chatId: string; readerId: string }) => void): void {
+    this.socket?.on('messagesRead', callback);
+  }
+
+  offMessagesRead(callback: (data: { chatId: string; readerId: string }) => void): void {
+    this.socket?.off('messagesRead', callback);
+  }
+  // -------------------------------------------------------------
+
+  sendTyping(chatId: string, username: string) {
+    this.socket?.emit('typing', { chatId, username });
+  }
+
+  sendStopTyping(chatId: string, username: string) {
+    this.socket?.emit('stopTyping', { chatId, username });
+  }
+
+  onUserTyping(callback: (data: { chatId: string; username: string; isTyping: boolean }) => void) {
+    this.socket?.on('userTyping', callback);
+  }
+
+  markAsRead(chatId: string, userId: string): void {
+    this.socket?.emit('readMessages', { chatId, userId });
+  }
+
+  joinInbox(userId: string): void {
+    this.socket?.emit('joinInbox', { userId });
   }
 
   disconnect(): void {

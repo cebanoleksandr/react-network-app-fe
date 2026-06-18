@@ -6,4 +6,5 @@ export interface ISidebarItem {
   path: string;
   end?: boolean;
   icon: ComponentType<SvgIconProps>;
+  badge?: number;
 }

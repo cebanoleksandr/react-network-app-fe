@@ -120,6 +120,16 @@ export interface ChatRoom {
   createdAt: string;
   updatedAt: string;
   participants: User[];
+  unreadCount?: number;
+  lastMessage?: {
+    id: string;
+    content: string;
+    createdAt: string;
+    sender: {
+      id: string;
+      username: string;
+    };
+  } | null;
 }
 
 export interface Message {
@@ -127,6 +137,9 @@ export interface Message {
   content: string;
   createdAt: string;
   sender: Pick<User, 'id' | 'username' | 'avatarUrl'>;
+  isDelivered: boolean; 
+  isRead: boolean;
+  chatId: string;
 }
 
 export interface CreateChatResponse {
@@ -138,9 +151,15 @@ export interface CreateChatResponse {
 
 export interface ServerToClientEvents {
   newMessage: (message: Message) => void;
+  userTyping: (data: { chatId: string; username: string; isTyping: boolean }) => void;
+  messagesRead: (data: { chatId: string; readerId: string }) => void;
 }
 
 export interface ClientToServerEvents {
   joinChat: (data: { chatId: string }) => void;
   sendMessage: (data: { chatId: string; senderId: string; content: string }) => void;
+  typing: (data: { chatId: string; username: string }) => void;
+  stopTyping: (data: { chatId: string; username: string }) => void;
+  readMessages: (data: { chatId: string; userId: string }) => void;
+  joinInbox: (data: { userId: string }) => void;
 }

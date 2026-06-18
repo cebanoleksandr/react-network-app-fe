@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Container,
@@ -13,15 +14,19 @@ import {
   Button,
   CircularProgress,
   InputAdornment,
-  Divider
+  Divider,
+  IconButton
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import ChatIcon from "@mui/icons-material/Chat";
 import type { User } from "../services/interfaces";
 import { UsersService } from "../services/users.service";
+import { ChatsService } from "../services/chats.service";
 import { useAppSelector } from "../store/hooks";
 
 const People = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,6 +37,7 @@ const People = () => {
   const [followers, setFollowers] = useState<User[]>([]);
   const [following, setFollowing] = useState<User[]>([]);
   const [loadingRelations, setLoadingRelations] = useState(false);
+  const [loadingChatId, setLoadingChatId] = useState<string | null>(null);
 
   const { item: currentUser } = useAppSelector(state => state.user);
 
@@ -124,6 +130,26 @@ const People = () => {
     }
   };
 
+  const handleStartChat = async (userId: string) => {
+    try {
+      setLoadingChatId(userId);
+      const chatRoom = await ChatsService.getOrCreateRoom(userId);
+      navigate(`/app/chat/${chatRoom.id}`);
+    } catch (error) {
+      console.error("Не вдалося відкрити діалог:", error);
+    } finally {
+      setLoadingChatId(null);
+    }
+  };
+
+  const handleNavigateToProfile = (userId: string) => {
+    if (userId === currentUser?.id) {
+      navigate(`/app/profile/${currentUser?.id}`);
+    } else {
+      navigate(`/app/profile/${userId}`);
+    }
+  };
+
   const filterLocalUsers = (usersList: User[]) => {
     return usersList.filter((u) =>
       `${u.firstName} ${u.lastName} ${u.username}`
@@ -202,8 +228,8 @@ const People = () => {
               displayedUsers.map((user, index) => {
                 const isLast = index === displayedUsers.length - 1;
                 const amIFollowing = isFollowingUser(user.id);
-                // Перевірка: чи є поточний елемент списку карткою самого користувача
                 const isMe = user.id === currentUser?.id;
+                const isChatRoomOpening = loadingChatId === user.id;
 
                 return (
                   <div key={user.id} ref={isLast && activeTab === 0 ? lastUserElementRef : null}>
@@ -219,12 +245,14 @@ const People = () => {
                       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                         <Avatar
                           src={user.avatarUrl}
-                          sx={{ width: 60, height: 60, bgcolor: "#447bba" }}
+                          onClick={() => handleNavigateToProfile(user.id)}
+                          sx={{ width: 60, height: 60, bgcolor: "#447bba", cursor: "pointer" }}
                         >
                           {user.username.substring(0, 2).toUpperCase()}
                         </Avatar>
                         <Box>
                           <Typography
+                            onClick={() => handleNavigateToProfile(user.id)}
                             sx={{
                               fontWeight: 600,
                               color: "#2a5885",
@@ -251,33 +279,53 @@ const People = () => {
                         </Box>
                       </Box>
 
-                      {/* Відображаємо кнопку лише якщо id юзера не дорівнює id авторизованого юзера */}
                       {!isMe && (
-                        <Button
-                          variant={amIFollowing ? "outlined" : "contained"}
-                          size="small"
-                          onClick={() => handleToggleFollow(user.id)}
-                          sx={{
-                            textTransform: "none",
-                            borderRadius: "8px",
-                            boxShadow: "none",
-                            fontSize: "13px",
-                            fontWeight: 500,
-                            px: 2,
-                            ...(amIFollowing
-                              ? {
-                                  borderColor: "#e7e8ec",
-                                  color: "#555",
-                                  "&:hover": { bgcolor: "#f0f2f5", borderColor: "#ceccd1" },
-                                }
-                              : {
-                                  bgcolor: "#447bba",
-                                  "&:hover": { bgcolor: "#3b699f", boxShadow: "none" },
-                                }),
-                          }}
-                        >
-                          {amIFollowing ? "Unfollow" : "Follow"}
-                        </Button>
+                        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                          <IconButton
+                            size="small"
+                            onClick={() => handleStartChat(user.id)}
+                            disabled={isChatRoomOpening}
+                            sx={{
+                              color: "#447bba",
+                              bgcolor: "#f0f2f5",
+                              borderRadius: "8px",
+                              p: "7px",
+                              "&:hover": { bgcolor: "#e4e6e9" }
+                            }}
+                          >
+                            {isChatRoomOpening ? (
+                              <CircularProgress size={18} sx={{ color: "#447bba" }} />
+                            ) : (
+                              <ChatIcon fontSize="small" />
+                            )}
+                          </IconButton>
+
+                          <Button
+                            variant={amIFollowing ? "outlined" : "contained"}
+                            size="small"
+                            onClick={() => handleToggleFollow(user.id)}
+                            sx={{
+                              textTransform: "none",
+                              borderRadius: "8px",
+                              boxShadow: "none",
+                              fontSize: "13px",
+                              fontWeight: 500,
+                              px: 2,
+                              ...(amIFollowing
+                                ? {
+                                    borderColor: "#e7e8ec",
+                                    color: "#555",
+                                    "&:hover": { bgcolor: "#f0f2f5", borderColor: "#ceccd1" },
+                                  }
+                                : {
+                                    bgcolor: "#447bba",
+                                    "&:hover": { bgcolor: "#3b699f", boxShadow: "none" },
+                                  }),
+                            }}
+                          >
+                            {amIFollowing ? "Unfollow" : "Follow"}
+                          </Button>
+                        </Box>
                       )}
                     </Box>
                     {!isLast && <Divider sx={{ borderColor: "#f0f2f5", mx: 2 }} />}

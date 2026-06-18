@@ -98,7 +98,7 @@ export const routes: RouteObject[] = [
             Component: Dialogs,
           },
           {
-            path: 'dialogs/:dialogId',
+            path: 'chat/:chatId',
             Component: Chat,
           },
         ],

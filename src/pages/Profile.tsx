@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../store/hooks';
 import PostList from '../components/business/posts/PostList';
 import CreatePostBlock from '../components/business/posts/CreatePostBlock';
 import type { Post, User } from '../services/interfaces';
 import { PostsService } from '../services/posts.service';
 import { UsersService } from '../services/users.service';
+import { ChatsService } from '../services/chats.service';
+import ChatIcon from '@mui/icons-material/Chat';
 
 import {
   Box,
@@ -41,8 +44,15 @@ const VkCard = styled(Card)(({ theme }) => ({
 const Profile: React.FC = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  
+  const { userId: urlUserId } = useParams<{ userId: string }>();
+  
   const { item: currentUser } = useAppSelector((state) => state.user);
   
+  const isForeignProfile = Boolean(urlUserId && urlUserId !== currentUser?.id);
+
+  const [profileUser, setProfileUser] = useState<User | null>(null);
   const [posts, setPosts] = useState<Post[]>([]);
   const [totalPosts, setTotalPosts] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -57,16 +67,34 @@ const Profile: React.FC = () => {
     bio: ''
   });
   const [isSaving, setIsSaving] = useState(false);
+  const [creatingChat, setCreatingChat] = useState(false);
 
   useEffect(() => {
     const fetchProfileData = async () => {
-      if (!currentUser) return;
       try {
         setLoading(true);
-        const postsData = await PostsService.getFeed(1, 20);
-        const userPosts = postsData.data.filter((post) => post.user.id === currentUser.id);
-        setPosts(userPosts);
-        setTotalPosts(userPosts.length);
+        let targetUser: User | null = null;
+
+        if (isForeignProfile && urlUserId) {
+          targetUser = await UsersService.getUserById(urlUserId);
+        } else {
+          targetUser = currentUser;
+        }
+
+        setProfileUser(targetUser);
+
+        if (targetUser) {
+          const postsData = await PostsService.getFeed(1, 20);
+          const userPosts = postsData.data.filter((post) => post.user.id === targetUser?.id);
+          setPosts(userPosts);
+          setTotalPosts(userPosts.length);
+
+          const followersData = await UsersService.getFollowers(targetUser.id);
+          setFollowers(followersData);
+
+          const followingData = await UsersService.getFollowing(targetUser.id);
+          setFollowing(followingData);
+        }
       } catch (error) {
         console.error('Error loading profile data:', error);
       } finally {
@@ -74,30 +102,21 @@ const Profile: React.FC = () => {
       }
     };
 
-    const getFollowers = async () => {
-      if (!currentUser?.id) return;
-      try {
-        const response = await UsersService.getFollowers(currentUser.id);
-        setFollowers(response);
-      } catch (error) {
-        console.error('Error fetching followers:', error);
-      }
-    };
-
-    const getFollowing = async () => {
-      if (!currentUser?.id) return;
-      try {
-        const response = await UsersService.getFollowing(currentUser.id);
-        setFollowing(response);
-      } catch (error) {
-        console.error('Error fetching following:', error);
-      }
-    };
-
     fetchProfileData();
-    getFollowers();
-    getFollowing();
-  }, [currentUser]);
+  }, [urlUserId, currentUser, isForeignProfile]);
+
+  const handleStartChat = async () => {
+    if (!profileUser) return;
+    try {
+      setCreatingChat(true);
+      const chatRoom = await ChatsService.getOrCreateRoom(profileUser.id);
+      navigate(`/app/chat/${chatRoom.id}`);
+    } catch (error) {
+      console.error('Failed to create or open chat room:', error);
+    } finally {
+      setCreatingChat(false);
+    }
+  };
 
   const handleOpenEdit = () => {
     if (currentUser) {
@@ -124,9 +143,7 @@ const Profile: React.FC = () => {
     try {
       setIsSaving(true);
       const updatedUser = await UsersService.updateProfile(editForm);
-      
       dispatch(setUserAC(updatedUser)); 
-      
       setIsEditOpen(false);
     } catch (error) {
       console.error('Error updating profile:', error);
@@ -136,9 +153,9 @@ const Profile: React.FC = () => {
   };
 
   const handlePostCreated = async () => {
-    if (currentUser) {
+    if (profileUser) {
       const postsData = await PostsService.getFeed(1, 20);
-      const userPosts = postsData.data.filter((post) => post.user.id === currentUser.id);
+      const userPosts = postsData.data.filter((post) => post.user.id === profileUser.id);
       setPosts(userPosts);
       setTotalPosts(userPosts.length);
     }
@@ -148,22 +165,22 @@ const Profile: React.FC = () => {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '64vh', color: 'text.secondary' }}>
         <CircularProgress size={40} sx={{ color: '#2a5885', mr: 2 }} />
-        <Typography variant="body1">{t('common.loading', 'Завантаження...')}</Typography>
+        <Typography variant="body1">{t('common.loading', 'Loading...')}</Typography>
       </Box>
     );
   }
 
-  if (!currentUser) {
+  if (!profileUser) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '64vh', color: 'error.main' }}>
-        <Typography variant="h6">Користувача не знайдено</Typography>
+        <Typography variant="h6">User not found</Typography>
       </Box>
     );
   }
 
-  const fullName = currentUser.firstName && currentUser.lastName 
-    ? `${currentUser.firstName} ${currentUser.lastName}` 
-    : currentUser.username;
+  const fullName = profileUser.firstName && profileUser.lastName 
+    ? `${profileUser.firstName} ${profileUser.lastName}` 
+    : profileUser.username;
 
   return (
     <Container 
@@ -193,28 +210,51 @@ const Profile: React.FC = () => {
               >
                 <Box
                   component="img"
-                  src={currentUser.avatarUrl || 'https://placehold.co/230x230?text=No+Avatar'}
+                  src={profileUser.avatarUrl || 'https://placehold.co/230x230?text=No+Avatar'}
                   alt={fullName}
                   sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
               </Box>
-              <Button 
-                fullWidth 
-                variant="contained"
-                onClick={handleOpenEdit}
-                sx={{ 
-                  backgroundColor: '#e1e3e6', 
-                  color: '#2a5885',
-                  boxShadow: 'none',
-                  textTransform: 'none',
-                  fontSize: '13px',
-                  fontWeight: 500,
-                  borderRadius: '8px',
-                  '&:hover': { backgroundColor: '#d7d8db', boxShadow: 'none' }
-                }}
-              >
-                Редагувати профіль
-              </Button>
+              
+              {isForeignProfile ? (
+                <Button 
+                  fullWidth 
+                  variant="contained"
+                  startIcon={<ChatIcon />}
+                  onClick={handleStartChat}
+                  disabled={creatingChat}
+                  sx={{ 
+                    backgroundColor: '#2a5885', 
+                    color: '#ffffff',
+                    boxShadow: 'none',
+                    textTransform: 'none',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    borderRadius: '8px',
+                    '&:hover': { backgroundColor: '#244d75', boxShadow: 'none' }
+                  }}
+                >
+                  {creatingChat ? 'Opening the chat...' : 'Send a message'}
+                </Button>
+              ) : (
+                <Button 
+                  fullWidth 
+                  variant="contained"
+                  onClick={handleOpenEdit}
+                  sx={{ 
+                    backgroundColor: '#e1e3e6', 
+                    color: '#2a5885',
+                    boxShadow: 'none',
+                    textTransform: 'none',
+                    fontSize: '13px',
+                    fontWeight: 500,
+                    borderRadius: '8px',
+                    '&:hover': { backgroundColor: '#d7d8db', boxShadow: 'none' }
+                  }}
+                >
+                  Edit profile
+                </Button>
+              )}
             </VkCard>
 
             <VkCard>
@@ -227,7 +267,12 @@ const Profile: React.FC = () => {
               
               <Grid container spacing={1} sx={{ textAlign: 'center', mb: 3 }}>
                 {followers.map((friend) => (
-                  <Grid size={4} key={friend.id} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
+                  <Grid 
+                    size={{ xs: 4 }} 
+                    key={friend.id} 
+                    sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }} 
+                    onClick={() => navigate(`/app/profile/${friend.id}`)}
+                  >
                     <Avatar 
                       src={friend.avatarUrl} 
                       alt={friend.username} 
@@ -252,7 +297,12 @@ const Profile: React.FC = () => {
               
               <Grid container spacing={1} sx={{ textAlign: 'center' }}>
                 {following.map((friend) => (
-                  <Grid size={4} key={friend.id} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }}>
+                  <Grid 
+                    size={{ xs: 4 }} 
+                    key={friend.id} 
+                    sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', cursor: 'pointer' }} 
+                    onClick={() => navigate(`/app/profile/${friend.id}`)}
+                  >
                     <Avatar 
                       src={friend.avatarUrl} 
                       alt={friend.username} 
@@ -279,7 +329,7 @@ const Profile: React.FC = () => {
                   {fullName}
                 </Typography>
                 <Typography sx={{ color: '#656565', fontSize: '13px' }}>
-                  {currentUser.bio || 'Статус відсутній'}
+                  {profileUser.bio || 'Статус відсутній'}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', fontSize: '12px', color: '#828282' }}>
@@ -288,22 +338,9 @@ const Profile: React.FC = () => {
               </Box>
             </Box>
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.25, fontSize: '13px' }}>
-              <Grid container spacing={0}>
-                <Grid size={3} sx={{ color: '#828282' }}>Нікнейм:</Grid>
-                <Grid size={9}>
-                  <Link underline="hover" sx={{ color: '#2a5885', cursor: 'pointer' }}>@{currentUser.username}</Link>
-                </Grid>
-              </Grid>
-              <Grid container spacing={0}>
-                <Grid size={3} sx={{ color: '#828282' }}>Email:</Grid>
-                <Grid size={9} sx={{ color: '#000' }}>{currentUser.email}</Grid>
-              </Grid>
-            </Box>
-
             <Box sx={{ display: 'flex', gap: 4, mt: 2.5, pt: 2, borderTop: '1px solid #e7e8ec', px: 1 }}>
-              <Box sx={{ cursor: 'pointer', '&:hover text': { transform: 'scale(1.05)' } }}>
-                <Typography sx={{ fontSize: '19px', color: '#2a5885', fontWeight: 300, transition: 'transform 0.2s' }}>
+              <Box sx={{ cursor: 'pointer' }}>
+                <Typography sx={{ fontSize: '19px', color: '#2a5885', fontWeight: 300 }}>
                   {totalPosts}
                 </Typography>
                 <Typography sx={{ color: '#828282', fontSize: '12px', mt: 0.5 }}>posts</Typography>
@@ -323,7 +360,7 @@ const Profile: React.FC = () => {
             </Box>
           </VkCard>
 
-          <CreatePostBlock onPostCreated={handlePostCreated} />
+          {!isForeignProfile && <CreatePostBlock onPostCreated={handlePostCreated} />}
 
           <Box 
             sx={{ 
