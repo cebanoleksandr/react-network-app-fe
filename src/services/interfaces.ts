@@ -114,3 +114,33 @@ export interface PaginatedUsersResponse {
     currentPage: number;
   };
 }
+
+export interface ChatRoom {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  participants: User[];
+}
+
+export interface Message {
+  id: string;
+  content: string;
+  createdAt: string;
+  sender: Pick<User, 'id' | 'username' | 'avatarUrl'>;
+}
+
+export interface CreateChatResponse {
+  id: string;
+  participants: User[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ServerToClientEvents {
+  newMessage: (message: Message) => void;
+}
+
+export interface ClientToServerEvents {
+  joinChat: (data: { chatId: string }) => void;
+  sendMessage: (data: { chatId: string; senderId: string; content: string }) => void;
+}
