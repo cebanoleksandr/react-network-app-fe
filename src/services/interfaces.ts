@@ -55,7 +55,6 @@ export interface ToggleFollowResponse {
 export interface UpdateProfileDto {
   firstName?: string;
   lastName?: string;
-  avatarUrl?: string;
   bio?: string;
 }
 
@@ -97,4 +96,21 @@ export interface Like {
   user: User;
   post: Post;
   createdAt: Date;
+}
+
+export interface GetAllUsersParams {
+  page?: number;
+  limit?: number;
+  search?: string;
+}
+
+export interface PaginatedUsersResponse {
+  data: User[];
+  meta: {
+    totalItems: number;
+    itemCount: number;
+    itemsPerPage: number;
+    totalPages: number;
+    currentPage: number;
+  };
 }

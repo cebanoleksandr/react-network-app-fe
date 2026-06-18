@@ -64,6 +64,16 @@ const Header = () => {
     handleMenuClose();
   }
 
+  const handleGoToProfile = () => {
+    handleMenuClose();
+    navigate(`/app/profile/${me.id}`);
+  }
+
+  const handleGoToSettings = () => {
+    handleMenuClose();
+    navigate('/app/settings');
+  }
+
   return (
     <Box
       component="header"
@@ -178,8 +188,8 @@ const Header = () => {
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
           >
-            <MenuItem onClick={handleMenuClose}>{t("header.my_profile")}</MenuItem>
-            <MenuItem onClick={handleMenuClose}>{t("header.settings")}</MenuItem>
+            <MenuItem onClick={handleGoToProfile}>{t("header.my_profile")}</MenuItem>
+            <MenuItem onClick={handleGoToSettings}>{t("header.settings")}</MenuItem>
             <MenuItem onClick={onLogout} sx={{ color: 'error.main' }}>
               {t("header.logout")}
             </MenuItem>

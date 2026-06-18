@@ -14,12 +14,14 @@ import {
 import { useTranslation } from "react-i18next";
 import type { ISidebarItem } from "./types";
 import SidebarItem from "./SidebarItem";
+import { useAppSelector } from "../../store/hooks";
 
 const Sidebar = () => {
   const { t } = useTranslation();
+  const { item: currentUser } = useAppSelector(state => state.user);
 
   const menuItems: ISidebarItem[] = [
-    { label: t("sidebar.profile"), path: "/app/profile/1", icon: AccountCircle },
+    { label: t("sidebar.profile"), path: `/app/profile/${currentUser?.id}`, icon: AccountCircle },
     { label: t("sidebar.feed"), path: "/app", end: true, icon: RssFeed },
     { label: t("sidebar.dialogs"), path: "/app/dialogs", icon: Chat },
     { label: t("sidebar.people"), path: "/app/people", icon: People },

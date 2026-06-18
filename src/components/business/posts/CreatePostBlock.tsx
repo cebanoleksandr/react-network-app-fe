@@ -69,7 +69,7 @@ const CreatePostBlock: FC<IProps> = ({ onPostCreated }) => {
         borderRadius: '8px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05)',
         bgcolor: 'white',
-        mb: '16px',
+        mb: '8px',
         display: 'flex',
         flexDirection: 'column',
         gap: 1.5,

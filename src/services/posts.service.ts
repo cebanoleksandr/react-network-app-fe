@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { api } from './';
-import type { Comment, GetLikesResponse, PaginatedResponse, Post, ToggleBookmarkResponse, ToggleFollowResponse, ToggleLikeResponse, UploadUrlResponse, User } from './interfaces';
+import type { Comment, GetLikesResponse, PaginatedResponse, Post, ToggleBookmarkResponse, ToggleLikeResponse, UploadUrlResponse } from './interfaces';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 
@@ -70,21 +70,6 @@ export const PostsService = {
 
   async getComments(postId: string): Promise<Comment[]> {
     const response = await api.get<Comment[]>(`/posts/${postId}/comments`);
-    return response.data;
-  },
-
-  async toggleFollow(userId: string): Promise<ToggleFollowResponse> {
-    const response = await api.post<ToggleFollowResponse>(`/users/${userId}/follow`);
-    return response.data;
-  },
-
-  async getFollowers(userId: string): Promise<User[]> {
-    const response = await api.get<User[]>(`/users/${userId}/followers`);
-    return response.data;
-  },
-
-  async getFollowing(userId: string): Promise<User[]> {
-    const response = await api.get<User[]>(`/users/${userId}/following`);
     return response.data;
   },
 

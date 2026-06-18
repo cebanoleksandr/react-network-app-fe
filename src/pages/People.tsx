@@ -1,12 +1,300 @@
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  Box,
+  Container,
+  Tabs,
+  Tab,
+  TextField,
+  Card,
+  CardContent,
+  Avatar,
+  Typography,
+  Button,
+  CircularProgress,
+  InputAdornment,
+  Divider
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import type { User } from "../services/interfaces";
+import { UsersService } from "../services/users.service";
+import { useAppSelector } from "../store/hooks";
 
 const People = () => {
   const { t } = useTranslation();
 
+  const [activeTab, setActiveTab] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [globalUsers, setGlobalUsers] = useState<User[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [followers, setFollowers] = useState<User[]>([]);
+  const [following, setFollowing] = useState<User[]>([]);
+  const [loadingRelations, setLoadingRelations] = useState(false);
+
+  const { item: currentUser } = useAppSelector(state => state.user);
+
+  const observer = useRef<IntersectionObserver | null>(null);
+
+  const fetchGlobalUsers = async (pageNum: number, search: string) => {
+    if (loading) return;
+    setLoading(true);
+    try {
+      const response = await UsersService.getAllUsers({
+        page: pageNum,
+        limit: 10,
+        search: search || undefined,
+      });
+
+      setGlobalUsers((prev) => {
+        return pageNum === 1 ? response.data : [...prev, ...response.data];
+      });
+      setHasMore(response.meta.currentPage < response.meta.totalPages);
+    } catch (error) {
+      console.error("Помилка завантаження користувачів:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadRelations = async () => {
+    if (!currentUser?.id) return;
+    setLoadingRelations(true);
+    try {
+      const [followersData, followingData] = await Promise.all([
+        UsersService.getFollowers(currentUser.id),
+        UsersService.getFollowing(currentUser.id),
+      ]);
+      setFollowers(followersData);
+      setFollowing(followingData);
+    } catch (error) {
+      console.error("Помилка завантаження зв'язків:", error);
+    } finally {
+      setLoadingRelations(false);
+    }
+  };
+
+  useEffect(() => {
+    const startFetching = async () => {
+      if (activeTab === 0) {
+        await fetchGlobalUsers(page, searchQuery);
+      } else if (activeTab === 1 || activeTab === 2) {
+        await loadRelations();
+      }
+    };
+
+    startFetching();
+  }, [searchQuery, activeTab, page]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+    setPage(1); 
+    setHasMore(true);
+  };
+
+  const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
+    setActiveTab(newValue);
+    setPage(1); 
+    setHasMore(true);
+  };
+
+  const lastUserElementRef = useCallback(
+    (node: HTMLDivElement) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore && activeTab === 0) {
+          setPage((prevPage) => prevPage + 1); 
+        }
+      });
+
+      if (node) observer.current.observe(node);
+    },
+    [loading, hasMore, activeTab]
+  );
+
+  const handleToggleFollow = async (userId: string) => {
+    try {
+      await UsersService.toggleFollow(userId);
+      await loadRelations();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const filterLocalUsers = (usersList: User[]) => {
+    return usersList.filter((u) =>
+      `${u.firstName} ${u.lastName} ${u.username}`
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase())
+    );
+  };
+
+  const displayedUsers = activeTab === 0 
+    ? globalUsers 
+    : activeTab === 1 
+      ? filterLocalUsers(followers) 
+      : filterLocalUsers(following);
+
+  const isFollowingUser = (userId: string) => following.some((f) => f.id === userId);
+
   return (
-    <div>
-      <h1>{t("pages.people")}</h1>
-    </div>
+    <Box sx={{ bgcolor: "#ededf0", minHeight: "100vh", py: 3 }}>
+      <Container maxWidth="sm">
+        <Card variant="outlined" sx={{ borderRadius: "12px", mb: 2, borderColor: "#e7e8ec", boxShadow: "none" }}>
+          <Tabs
+            value={activeTab}
+            onChange={handleTabChange}
+            sx={{
+              px: 2,
+              borderBottom: 1,
+              borderColor: "divider",
+              "& .MuiTab-root": { textTransform: "none", fontWeight: 500, fontSize: "15px" },
+            }}
+          >
+            <Tab label={t("pages.people")} />
+            <Tab label={`${t("pages.followers")} ${followers.length ? `(${followers.length})` : ""}`} />
+            <Tab label={`${t("pages.following")} ${following.length ? `(${following.length})` : ""}`} />
+          </Tabs>
+
+          <Box sx={{ p: 2 }}>
+            <TextField
+              fullWidth
+              size="small"
+              variant="outlined"
+              placeholder={t("actions.search")}
+              value={searchQuery}
+              onChange={handleSearchChange}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon sx={{ color: "#939393" }} />
+                    </InputAdornment>
+                  ),
+                },
+              }}
+              sx={{
+                "& .MuiOutlinedInput-root": {
+                  bgcolor: "#f5f5f7",
+                  "& fieldset": { borderColor: "transparent" },
+                  "&:hover fieldset": { borderColor: "#e7e8ec" },
+                  "&.Mui-focused fieldset": { borderColor: "#447bba", borderWidth: "1px" },
+                },
+              }}
+            />
+          </Box>
+        </Card>
+
+        <Card variant="outlined" sx={{ borderRadius: "12px", borderColor: "#e7e8ec", boxShadow: "none" }}>
+          <CardContent sx={{ p: "0px !important" }}>
+            {loadingRelations && displayedUsers.length === 0 ? (
+              <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
+                <CircularProgress size={30} sx={{ color: "#447bba" }} />
+              </Box>
+            ) : displayedUsers.length === 0 ? (
+              <Typography align="center" sx={{ color: "#828282", py: 4, fontSize: "14px" }}>
+                Users not found
+              </Typography>
+            ) : (
+              displayedUsers.map((user, index) => {
+                const isLast = index === displayedUsers.length - 1;
+                const amIFollowing = isFollowingUser(user.id);
+                // Перевірка: чи є поточний елемент списку карткою самого користувача
+                const isMe = user.id === currentUser?.id;
+
+                return (
+                  <div key={user.id} ref={isLast && activeTab === 0 ? lastUserElementRef : null}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        p: 2,
+                        "&:hover": { bgcolor: "#f9f9fa" },
+                      }}
+                    >
+                      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                        <Avatar
+                          src={user.avatarUrl}
+                          sx={{ width: 60, height: 60, bgcolor: "#447bba" }}
+                        >
+                          {user.username.substring(0, 2).toUpperCase()}
+                        </Avatar>
+                        <Box>
+                          <Typography
+                            sx={{
+                              fontWeight: 600,
+                              color: "#2a5885",
+                              cursor: "pointer",
+                              fontSize: "14px",
+                              "&:hover": { textDecoration: "underline" },
+                            }}
+                          >
+                            {user.firstName || user.lastName
+                              ? `${user.firstName || ""} ${user.lastName || ""}`.trim()
+                              : `@${user.username}`}
+                            {isMe && ` (${t("Перегляд профілю") || "Ви"})`}
+                          </Typography>
+                          {user.firstName && user.lastName && (
+                            <Typography sx={{ color: "#828282", fontSize: "12px" }}>
+                              @{user.username}
+                            </Typography>
+                          )}
+                          {user.bio && (
+                            <Typography sx={{ color: "#000", fontSize: "13px", mt: 0.5 }} noWrap>
+                              {user.bio}
+                            </Typography>
+                          )}
+                        </Box>
+                      </Box>
+
+                      {/* Відображаємо кнопку лише якщо id юзера не дорівнює id авторизованого юзера */}
+                      {!isMe && (
+                        <Button
+                          variant={amIFollowing ? "outlined" : "contained"}
+                          size="small"
+                          onClick={() => handleToggleFollow(user.id)}
+                          sx={{
+                            textTransform: "none",
+                            borderRadius: "8px",
+                            boxShadow: "none",
+                            fontSize: "13px",
+                            fontWeight: 500,
+                            px: 2,
+                            ...(amIFollowing
+                              ? {
+                                  borderColor: "#e7e8ec",
+                                  color: "#555",
+                                  "&:hover": { bgcolor: "#f0f2f5", borderColor: "#ceccd1" },
+                                }
+                              : {
+                                  bgcolor: "#447bba",
+                                  "&:hover": { bgcolor: "#3b699f", boxShadow: "none" },
+                                }),
+                          }}
+                        >
+                          {amIFollowing ? "Unfollow" : "Follow"}
+                        </Button>
+                      )}
+                    </Box>
+                    {!isLast && <Divider sx={{ borderColor: "#f0f2f5", mx: 2 }} />}
+                  </div>
+                );
+              })
+            )}
+
+            {loading && activeTab === 0 && (
+              <Box sx={{ display: "flex", justifyContent: "center", py: 2 }}>
+                <CircularProgress size={24} sx={{ color: "#447bba" }} />
+              </Box>
+            )}
+          </CardContent>
+        </Card>
+      </Container>
+    </Box>
   );
 };
 
