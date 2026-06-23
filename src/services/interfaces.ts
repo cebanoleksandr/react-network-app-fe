@@ -24,6 +24,7 @@ export interface Post {
   media: Media[];
   commentsCount: number;
   isLiked: boolean;
+  isBookmarked: boolean;
 }
 
 export interface Comment {

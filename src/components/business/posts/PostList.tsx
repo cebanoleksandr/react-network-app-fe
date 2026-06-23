@@ -3,6 +3,7 @@ import { Article as ArticleIcon } from '@mui/icons-material';
 import type { Post } from "../../../services/interfaces";
 import type { FC } from "react";
 import PostItem from "./PostItem";
+import { AnimatePresence } from "framer-motion";
 
 interface IProps {
   posts: Post[];
@@ -54,9 +55,11 @@ const PostList: FC<IProps> = ({ posts }) => {
         </Box>
       )}
 
-      {posts.map(post => (
-        <PostItem key={post.id} post={post} />
-      ))}
+      <AnimatePresence mode="popLayout">
+        {posts.map(post => (
+          <PostItem key={post.id} post={post} />
+        ))}
+      </AnimatePresence>
     </Box>
   );
 };

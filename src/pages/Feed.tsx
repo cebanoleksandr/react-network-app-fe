@@ -5,11 +5,13 @@ import {
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
 } from '@mui/icons-material';
-import type { Post } from "../services/interfaces";
 import PostList from "../components/business/posts/PostList";
 import FilterMenu from "../components/business/posts/FilterMenu";
 import CreatePostBlock from "../components/business/posts/CreatePostBlock";
 import { PostsService } from "../services/posts.service";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { setPostsAC } from "../store/postsSlice";
+import { FEED_FILTERS, type FeedFilter } from "../components/business/posts/types";
 
 const dummyStories = [
   { id: 1, name: 'Дмитро', avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&q=80' },
@@ -35,13 +37,37 @@ const Feed = () => {
   const [showLeftBtn, setShowLeftBtn] = useState(false);
   const [showRightBtn, setShowRightBtn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [page] = useState(1);
+  const [page, setPage] = useState(1);
+  const [selectedFilter, setSelectedFilter] = useState<FeedFilter>(FEED_FILTERS.FEED);
+
+  const { items: posts } = useAppSelector(state => state.posts);
+
+  const dispatch = useAppDispatch();
 
   const getPosts = async () => {
     try {
       const response = await PostsService.getFeed(page);
-      setPosts(response.data);
+      dispatch(setPostsAC(response.data));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const getSavedPosts = async () => {
+    setPage(() => 1);
+    try {
+      const response = await PostsService.getBookmarkedPosts(page);
+      dispatch(setPostsAC(response.data));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const getFavoritePosts = async () => {
+    setPage(() => 1);
+    try {
+      const response = await PostsService.getFavoritePosts(page);
+      dispatch(setPostsAC(response.data));
     } catch (error) {
       console.error(error);
     }
@@ -50,7 +76,15 @@ const Feed = () => {
   const loadData = async () => {
     setIsLoading(true);
     try {
-      await getPosts();
+      if (selectedFilter === FEED_FILTERS.FEED) {
+        await getPosts();
+      }
+      if (selectedFilter === FEED_FILTERS.SAVED) {
+        await getSavedPosts();
+      }
+      if (selectedFilter === FEED_FILTERS.FAVORITE) {
+        await getFavoritePosts();
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -62,8 +96,11 @@ const Feed = () => {
     const timer = window.setTimeout(() => {
       void loadData();
     }, 0);
-    return () => clearTimeout(timer);
-  }, []);
+    return () => {
+      clearTimeout(timer);
+      dispatch(setPostsAC([]));
+    };
+  }, [selectedFilter]);
 
   const checkScrollLimits = () => {
     if (scrollContainerRef.current) {
@@ -196,7 +233,7 @@ const Feed = () => {
         </Box>
       </Box>
       <Box sx={{ width: '280px', flexShrink: 0 }}>
-        <FilterMenu />
+        <FilterMenu selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
 
         <Box
           sx={{

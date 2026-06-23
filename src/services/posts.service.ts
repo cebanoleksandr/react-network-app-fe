@@ -53,6 +53,47 @@ export const PostsService = {
     return postResponse.data;
   },
 
+  async updatePost(postId: string, caption?: string, files?: File[]): Promise<Post> {
+    let mediaData: { url: string; type: 'IMAGE' | 'VIDEO' | 'AUDIO' }[] | undefined = undefined;
+
+    if (files) {
+      mediaData = await Promise.all(
+        files.map(async (file) => {
+          const urlResponse = await api.post<UploadUrlResponse>('/media/upload-url', {
+            fileName: file.name,
+            fileType: file.type,
+          });
+
+          const { uploadUrl, path } = urlResponse.data;
+
+          await axios.put<void>(uploadUrl, file, {
+            headers: {
+              'Content-Type': file.type,
+            },
+          });
+
+          const publicUrl = `https://${supabaseUrl}.supabase.co/storage/v1/object/public/network/${path}`;
+
+          let mediaType: 'IMAGE' | 'VIDEO' | 'AUDIO' = 'IMAGE';
+          if (file.type.startsWith('video/')) mediaType = 'VIDEO';
+          if (file.type.startsWith('audio/')) mediaType = 'AUDIO';
+
+          return {
+            url: publicUrl,
+            type: mediaType,
+          };
+        })
+      );
+    }
+
+    const response = await api.patch<Post>(`/posts/${postId}`, {
+      ...(caption !== undefined && { caption }),
+      ...(mediaData !== undefined && { media: mediaData }),
+    });
+
+    return response.data;
+  },
+
   async toggleLike(postId: string): Promise<ToggleLikeResponse> {
     const response = await api.post<ToggleLikeResponse>(`/posts/${postId}/like`);
     return response.data;
@@ -84,4 +125,16 @@ export const PostsService = {
     });
     return response.data;
   },
+
+  async getFavoritePosts(page = 1, limit = 10): Promise<PaginatedResponse<Post>> {
+    const response = await api.get<PaginatedResponse<Post>>('/posts/favorite/all', {
+      params: { page, limit },
+    });
+    return response.data;
+  },
+
+  async deletePost(postId: string): Promise<{ message: string }> {
+    const response = await api.delete<{ message: string }>(`/posts/${postId}`);
+    return response.data;
+  }
 };

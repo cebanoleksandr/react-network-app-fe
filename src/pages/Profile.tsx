@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../store/hooks';
 import PostList from '../components/business/posts/PostList';
 import CreatePostBlock from '../components/business/posts/CreatePostBlock';
-import type { Post, User } from '../services/interfaces';
+import type { User } from '../services/interfaces';
 import { PostsService } from '../services/posts.service';
 import { UsersService } from '../services/users.service';
 import { ChatsService } from '../services/chats.service';
@@ -31,6 +31,7 @@ import {
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { setUserAC } from '../store/userSlice';
+import { setPostsAC } from '../store/postsSlice';
 
 const VkCard = styled(Card)(({ theme }) => ({
   backgroundColor: '#ffffff',
@@ -47,13 +48,12 @@ const Profile: React.FC = () => {
   const navigate = useNavigate();
   
   const { userId: urlUserId } = useParams<{ userId: string }>();
-  
+  const { items: posts } = useAppSelector(state => state.posts);
   const { item: currentUser } = useAppSelector((state) => state.user);
   
   const isForeignProfile = Boolean(urlUserId && urlUserId !== currentUser?.id);
 
   const [profileUser, setProfileUser] = useState<User | null>(null);
-  const [posts, setPosts] = useState<Post[]>([]);
   const [totalPosts, setTotalPosts] = useState(0);
   const [loading, setLoading] = useState(true);
   const [followers, setFollowers] = useState<User[]>([]);
@@ -86,7 +86,7 @@ const Profile: React.FC = () => {
         if (targetUser) {
           const postsData = await PostsService.getFeed(1, 20);
           const userPosts = postsData.data.filter((post) => post.user.id === targetUser?.id);
-          setPosts(userPosts);
+          dispatch(setPostsAC(userPosts));
           setTotalPosts(userPosts.length);
 
           const followersData = await UsersService.getFollowers(targetUser.id);
@@ -103,6 +103,10 @@ const Profile: React.FC = () => {
     };
 
     fetchProfileData();
+
+    return () => {
+      dispatch(setPostsAC([]));
+    }
   }, [urlUserId, currentUser, isForeignProfile]);
 
   const handleStartChat = async () => {
@@ -156,7 +160,7 @@ const Profile: React.FC = () => {
     if (profileUser) {
       const postsData = await PostsService.getFeed(1, 20);
       const userPosts = postsData.data.filter((post) => post.user.id === profileUser.id);
-      setPosts(userPosts);
+      dispatch(setPostsAC(userPosts));
       setTotalPosts(userPosts.length);
     }
   };

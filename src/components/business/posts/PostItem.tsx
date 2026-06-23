@@ -12,7 +12,8 @@ import {
   FavoriteBorderOutlined as FavoriteBorderOutlinedIcon,
   ModeCommentOutlined as ModeCommentOutlinedIcon,
   ReplyOutlined as ReplyOutlinedIcon,
-  Favorite as FavoriteIcon
+  Favorite as FavoriteIcon,
+  Bookmark as BookmarkIcon
 } from '@mui/icons-material';
 import { motion, AnimatePresence } from "framer-motion";
 import type { Post } from "../../../services/interfaces";
@@ -21,6 +22,10 @@ import { useNavigate } from "react-router-dom";
 import PostComments from "./PostComments";
 import PostSharePopover from "./PostSharePopover";
 import { PostsService } from "../../../services/posts.service";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
+import { deletePostAC, toggleSavePostAC, updatePostAC } from "../../../store/postsSlice";
+import DeletePostPopup from "../../popups/DeletePostPopup";
+import UpdatePostPopup from "../../popups/UpdatePostPopup";
 
 interface IProps {
   post: Post;
@@ -34,7 +39,13 @@ const PostItem: FC<IProps> = ({ post }) => {
   const [shareAnchorEl, setShareAnchorEl] = useState<null | HTMLElement>(null);
   const [likesCount, setLikesCount] = useState(0);
   const [isLiked, setIsLiked] = useState(post.isLiked);
+  const [isDeletePostPopupVisible, setIsDeletePostPopupVisible] = useState(false);
+  const [isUpdatePostPopupVisible, setIsUpdatePostPopupVisible] = useState(false);
   const isMenuOpen = Boolean(anchorEl);
+
+  const { item: currentUser } = useAppSelector(state => state.user);
+
+  const dispatch = useAppDispatch();
 
   const getLikes = async () => {
     try {
@@ -80,14 +91,31 @@ const PostItem: FC<IProps> = ({ post }) => {
     }
   }
 
-  const handleEdit = () => {
-    console.log("Редагувати пост:", post.id);
+  const onUpdatePostPopupOpen = () => {
     handleMenuClose();
+    setIsUpdatePostPopupVisible(true);
   };
 
-  const handleSave = () => {
-    console.log("Save post:", post.id);
-    handleMenuClose();
+  const handleEdit = async (caption: string, files: File[]) => {
+    try {
+      const response = await PostsService.updatePost(post.id, caption, files);
+      dispatch(updatePostAC(response));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsUpdatePostPopupVisible(true);
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      await PostsService.toggleBookmark(post.id);
+      dispatch(toggleSavePostAC(post.id));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      handleMenuClose();
+    }
   };
   
   const handleEnableТotifications = () => {
@@ -100,9 +128,22 @@ const PostItem: FC<IProps> = ({ post }) => {
     handleMenuClose();
   };
 
-  const handleDelete = () => {
-    console.log("Видалити пост:", post.id);
+  const openDeletePostPopup = () => {
     handleMenuClose();
+    setIsDeletePostPopupVisible(true);
+  }
+
+  const handleDelete = async () => {
+    if (currentUser.id !== post.user.id) return;
+
+    try {
+      await PostsService.deletePost(post.id);
+      dispatch(deletePostAC(post.id));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      handleMenuClose();
+    }
   };
 
   const handleToggleComments = () => {
@@ -119,6 +160,22 @@ const PostItem: FC<IProps> = ({ post }) => {
 
   return (
     <Box
+      component={motion.div}
+      layout
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ 
+        opacity: 0, 
+        scale: 0.9, 
+        y: -20,
+        transition: { duration: 0.2 } 
+      }}
+      transition={{ 
+        type: "spring", 
+        stiffness: 500, 
+        damping: 30,
+        opacity: { duration: 0.2 }
+      }}
       sx={{
         p: '10px 20px',
         border: '1px solid #DCE1E5',
@@ -176,11 +233,33 @@ const PostItem: FC<IProps> = ({ post }) => {
             }
           }}
         >
-          <MenuItem onClick={handleSave} sx={{ fontSize: 14 }}><BookmarkBorderOutlinedIcon sx={{ mr: 2 }} /> Save</MenuItem>
+          <MenuItem onClick={handleSave} sx={{ fontSize: 14 }}>
+            {post.isBookmarked ? (
+              <>
+                <BookmarkIcon sx={{ mr: 2, color: 'yellow' }} /> Unsave
+              </>
+            ) : (
+              <>
+                <BookmarkBorderOutlinedIcon sx={{ mr: 2 }} /> Save
+              </>
+            )}
+          </MenuItem>
           <MenuItem onClick={handleEnableТotifications} sx={{ fontSize: 14 }}><NotificationsOutlinedIcon sx={{ mr: 2 }} /> Enable notifications</MenuItem>
           <MenuItem onClick={handleHideFromFeed} sx={{ fontSize: 14 }}><VisibilityOffOutlinedIcon sx={{ mr: 2 }} /> Hide from feed</MenuItem>
-          <MenuItem onClick={handleEdit} sx={{ fontSize: 14 }}><EditOutlinedIcon sx={{ mr: 2 }} /> Edit</MenuItem>
-          <MenuItem onClick={handleDelete} sx={{ fontSize: 14, color: '#FF3B30' }}><DeleteForeverOutlinedIcon sx={{ mr: 2 }} /> Delete</MenuItem>
+          {currentUser.id === post.user.id && (
+            <>
+              <MenuItem onClick={onUpdatePostPopupOpen} sx={{ fontSize: 14 }}>
+                <EditOutlinedIcon sx={{ mr: 2 }} /> Edit
+              </MenuItem>
+
+              <MenuItem 
+                onClick={openDeletePostPopup} 
+                sx={{ fontSize: 14, color: '#FF3B30' }}
+              >
+                <DeleteForeverOutlinedIcon sx={{ mr: 2 }} /> Delete
+              </MenuItem>
+            </>
+          )}
           <MenuItem onClick={handleMenuClose} sx={{ fontSize: 14 }}><ErrorOutlineOutlinedIcon sx={{ mr: 2 }} /> Complain</MenuItem>
         </Menu>
       </Box>
@@ -351,6 +430,19 @@ const PostItem: FC<IProps> = ({ post }) => {
           )}
         </AnimatePresence>
       </Portal>
+
+      <UpdatePostPopup
+        isVisible={isUpdatePostPopupVisible}
+        post={post}
+        onClose={() => setIsUpdatePostPopupVisible(false)}
+        onUpdate={handleEdit}
+      />
+
+      <DeletePostPopup
+        isVisible={isDeletePostPopupVisible}
+        onClose={() => setIsDeletePostPopupVisible(false)}
+        onDelete={handleDelete}
+      />
     </Box>
   )
 }
