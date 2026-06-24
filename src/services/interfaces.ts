@@ -12,7 +12,7 @@ export interface Media {
   id: string;
   url: string;
   thumbnailUrl: string | null;
-  type: 'IMAGE' | 'VIDEO' | 'AUDIO';
+  type: MediaType;
 }
 
 export interface Post {
@@ -163,4 +163,22 @@ export interface ClientToServerEvents {
   stopTyping: (data: { chatId: string; username: string }) => void;
   readMessages: (data: { chatId: string; userId: string }) => void;
   joinInbox: (data: { userId: string }) => void;
+}
+
+export type MediaType = 'IMAGE' | 'VIDEO' | 'AUDIO';
+
+export interface IStory {
+  id: string;
+  mediaUrl: string;
+  mediaType: MediaType;
+  caption?: string;
+  createdAt: string;
+  expiresAt: string;
+  user: User;
+}
+
+export interface ICreateStoryDto {
+  mediaUrl: string;
+  mediaType: MediaType;
+  caption?: string;
 }
