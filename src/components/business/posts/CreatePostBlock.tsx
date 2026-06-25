@@ -8,6 +8,8 @@ import {
   Send as SendIcon
 } from '@mui/icons-material';
 import { PostsService } from '../../../services/posts.service';
+import { useAppDispatch } from '../../../store/hooks';
+import { setAlertAC } from '../../../store/alertSlice';
 
 interface IProps {
   onPostCreated?: () => Promise<void>;
@@ -17,6 +19,7 @@ const CreatePostBlock: FC<IProps> = ({ onPostCreated }) => {
   const [caption, setCaption] = useState('');
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useAppDispatch();
   
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -52,10 +55,11 @@ const CreatePostBlock: FC<IProps> = ({ onPostCreated }) => {
       setCaption('');
       setFiles([]);
       
+      dispatch(setAlertAC({ text: 'alerts.post_created_success', mode: 'success' }));
       if (onPostCreated) onPostCreated();
     } catch (error) {
       console.error("Помилка при створенні поста:", error);
-      alert("Не вдалося опублікувати пост.");
+      dispatch(setAlertAC({ text: 'alerts.post_created_error', mode: 'error' }));
     } finally {
       setIsLoading(false);
     }

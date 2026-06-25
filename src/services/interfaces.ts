@@ -57,6 +57,7 @@ export interface UpdateProfileDto {
   firstName?: string;
   lastName?: string;
   bio?: string;
+  avatarUrl?: string;
 }
 
 export class RegisterCredentials {
@@ -175,6 +176,7 @@ export interface IStory {
   createdAt: string;
   expiresAt: string;
   user: User;
+  views: User[];
 }
 
 export interface ICreateStoryDto {

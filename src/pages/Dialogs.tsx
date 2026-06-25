@@ -13,12 +13,14 @@ import {
   CircularProgress,
   Badge 
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { ChatsService } from '../services/chats.service';
 import { socketService } from '../services/socket';
 import type { ChatRoom, Message } from '../services/interfaces';
 import { useAppSelector } from '../store/hooks';
 
 export const Dialogs: React.FC = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [rooms, setRooms] = useState<ChatRoom[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -93,7 +95,7 @@ export const Dialogs: React.FC = () => {
     <Box sx={{ maxWidth: '600px', margin: '0 auto', padding: '16px' }}>
       <Paper elevation={0} sx={{ border: '1px solid #e7e8ec', borderRadius: '8px', overflow: 'hidden' }}>
         <Box sx={{ padding: '12px 16px', borderBottom: '1px solid #e7e8ec', backgroundColor: '#fff' }}>
-          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#000' }}>Мессенджер</Typography>
+          <Typography variant="subtitle1" sx={{ fontWeight: 600, color: '#000' }}>{t("pages.dialogs")}</Typography>
         </Box>
 
         <List sx={{ padding: 0, backgroundColor: '#fff' }}>

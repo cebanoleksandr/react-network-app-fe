@@ -14,11 +14,13 @@ import {
   Link,
 } from "@mui/material";
 import { Visibility, VisibilityOff, LockOutlined as LockOutlinedIcon } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 import { loginSchema, type LoginFormData } from "./loginSchema";
 import { AuthService } from "../../services/auth.service";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
@@ -76,7 +78,7 @@ const LoginPage = () => {
           </Box>
 
           <Typography component="h1" variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
-            Вхід до акаунту
+            {t("login.title")}
           </Typography>
 
           <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ width: "100%" }}>

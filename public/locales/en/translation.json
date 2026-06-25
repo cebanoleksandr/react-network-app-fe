@@ -42,5 +42,23 @@
     "search": "Search Page",
     "not_found": "404 - Not Found",
     "profile": "Profile Page"
+  },
+  "alerts": {
+    "post_created_success": "Post created successfully",
+    "post_created_error": "Failed to create post",
+    "post_updated_success": "Post updated successfully",
+    "post_updated_error": "Failed to update post",
+    "post_deleted_success": "Post deleted successfully",
+    "post_deleted_error": "Failed to delete post",
+    "comment_added_success": "Comment added successfully",
+    "comment_added_error": "Failed to add comment",
+    "story_created_success": "Story created successfully",
+    "story_created_error": "Failed to create story",
+    "avatar_updated_success": "Avatar updated successfully",
+    "avatar_updated_error": "Failed to update avatar",
+    "avatar_deleted_success": "Avatar deleted successfully",
+    "avatar_deleted_error": "Failed to delete avatar",
+    "profile_updated_success": "Profile updated successfully",
+    "profile_updated_error": "Failed to update profile"
   }
 }

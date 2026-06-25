@@ -4,6 +4,7 @@ import { api } from '.';
 interface IUploadUrlResponse {
   uploadUrl: string;
   path: string;
+  publicUrl: string;
 }
 
 export const MediaService = {

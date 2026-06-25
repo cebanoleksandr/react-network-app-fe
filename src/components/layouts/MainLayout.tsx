@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Sidebar from "./Sidebar";
+import CustomAlert from "../UI/CustomAlert";
 
 const MainLayout = () => {
   return (
@@ -46,6 +47,8 @@ const MainLayout = () => {
           </Box>
         </Box>
       </Box>
+
+      <CustomAlert />
     </Box>
   );
 };

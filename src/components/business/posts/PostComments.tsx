@@ -1,18 +1,23 @@
 import { type FC, useState, useEffect } from "react";
 import { Box, Typography, Avatar, TextField, Button, CircularProgress } from "@mui/material";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 import { PostsService } from "../../../services/posts.service";
 import type { Comment } from "../../../services/interfaces";
+import { useAppDispatch } from "../../../store/hooks";
+import { setAlertAC } from "../../../store/alertSlice";
 
 interface ICommentsProps {
   postId: string;
 }
 
 const PostComments: FC<ICommentsProps> = ({ postId }) => {
+  const { t } = useTranslation();
   const [comments, setComments] = useState<Comment[]>([]);
   const [commentText, setCommentText] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const fetchComments = async () => {
@@ -40,8 +45,10 @@ const PostComments: FC<ICommentsProps> = ({ postId }) => {
       setComments((prev) => [...prev, newComment]); 
       
       setCommentText("");
+      dispatch(setAlertAC({ text: t('alerts.comment_added_success'), mode: 'success' }));
     } catch (error) {
       console.error("Помилка при додаванні коментаря:", error);
+      dispatch(setAlertAC({ text: t('alerts.comment_added_error'), mode: 'error' }));
     } finally {
       setIsSubmitting(false);
     }

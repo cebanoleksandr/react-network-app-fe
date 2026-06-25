@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Box, IconButton, Avatar, Typography, LinearProgress } from "@mui/material";
 import { Close as CloseIcon, ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon } from "@mui/icons-material";
 import { type IStory } from "../../services/interfaces";
+import { StoriesService } from "../../services/storyService"; // Імпортуємо сервіс історій
 
 interface StoriesViewerPopupProps {
   isOpen: boolean;
@@ -22,6 +23,30 @@ export const StoriesViewerPopup: React.FC<StoriesViewerPopupProps> = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    let resetTimer: ReturnType<typeof setTimeout> | null = null;
+    if (isOpen) {
+      resetTimer = setTimeout(() => {
+        setCurrentIndex(0);
+        setProgress(0);
+      }, 0);
+    }
+    return () => {
+      if (resetTimer) clearTimeout(resetTimer);
+    };
+  }, [isOpen, username]);
+
+  useEffect(() => {
+    if (!isOpen || stories.length === 0) return;
+
+    const currentStory = stories[currentIndex];
+    if (currentStory?.id) {
+      StoriesService.viewStory(currentStory.id).catch((error) => {
+        console.error("Не вдалося зафіксувати перегляд історії:", error);
+      });
+    }
+  }, [currentIndex, isOpen, stories]);
 
   useEffect(() => {
     if (!isOpen || stories.length === 0) return;

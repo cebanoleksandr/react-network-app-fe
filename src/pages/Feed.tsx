@@ -5,18 +5,21 @@ import {
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
 } from '@mui/icons-material';
+import { useTranslation } from "react-i18next";
 import PostList from "../components/business/posts/PostList";
 import FilterMenu from "../components/business/posts/FilterMenu";
 import CreatePostBlock from "../components/business/posts/CreatePostBlock";
 import { PostsService } from "../services/posts.service";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { setPostsAC } from "../store/postsSlice";
+import { setAlertAC } from "../store/alertSlice";
 import { FEED_FILTERS, type FeedFilter } from "../components/business/posts/types";
 import type { IStory } from "../services/interfaces";
 import { StoriesService } from "../services/storyService";
 import { StoriesViewerPopup } from "../components/popups/StoriesViewerPopup";
 
 const Feed = () => {
+  const { t } = useTranslation();
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   
@@ -114,7 +117,7 @@ const Feed = () => {
     };
   }, [selectedFilter]);
 
-  const groupedStories = Object.values(
+  const usersWithStories = Object.values(
     stories.reduce((acc, story) => {
       if (!acc[story.user.id]) {
         acc[story.user.id] = {
@@ -128,6 +131,21 @@ const Feed = () => {
       return acc;
     }, {} as Record<string, { userId: string; username: string; avatarUrl: string | null; stories: IStory[] }>)
   );
+
+  const groupedStories = usersWithStories.map((group) => {
+    const isAllViewed = group.stories.every(story => 
+      story.views?.some((view) => (view.id === currentUser?.id))
+    );
+
+    return {
+      ...group,
+      isAllViewed,
+    };
+  }).sort((a, b) => {
+    if (a.isAllViewed && !b.isAllViewed) return 1;
+    if (!a.isAllViewed && b.isAllViewed) return -1;
+    return 0;
+  });
 
   const checkScrollLimits = () => {
     if (scrollContainerRef.current) {
@@ -184,8 +202,10 @@ const Feed = () => {
       const newStory = await StoriesService.createStory(file);
   
       setStories((prev) => [newStory, ...prev]);
+      dispatch(setAlertAC({ text: t('alerts.story_created_success'), mode: 'success' }));
     } catch (error) {
       console.error("Не вдалося створити історію:", error);
+      dispatch(setAlertAC({ text: t('alerts.story_created_error'), mode: 'error' }));
     } finally {
       setIsStoryCreating(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -311,12 +331,33 @@ const Feed = () => {
                   onClick={() => handleOpenStories(group)}
                   sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '64px', flexShrink: 0, cursor: 'pointer', '&:hover img': { transform: 'scale(1.05)' } }}
                 >
-                  <Box sx={{ p: '2px', borderRadius: '50%', background: 'linear-gradient(45deg, #06B6D4 0%, #4F46E5 50%, #FF007A 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 0.5 }}>
+                  <Box 
+                    sx={{ 
+                      p: '2px', 
+                      borderRadius: '50%', 
+                      background: group.isAllViewed 
+                        ? '#E1E3E6' 
+                        : 'linear-gradient(45deg, #06B6D4 0%, #4F46E5 50%, #FF007A 100%)', 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      mb: 0.5 
+                    }}
+                  >
                     <Avatar src={group.avatarUrl || undefined} sx={{ width: 52, height: 52, border: '2px solid white', transition: 'transform 0.2s ease' }}>
                       {group.username.substring(0, 2).toUpperCase()}
                     </Avatar>
                   </Box>
-                  <Typography variant="caption" noWrap sx={{ maxWidth: 64, color: '#222222', fontSize: '11px' }}>
+                  <Typography 
+                    variant="caption" 
+                    noWrap 
+                    sx={{ 
+                      maxWidth: 64, 
+                      color: group.isAllViewed ? '#818C99' : '#222222', 
+                      fontSize: '11px',
+                      fontWeight: group.isAllViewed ? 400 : 500
+                    }}
+                  >
                     {group.username}
                   </Typography>
                 </Box>
@@ -362,6 +403,7 @@ const Feed = () => {
           onClose={() => {
             setIsViewerOpen(false);
             setSelectedGroup(null);
+            void loadStories();
           }}
           username={selectedGroup.username}
           avatarUrl={selectedGroup.avatarUrl}

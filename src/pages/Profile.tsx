@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAppSelector, useAppDispatch } from '../store/hooks';
@@ -8,7 +8,10 @@ import type { User } from '../services/interfaces';
 import { PostsService } from '../services/posts.service';
 import { UsersService } from '../services/users.service';
 import { ChatsService } from '../services/chats.service';
+import { MediaService } from '../services/mediaService';
 import ChatIcon from '@mui/icons-material/Chat';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 import {
   Box,
@@ -27,11 +30,14 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  TextField
+  TextField,
+  IconButton
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { setUserAC } from '../store/userSlice';
 import { setPostsAC } from '../store/postsSlice';
+import { setAlertAC } from '../store/alertSlice';
+import DeleteAvaPopup from '../components/popups/DeleteAvaPopup';
 
 const VkCard = styled(Card)(({ theme }) => ({
   backgroundColor: '#ffffff',
@@ -47,6 +53,7 @@ const Profile: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const { userId: urlUserId } = useParams<{ userId: string }>();
   const { items: posts } = useAppSelector(state => state.posts);
   const { item: currentUser } = useAppSelector((state) => state.user);
@@ -59,7 +66,7 @@ const Profile: React.FC = () => {
   const [followers, setFollowers] = useState<User[]>([]);
   const [following, setFollowing] = useState<User[]>([]);
   const [activeTab, setActiveTab] = useState(0);
-
+  const [isDeleteAvaPopupVisible, setIsDeleteAvaPopupVisible] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [editForm, setEditForm] = useState({
     firstName: '',
@@ -68,6 +75,9 @@ const Profile: React.FC = () => {
   });
   const [isSaving, setIsSaving] = useState(false);
   const [creatingChat, setCreatingChat] = useState(false);
+  const [isAvatarHovered, setIsAvatarHovered] = useState(false);
+  const [avatarLoading, setAvatarLoading] = useState(false);
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -99,6 +109,7 @@ const Profile: React.FC = () => {
         console.error('Error loading profile data:', error);
       } finally {
         setLoading(false);
+        setIsDeleteAvaPopupVisible(false);
       }
     };
 
@@ -108,6 +119,73 @@ const Profile: React.FC = () => {
       dispatch(setPostsAC([]));
     }
   }, [urlUserId, currentUser, isForeignProfile]);
+
+  const handleOpenViewer = () => {
+    if (profileUser?.avatarUrl) {
+      setIsViewerOpen(true);
+    }
+  };
+
+  const handleCloseViewer = () => {
+    setIsViewerOpen(false);
+  };
+
+  const handleUploadClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!avatarLoading) {
+      fileInputRef.current?.click();
+    }
+  };
+
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      alert('Будь ласка, оберіть зображення.');
+      return;
+    }
+
+    try {
+      setAvatarLoading(true);
+
+      const { uploadUrl, path } = await MediaService.getUploadUrl(file.name, file.type);
+
+      await MediaService.uploadToStorage(uploadUrl, file);
+
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'ВАШ_SUPABASE_URL';
+      const generatedAvatarUrl = `https://${supabaseUrl}.supabase.co/storage/v1/object/public/network/${path}`;
+
+      const updatedUser = await UsersService.updateProfile({ avatarUrl: generatedAvatarUrl });
+      
+      dispatch(setUserAC(updatedUser));
+      setProfileUser(updatedUser);
+      dispatch(setAlertAC({ text: t('alerts.avatar_updated_success'), mode: 'success' }));
+    } catch (error) {
+      console.error('Помилка при завантаженні аватарки:', error);
+      dispatch(setAlertAC({ text: t('alerts.avatar_updated_error'), mode: 'error' }));
+    } finally {
+      setAvatarLoading(false);
+    }
+  };
+
+  const handleDeleteAvatar = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    try {
+      setAvatarLoading(true);
+      const updatedUser = await UsersService.updateProfile({ avatarUrl: '' });
+      
+      dispatch(setUserAC(updatedUser));
+      setProfileUser(updatedUser);
+      dispatch(setAlertAC({ text: t('alerts.avatar_deleted_success'), mode: 'success' }));
+    } catch (error) {
+      console.error('Помилка при видаленні аватарки:', error);
+      dispatch(setAlertAC({ text: t('alerts.avatar_deleted_error'), mode: 'error' }));
+    } finally {
+      setAvatarLoading(false);
+    }
+  };
 
   const handleStartChat = async () => {
     if (!profileUser) return;
@@ -147,10 +225,12 @@ const Profile: React.FC = () => {
     try {
       setIsSaving(true);
       const updatedUser = await UsersService.updateProfile(editForm);
-      dispatch(setUserAC(updatedUser)); 
+      dispatch(setUserAC(updatedUser));
       setIsEditOpen(false);
+      dispatch(setAlertAC({ text: t('alerts.profile_updated_success'), mode: 'success' }));
     } catch (error) {
       console.error('Error updating profile:', error);
+      dispatch(setAlertAC({ text: t('alerts.profile_updated_error'), mode: 'error' }));
     } finally {
       setIsSaving(false);
     }
@@ -186,6 +266,8 @@ const Profile: React.FC = () => {
     ? `${profileUser.firstName} ${profileUser.lastName}` 
     : profileUser.username;
 
+  const currentAvatarUrl = profileUser.avatarUrl || 'https://placehold.co/230x230?text=No+Avatar';
+
   return (
     <Container 
       maxWidth="md" 
@@ -198,26 +280,85 @@ const Profile: React.FC = () => {
         color: '#000000'
       }}
     >
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        accept="image/*"
+        style={{ display: 'none' }}
+      />
+
       <Grid container spacing={2.5} sx={{ height: '100%', alignItems: 'flex-start' }}>
         <Grid size={{ xs: 12, md: 'auto' }} sx={{ width: { md: '230px' } }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <VkCard>
               <Box 
+                onMouseEnter={() => setIsAvatarHovered(true)}
+                onMouseLeave={() => setIsAvatarHovered(false)}
+                onClick={handleOpenViewer}
                 sx={{ 
                   width: '100%', 
                   aspectRatio: '1/1', 
                   backgroundColor: '#f0f2f5', 
                   borderRadius: '8px', 
                   overflow: 'hidden', 
-                  mb: 1.5 
+                  mb: 1.5,
+                  position: 'relative',
+                  cursor: profileUser.avatarUrl ? 'pointer' : 'default'
                 }}
               >
+                {avatarLoading ? (
+                  <Box sx={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.7)', zIndex: 2 }}>
+                    <CircularProgress size={30} sx={{ color: '#2a5885' }} />
+                  </Box>
+                ) : null}
+
                 <Box
                   component="img"
-                  src={profileUser.avatarUrl || 'https://placehold.co/230x230?text=No+Avatar'}
+                  src={currentAvatarUrl}
                   alt={fullName}
                   sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
+
+                {!isForeignProfile && isAvatarHovered && !avatarLoading && (
+                  <Box 
+                    sx={{ 
+                      position: 'absolute', 
+                      bottom: 0, left: 0, right: 0, 
+                      backgroundColor: 'rgba(0, 0, 0, 0.6)', 
+                      color: '#fff', 
+                      display: 'flex', 
+                      justifyContent: 'space-around', 
+                      alignItems: 'center',
+                      p: 0.5,
+                      transition: 'all 0.2s',
+                      zIndex: 1
+                    }}
+                  >
+                    <IconButton 
+                      size="small" 
+                      sx={{ color: '#fff' }} 
+                      title="Оновити фото"
+                      onClick={handleUploadClick}
+                    >
+                      <CloudUploadIcon fontSize="small" />
+                    </IconButton>
+                    
+                    {profileUser.avatarUrl && (
+                      <IconButton 
+                        size="small" 
+                        sx={{ color: '#ff4d4d' }} 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsDeleteAvaPopupVisible(true);
+                        }}
+                        title="Видалити фото"
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    )}
+                  </Box>
+                )}
               </Box>
               
               {isForeignProfile ? (
@@ -435,6 +576,48 @@ const Profile: React.FC = () => {
         </Grid>
       </Grid>
 
+      <Dialog
+        open={isViewerOpen}
+        onClose={handleCloseViewer}
+        maxWidth="md"
+        slotProps={{
+          paper: {
+            sx: { 
+              backgroundColor: 'transparent', 
+              boxShadow: 'none',
+              overflow: 'hidden',
+              m: 2
+            }
+          }
+        }}
+      >
+        <Box 
+          onClick={handleCloseViewer}
+          sx={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center',
+            cursor: 'pointer',
+            maxWidth: '90vw',
+            maxHeight: '90vh'
+          }}
+        >
+          <Box
+            component="img"
+            src={profileUser.avatarUrl}
+            alt={fullName}
+            onClick={(e) => e.stopPropagation()}
+            sx={{ 
+              width: '100%', 
+              height: '100%', 
+              objectFit: 'contain',
+              borderRadius: '8px',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.3)'
+            }}
+          />
+        </Box>
+      </Dialog>
+
       <Dialog 
         open={isEditOpen} 
         onClose={handleCloseEdit}
@@ -502,6 +685,12 @@ const Profile: React.FC = () => {
           </DialogActions>
         </form>
       </Dialog>
+
+      <DeleteAvaPopup
+        isVisible={isDeleteAvaPopupVisible}
+        onClose={() => setIsDeleteAvaPopupVisible(false)}
+        onDelete={handleDeleteAvatar}
+      />
     </Container>
   );
 };

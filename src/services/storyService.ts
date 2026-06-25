@@ -38,4 +38,9 @@ export const StoriesService = {
 
     return response.data;
   },
+
+  async viewStory(storyId: string): Promise<{ success: boolean }> {
+    const response = await api.post<{ success: boolean }>(`/stories/${storyId}/view`);
+    return response.data;
+  },
 };

@@ -17,11 +17,13 @@ import {
   FormHelperText,
 } from "@mui/material";
 import { Visibility, VisibilityOff, PersonAddOutlined as PersonAddOutlinedIcon } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 import { registerSchema, type RegisterFormData } from "./registerSchema";
 import { AuthService } from "../../services/auth.service";
 import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
+  const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -90,7 +92,7 @@ const RegisterPage = () => {
           </Box>
 
           <Typography component="h1" variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
-            Створення акаунту
+            {t("register.title")}
           </Typography>
 
           <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ width: "100%" }}>

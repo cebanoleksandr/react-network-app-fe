@@ -24,14 +24,17 @@ import PostSharePopover from "./PostSharePopover";
 import { PostsService } from "../../../services/posts.service";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { deletePostAC, toggleSavePostAC, updatePostAC } from "../../../store/postsSlice";
+import { setAlertAC } from "../../../store/alertSlice";
 import DeletePostPopup from "../../popups/DeletePostPopup";
 import UpdatePostPopup from "../../popups/UpdatePostPopup";
+import { useTranslation } from "react-i18next";
 
 interface IProps {
   post: Post;
 }
 
 const PostItem: FC<IProps> = ({ post }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [activeImgUrl, setActiveImgUrl] = useState<string | null>(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -100,8 +103,10 @@ const PostItem: FC<IProps> = ({ post }) => {
     try {
       const response = await PostsService.updatePost(post.id, caption, files);
       dispatch(updatePostAC(response));
+      dispatch(setAlertAC({ text: t('alerts.post_updated_success'), mode: 'success' }));
     } catch (error) {
       console.error(error);
+      dispatch(setAlertAC({ text: t('alerts.post_updated_error'), mode: 'error' }));
     } finally {
       setIsUpdatePostPopupVisible(true);
     }
@@ -139,8 +144,10 @@ const PostItem: FC<IProps> = ({ post }) => {
     try {
       await PostsService.deletePost(post.id);
       dispatch(deletePostAC(post.id));
+      dispatch(setAlertAC({ text: t('alerts.post_deleted_success'), mode: 'success' }));
     } catch (error) {
       console.log(error);
+      dispatch(setAlertAC({ text: t('alerts.post_deleted_error'), mode: 'error' }));
     } finally {
       handleMenuClose();
     }
