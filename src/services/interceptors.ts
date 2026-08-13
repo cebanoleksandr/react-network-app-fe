@@ -72,9 +72,19 @@ api.interceptors.response.use(
         const axiosError = refreshError as AxiosError;
         processQueue(axiosError, null);
         localStorage.removeItem('network-token');
+        if (!window.location.pathname.startsWith('/auth')) {
+          window.location.href = '/auth/login';
+        }
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;
+      }
+    }
+
+    if (error.response?.status === 401 && originalRequest?._retry) {
+      localStorage.removeItem('network-token');
+      if (!window.location.pathname.startsWith('/auth')) {
+        window.location.href = '/auth/login';
       }
     }
 

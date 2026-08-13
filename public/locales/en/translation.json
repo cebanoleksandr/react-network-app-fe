@@ -20,7 +20,35 @@
     "default_user_name": "Alex"
   },
   "landing": {
-    "welcome": "Welcome to the Landing Page"
+    "welcome": "Welcome to the Landing Page",
+    "nav": {
+      "login": "Log in",
+      "register": "Sign up"
+    },
+    "hero": {
+      "title": "Connect with people who matter",
+      "subtitle": "Share moments, chat in real time, and stay close to your friends and communities — all in one place.",
+      "cta_primary": "Get started",
+      "cta_secondary": "I already have an account"
+    },
+    "features": {
+      "title": "Everything you need to stay connected",
+      "feed": {
+        "title": "Feed & Stories",
+        "description": "Share photos and videos, and keep up with stories from people you follow."
+      },
+      "chat": {
+        "title": "Real-time chat",
+        "description": "Message your friends instantly with live typing indicators and read receipts."
+      },
+      "groups": {
+        "title": "Groups & Communities",
+        "description": "Create or join groups around your interests and stay in the loop."
+      }
+    },
+    "footer": {
+      "rights": "All rights reserved."
+    }
   },
   "login": {
     "title": "Login Page"

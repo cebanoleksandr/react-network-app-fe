@@ -184,3 +184,56 @@ export interface ICreateStoryDto {
   mediaType: MediaType;
   caption?: string;
 }
+
+export const GroupRole = {
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+  MODERATOR: 'MODERATOR',
+  MEMBER: 'MEMBER',
+} as const;
+
+export type GroupRoleType = typeof GroupRole[keyof typeof GroupRole];
+
+export interface IGroupMember {
+  id: string;
+  user: {
+    id: string;
+    username: string;
+    avatarUrl?: string;
+    firstName?: string;
+    lastName?: string;
+  };
+  role: GroupRoleType;
+  joinedAt: string;
+}
+
+export interface IGroup {
+  id: string;
+  name: string;
+  description?: string;
+  avatarUrl?: string;
+  slug: string;
+  isPrivate: boolean;
+  owner: {
+    id: string;
+    username: string;
+  };
+  members: IGroupMember[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ICreateGroupDto {
+  name: string;
+  description?: string;
+  slug: string;
+  isPrivate?: boolean;
+}
+
+export interface IUpdateGroupDto {
+  name?: string;
+  description?: string;
+  slug?: string;
+  isPrivate?: boolean;
+  avatarUrl?: string;
+}

@@ -21,6 +21,7 @@ import Video from '../pages/Video';
 import Games from '../pages/Games';
 import Settings from '../pages/Settings';
 import ResetPassword from '../pages/auth/ResetPassword';
+import GroupPage from '../pages/GroupPage';
 
 const loader = () => {
   const token = localStorage.getItem("network-token");
@@ -68,6 +69,10 @@ export const routes: RouteObject[] = [
           {
             path: 'groups',
             Component: Groups,
+          },
+          {
+            path: 'groups/:slug',
+            Component: GroupPage,
           },
           {
             path: 'photos',
