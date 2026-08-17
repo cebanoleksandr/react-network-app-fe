@@ -80,11 +80,11 @@ const UpdatePostPopup: FC<IProps> = ({ isVisible, post, onClose, onUpdate }) => 
   return (
     <BasePopup isVisible={isVisible} onClose={handleCancel}>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 1, minWidth: { xs: '100%', sm: '450px' } }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #F0F2F5', pb: 1 }}>
-          <Typography variant="h6" sx={{ fontWeight: 600, color: '#111827' }}>
+        <Box sx={(theme) => ({ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: `1px solid ${theme.palette.divider}`, pb: 1 })}>
+          <Typography variant="h6" sx={(theme) => ({ fontWeight: 600, color: theme.palette.text.primary })}>
             Edit post
           </Typography>
-          <IconButton onClick={handleCancel} disabled={isLoading} sx={{ color: '#6B7280' }}>
+          <IconButton onClick={handleCancel} disabled={isLoading} sx={(theme) => ({ color: theme.palette.text.secondary })}>
             <CloseIcon />
           </IconButton>
         </Box>
@@ -107,14 +107,14 @@ const UpdatePostPopup: FC<IProps> = ({ isVisible, post, onClose, onUpdate }) => 
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
           disabled={isLoading}
-          sx={{
+          sx={(theme) => ({
             "& .MuiOutlinedInput-root": {
               p: '8px 12px',
-              "& fieldset": { borderColor: '#DCE1E5' },
-              "&:hover fieldset": { borderColor: '#B5BDC5' },
+              "& fieldset": { borderColor: theme.palette.divider },
+              "&:hover fieldset": { borderColor: theme.palette.text.secondary },
               "&.Mui-focused fieldset": { borderColor: '#4973a5' },
             },
-          }}
+          })}
         />
 
         {!changeMedia && post.media.length > 0 && (
@@ -127,7 +127,7 @@ const UpdatePostPopup: FC<IProps> = ({ isVisible, post, onClose, onUpdate }) => 
                   label={m.type === 'IMAGE' ? 'Зображення' : m.type === 'VIDEO' ? 'Відео' : 'Аудіо'}
                   variant="outlined"
                   size="small"
-                  sx={{ borderColor: '#E7E8EC', bgcolor: '#F5F6F8' }}
+                  sx={(theme) => ({ borderColor: theme.palette.divider, bgcolor: theme.palette.mode === 'dark' ? theme.palette.action.hover : '#F5F6F8' })}
                 />
               ))}
               <Button 
@@ -152,25 +152,25 @@ const UpdatePostPopup: FC<IProps> = ({ isVisible, post, onClose, onUpdate }) => 
                 size="small"
                 onDelete={() => handleRemoveFile(index)}
                 deleteIcon={<CloseIcon sx={{ fontSize: '14px !important' }} />}
-                sx={{
+                sx={(theme) => ({
                   maxWidth: '220px',
-                  borderColor: '#E7E8EC',
-                  bgcolor: '#F5F6F8',
-                }}
+                  borderColor: theme.palette.divider,
+                  bgcolor: theme.palette.mode === 'dark' ? theme.palette.action.hover : '#F5F6F8',
+                })}
               />
             ))}
           </Box>
         )}
 
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pt: 1, borderTop: '1px solid #F0F2F5' }}>
+        <Box sx={(theme) => ({ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pt: 1, borderTop: `1px solid ${theme.palette.divider}` })}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <IconButton onClick={() => triggerFileInput('image/*')} disabled={isLoading} size="small" sx={{ color: '#828282' }}>
+            <IconButton onClick={() => triggerFileInput('image/*')} disabled={isLoading} size="small" sx={(theme) => ({ color: theme.palette.text.secondary })}>
               <AddAPhotoIcon fontSize="small" />
             </IconButton>
-            <IconButton onClick={() => triggerFileInput('video/*')} disabled={isLoading} size="small" sx={{ color: '#828282' }}>
+            <IconButton onClick={() => triggerFileInput('video/*')} disabled={isLoading} size="small" sx={(theme) => ({ color: theme.palette.text.secondary })}>
               <VideoCallIcon fontSize="small" />
             </IconButton>
-            <IconButton onClick={() => triggerFileInput('audio/*')} disabled={isLoading} size="small" sx={{ color: '#828282' }}>
+            <IconButton onClick={() => triggerFileInput('audio/*')} disabled={isLoading} size="small" sx={(theme) => ({ color: theme.palette.text.secondary })}>
               <LibraryMusicIcon fontSize="small" />
             </IconButton>
           </Box>
@@ -181,13 +181,13 @@ const UpdatePostPopup: FC<IProps> = ({ isVisible, post, onClose, onUpdate }) => 
               variant="outlined"
               size="small"
               disabled={isLoading}
-              sx={{
-                color: '#374151',
-                borderColor: '#DCE1E5',
+              sx={(theme) => ({
+                color: theme.palette.text.primary,
+                borderColor: theme.palette.divider,
                 textTransform: 'none',
                 borderRadius: '6px',
-                '&:hover': { bgcolor: '#F5F6F8', borderColor: '#B5BDC5' }
-              }}
+                '&:hover': { bgcolor: theme.palette.action.hover, borderColor: theme.palette.text.secondary }
+              })}
             >
               Cancel
             </Button>

@@ -3,7 +3,7 @@ import BasePopup from './BasePopup';
 import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { Button, IconButton, Typography, Box, alpha } from '@mui/material';
+import { Button, IconButton, Typography, Box } from '@mui/material';
 
 interface IProps {
   isVisible: boolean;
@@ -18,7 +18,7 @@ const DeleteAvaPopup: FC<IProps> = ({ isVisible, onClose, onDelete }) => {
         <Box sx={{ display: 'flex', justifyContent: 'end' }}>
           <IconButton
             onClick={onClose}
-            sx={{ color: '#6B7280', '&:hover': { bgcolor: alpha('#ffffff', 0.8) } }}
+            sx={(theme) => ({ color: theme.palette.text.secondary, '&:hover': { bgcolor: theme.palette.action.hover } })}
           >
             <CloseIcon />
           </IconButton>
@@ -28,12 +28,12 @@ const DeleteAvaPopup: FC<IProps> = ({ isVisible, onClose, onDelete }) => {
           variant="h4"
           component="h3"
           align='center'
-          sx={{ fontWeight: 500, color: '#111827', mb: '8px' }}
+          sx={(theme) => ({ fontWeight: 500, color: theme.palette.text.primary, mb: '8px' })}
         >
           Delete avatar
         </Typography>
 
-        <Typography variant="body2" align="center" sx={{ color: '#6B7280', mb: '24px' }}>
+        <Typography variant="body2" align="center" sx={(theme) => ({ color: theme.palette.text.secondary, mb: '24px' })}>
           Are you sure that you want to delete your avatar?
         </Typography>
 
@@ -42,11 +42,11 @@ const DeleteAvaPopup: FC<IProps> = ({ isVisible, onClose, onDelete }) => {
             onClick={onClose}
             variant="outlined"
             color="inherit"
-            sx={{
-              color: '#374151',
-              borderColor: alpha('#ffffff', 0.8),
+            sx={(theme) => ({
+              color: theme.palette.text.primary,
+              borderColor: theme.palette.divider,
               fontWeight: 500,
-            }}
+            })}
             startIcon={<ArrowBackIcon />}
           >
             Cancel

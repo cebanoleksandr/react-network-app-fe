@@ -167,9 +167,9 @@ const People = () => {
   const isFollowingUser = (userId: string) => following.some((f) => f.id === userId);
 
   return (
-    <Box sx={{ bgcolor: "#ededf0", minHeight: "100vh", py: 3 }}>
+    <Box sx={{ bgcolor: "background.default", minHeight: "100vh", py: 3 }}>
       <Container maxWidth="sm">
-        <Card variant="outlined" sx={{ borderRadius: "12px", mb: 2, borderColor: "#e7e8ec", boxShadow: "none" }}>
+        <Card variant="outlined" sx={{ borderRadius: "12px", mb: 2, borderColor: "divider", boxShadow: "none" }}>
           <Tabs
             value={activeTab}
             onChange={handleTabChange}
@@ -197,31 +197,31 @@ const People = () => {
                 input: {
                   startAdornment: (
                     <InputAdornment position="start">
-                      <SearchIcon sx={{ color: "#939393" }} />
+                      <SearchIcon sx={{ color: "text.secondary" }} />
                     </InputAdornment>
                   ),
                 },
               }}
-              sx={{
+              sx={(theme) => ({
                 "& .MuiOutlinedInput-root": {
-                  bgcolor: "#f5f5f7",
+                  bgcolor: theme.palette.action.hover,
                   "& fieldset": { borderColor: "transparent" },
-                  "&:hover fieldset": { borderColor: "#e7e8ec" },
+                  "&:hover fieldset": { borderColor: theme.palette.divider },
                   "&.Mui-focused fieldset": { borderColor: "#447bba", borderWidth: "1px" },
                 },
-              }}
+              })}
             />
           </Box>
         </Card>
 
-        <Card variant="outlined" sx={{ borderRadius: "12px", borderColor: "#e7e8ec", boxShadow: "none" }}>
+        <Card variant="outlined" sx={{ borderRadius: "12px", borderColor: "divider", boxShadow: "none" }}>
           <CardContent sx={{ p: "0px !important" }}>
             {loadingRelations && displayedUsers.length === 0 ? (
               <Box sx={{ display: "flex", justifyContent: "center", p: 4 }}>
                 <CircularProgress size={30} sx={{ color: "#447bba" }} />
               </Box>
             ) : displayedUsers.length === 0 ? (
-              <Typography align="center" sx={{ color: "#828282", py: 4, fontSize: "14px" }}>
+              <Typography align="center" sx={{ color: "text.secondary", py: 4, fontSize: "14px" }}>
                 Users not found
               </Typography>
             ) : (
@@ -234,13 +234,13 @@ const People = () => {
                 return (
                   <div key={user.id} ref={isLast && activeTab === 0 ? lastUserElementRef : null}>
                     <Box
-                      sx={{
+                      sx={(theme) => ({
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "space-between",
                         p: 2,
-                        "&:hover": { bgcolor: "#f9f9fa" },
-                      }}
+                        "&:hover": { bgcolor: theme.palette.action.hover },
+                      })}
                     >
                       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                         <Avatar
@@ -253,13 +253,13 @@ const People = () => {
                         <Box>
                           <Typography
                             onClick={() => handleNavigateToProfile(user.id)}
-                            sx={{
+                            sx={(theme) => ({
                               fontWeight: 600,
-                              color: "#2a5885",
+                              color: theme.palette.mode === "dark" ? "#8FB8E0" : "#2a5885",
                               cursor: "pointer",
                               fontSize: "14px",
                               "&:hover": { textDecoration: "underline" },
-                            }}
+                            })}
                           >
                             {user.firstName || user.lastName
                               ? `${user.firstName || ""} ${user.lastName || ""}`.trim()
@@ -267,12 +267,12 @@ const People = () => {
                             {isMe && ` (${t("Перегляд профілю") || "Ви"})`}
                           </Typography>
                           {user.firstName && user.lastName && (
-                            <Typography sx={{ color: "#828282", fontSize: "12px" }}>
+                            <Typography sx={{ color: "text.secondary", fontSize: "12px" }}>
                               @{user.username}
                             </Typography>
                           )}
                           {user.bio && (
-                            <Typography sx={{ color: "#000", fontSize: "13px", mt: 0.5 }} noWrap>
+                            <Typography sx={{ color: "text.primary", fontSize: "13px", mt: 0.5 }} noWrap>
                               {user.bio}
                             </Typography>
                           )}
@@ -313,9 +313,9 @@ const People = () => {
                               px: 2,
                               ...(amIFollowing
                                 ? {
-                                    borderColor: "#e7e8ec",
-                                    color: "#555",
-                                    "&:hover": { bgcolor: "#f0f2f5", borderColor: "#ceccd1" },
+                                    borderColor: "divider",
+                                    color: "text.secondary",
+                                    "&:hover": { bgcolor: "action.hover", borderColor: "text.disabled" },
                                   }
                                 : {
                                     bgcolor: "#447bba",
@@ -328,7 +328,7 @@ const People = () => {
                         </Box>
                       )}
                     </Box>
-                    {!isLast && <Divider sx={{ borderColor: "#f0f2f5", mx: 2 }} />}
+                    {!isLast && <Divider sx={{ borderColor: "divider", mx: 2 }} />}
                   </div>
                 );
               })

@@ -12,57 +12,57 @@ interface IProps {
 const FilterMenu: FC<IProps> = ({ selectedFilter, setSelectedFilter }) => {
   return (
     <Box
-      sx={{
+      sx={(theme) => ({
         p: '4px',
-        border: '1px solid #E7E8EC',
+        border: `1px solid ${theme.palette.divider}`,
         borderRadius: '12px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-        bgcolor: 'white',
+        bgcolor: theme.palette.background.paper,
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-      }}
+      })}
     >
       <List disablePadding>
         <ListItem
           disablePadding
-          sx={{
+          sx={(theme) => ({
             borderRadius: '8px',
             mb: '4px',
-            ...(selectedFilter === FEED_FILTERS.FEED ? { bgcolor: '#F5F6F8' } : {}),
-          }}
+            ...(selectedFilter === FEED_FILTERS.FEED ? { bgcolor: theme.palette.action.hover } : {}),
+          })}
         >
           <ListItemButton dense sx={{ p: '8px 16px', borderRadius: '8px' }} onClick={() => setSelectedFilter(FEED_FILTERS.FEED)}>
             <ListItemText
-              primary={<Typography sx={{ fontSize: '14px', fontWeight: 500, color: '#000000' }}>Feed</Typography>}
+              primary={<Typography sx={{ fontSize: '14px', fontWeight: 500, color: 'text.primary' }}>Feed</Typography>}
             />
           </ListItemButton>
         </ListItem>
 
         <ListItem
           disablePadding
-          sx={{
+          sx={(theme) => ({
             borderRadius: '8px',
             mb: '4px',
-            ...(selectedFilter === FEED_FILTERS.SAVED ? { bgcolor: '#F5F6F8' } : {}),
-          }}
+            ...(selectedFilter === FEED_FILTERS.SAVED ? { bgcolor: theme.palette.action.hover } : {}),
+          })}
         >
           <ListItemButton dense sx={{ p: '8px 16px', borderRadius: '8px' }} onClick={() => setSelectedFilter(FEED_FILTERS.SAVED)}>
             <ListItemText
-              primary={<Typography sx={{ fontSize: '14px', fontWeight: 500, color: '#000000' }}>Saved</Typography>}
+              primary={<Typography sx={{ fontSize: '14px', fontWeight: 500, color: 'text.primary' }}>Saved</Typography>}
             />
           </ListItemButton>
         </ListItem>
 
         <ListItem
           disablePadding
-          sx={{
+          sx={(theme) => ({
             borderRadius: '8px',
             mb: '4px',
-            ...(selectedFilter === FEED_FILTERS.FAVORITE ? { bgcolor: '#F5F6F8' } : {}),
-          }}
+            ...(selectedFilter === FEED_FILTERS.FAVORITE ? { bgcolor: theme.palette.action.hover } : {}),
+          })}
         >
           <ListItemButton dense sx={{ p: '8px 16px', borderRadius: '8px' }} onClick={() => setSelectedFilter(FEED_FILTERS.FAVORITE)}>
             <ListItemText
-              primary={<Typography sx={{ fontSize: '14px', fontWeight: 500, color: '#000000' }}>Favorite</Typography>}
+              primary={<Typography sx={{ fontSize: '14px', fontWeight: 500, color: 'text.primary' }}>Favorite</Typography>}
             />
           </ListItemButton>
         </ListItem>

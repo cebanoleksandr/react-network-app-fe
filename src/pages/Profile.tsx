@@ -31,7 +31,8 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  IconButton
+  IconButton,
+  alpha
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { setUserAC } from '../store/userSlice';
@@ -40,9 +41,9 @@ import { setAlertAC } from '../store/alertSlice';
 import DeleteAvaPopup from '../components/popups/DeleteAvaPopup';
 
 const VkCard = styled(Card)(({ theme }) => ({
-  backgroundColor: '#ffffff',
+  backgroundColor: theme.palette.background.paper,
   borderRadius: '12px',
-  border: '1px solid #e7e8ec',
+  border: `1px solid ${theme.palette.divider}`,
   boxShadow: '0 1px 2px 0 rgba(0,0,0,0.05)',
   padding: theme.spacing(2),
   boxSizing: 'border-box',
@@ -248,7 +249,7 @@ const Profile: React.FC = () => {
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '64vh', color: 'text.secondary' }}>
-        <CircularProgress size={40} sx={{ color: '#2a5885', mr: 2 }} />
+        <CircularProgress size={40} sx={(theme) => ({ color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885', mr: 2 })} />
         <Typography variant="body1">{t('common.loading', 'Loading...')}</Typography>
       </Box>
     );
@@ -277,7 +278,7 @@ const Profile: React.FC = () => {
         px: { xs: 2, sm: 2 }, 
         py: 2,
         fontFamily: 'sans-serif',
-        color: '#000000'
+        color: 'text.primary'
       }}
     >
       <input
@@ -296,20 +297,20 @@ const Profile: React.FC = () => {
                 onMouseEnter={() => setIsAvatarHovered(true)}
                 onMouseLeave={() => setIsAvatarHovered(false)}
                 onClick={handleOpenViewer}
-                sx={{ 
-                  width: '100%', 
-                  aspectRatio: '1/1', 
-                  backgroundColor: '#f0f2f5', 
-                  borderRadius: '8px', 
-                  overflow: 'hidden', 
+                sx={(theme) => ({
+                  width: '100%',
+                  aspectRatio: '1/1',
+                  backgroundColor: theme.palette.action.hover,
+                  borderRadius: '8px',
+                  overflow: 'hidden',
                   mb: 1.5,
                   position: 'relative',
                   cursor: profileUser.avatarUrl ? 'pointer' : 'default'
-                }}
+                })}
               >
                 {avatarLoading ? (
-                  <Box sx={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255,255,255,0.7)', zIndex: 2 }}>
-                    <CircularProgress size={30} sx={{ color: '#2a5885' }} />
+                  <Box sx={(theme) => ({ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: alpha(theme.palette.background.paper, 0.7), zIndex: 2 })}>
+                    <CircularProgress size={30} sx={(theme) => ({ color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885' })} />
                   </Box>
                 ) : null}
 
@@ -368,34 +369,34 @@ const Profile: React.FC = () => {
                   startIcon={<ChatIcon />}
                   onClick={handleStartChat}
                   disabled={creatingChat}
-                  sx={{ 
-                    backgroundColor: '#2a5885', 
+                  sx={(theme) => ({
+                    backgroundColor: theme.palette.mode === 'dark' ? '#3E6690' : '#2a5885',
                     color: '#ffffff',
                     boxShadow: 'none',
                     textTransform: 'none',
                     fontSize: '13px',
                     fontWeight: 500,
                     borderRadius: '8px',
-                    '&:hover': { backgroundColor: '#244d75', boxShadow: 'none' }
-                  }}
+                    '&:hover': { backgroundColor: theme.palette.mode === 'dark' ? '#4A76A8' : '#244d75', boxShadow: 'none' }
+                  })}
                 >
                   {creatingChat ? 'Opening the chat...' : 'Send a message'}
                 </Button>
               ) : (
-                <Button 
-                  fullWidth 
+                <Button
+                  fullWidth
                   variant="contained"
                   onClick={handleOpenEdit}
-                  sx={{ 
-                    backgroundColor: '#e1e3e6', 
-                    color: '#2a5885',
+                  sx={(theme) => ({
+                    backgroundColor: theme.palette.action.selected,
+                    color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885',
                     boxShadow: 'none',
                     textTransform: 'none',
                     fontSize: '13px',
                     fontWeight: 500,
                     borderRadius: '8px',
-                    '&:hover': { backgroundColor: '#d7d8db', boxShadow: 'none' }
-                  }}
+                    '&:hover': { backgroundColor: theme.palette.action.hover, boxShadow: 'none' }
+                  })}
                 >
                   Edit profile
                 </Button>
@@ -405,9 +406,9 @@ const Profile: React.FC = () => {
             <VkCard>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
                 <Typography sx={{ fontSize: '14px', fontWeight: 500 }}>
-                  Followers <Box component="span" sx={{ color: '#828282', ml: 0.5 }}>{followers.length}</Box>
+                  Followers <Box component="span" sx={{ color: 'text.secondary', ml: 0.5 }}>{followers.length}</Box>
                 </Typography>
-                <Link href="#followers" underline="hover" sx={{ color: '#2a5885', fontSize: '13px' }}>all</Link>
+                <Link href="#followers" underline="hover" sx={(theme) => ({ color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885', fontSize: '13px' })}>all</Link>
               </Box>
               
               <Grid container spacing={1} sx={{ textAlign: 'center', mb: 3 }}>
@@ -425,7 +426,7 @@ const Profile: React.FC = () => {
                     />
                     <Typography 
                       noWrap 
-                      sx={{ color: '#2a5885', fontSize: '11px', width: '100%', textAlign: 'center', '&:hover': { textDecoration: 'underline' } }}
+                      sx={(theme) => ({ color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885', fontSize: '11px', width: '100%', textAlign: 'center', '&:hover': { textDecoration: 'underline' } })}
                     >
                       {`${friend.firstName || ''} ${friend.lastName || ''}`.trim() || friend.username}
                     </Typography>
@@ -435,9 +436,9 @@ const Profile: React.FC = () => {
 
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
                 <Typography sx={{ fontSize: '14px', fontWeight: 500 }}>
-                  Following <Box component="span" sx={{ color: '#828282', ml: 0.5 }}>{following.length}</Box>
+                  Following <Box component="span" sx={{ color: 'text.secondary', ml: 0.5 }}>{following.length}</Box>
                 </Typography>
-                <Link href="#following" underline="hover" sx={{ color: '#2a5885', fontSize: '13px' }}>all</Link>
+                <Link href="#following" underline="hover" sx={(theme) => ({ color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885', fontSize: '13px' })}>all</Link>
               </Box>
               
               <Grid container spacing={1} sx={{ textAlign: 'center' }}>
@@ -455,7 +456,7 @@ const Profile: React.FC = () => {
                     />
                     <Typography 
                       noWrap 
-                      sx={{ color: '#2a5885', fontSize: '11px', width: '100%', textAlign: 'center', '&:hover': { textDecoration: 'underline' } }}
+                      sx={(theme) => ({ color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885', fontSize: '11px', width: '100%', textAlign: 'center', '&:hover': { textDecoration: 'underline' } })}
                     >
                       {`${friend.firstName || ''} ${friend.lastName || ''}`.trim() || friend.username}
                     </Typography>
@@ -468,65 +469,65 @@ const Profile: React.FC = () => {
 
         <Grid size={{ xs: 12, md: 'grow' }} sx={{ maxHeight: '100%', height: '100%', display: 'flex', flexDirection: 'column', gap: 1 }}>
           <VkCard sx={{ p: 2.5, flexShrink: 0 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', pb: 1.5, mb: 2, borderBottom: '1px solid #e7e8ec' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', pb: 1.5, mb: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
               <Box>
-                <Typography variant="h1" sx={{ fontSize: '21px', fontWeight: 400, color: '#000', mb: 0.5 }}>
+                <Typography variant="h1" sx={{ fontSize: '21px', fontWeight: 400, color: 'text.primary', mb: 0.5 }}>
                   {fullName}
                 </Typography>
-                <Typography sx={{ color: '#656565', fontSize: '13px' }}>
+                <Typography sx={{ color: 'text.secondary', fontSize: '13px' }}>
                   {profileUser.bio || 'Статус відсутній'}
                 </Typography>
               </Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', fontSize: '12px', color: '#828282' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', fontSize: '12px', color: 'text.secondary' }}>
                 <Badge variant="dot" color="success" sx={{ mr: 1, '& .MuiBadge-badge': { width: 8, height: 8, borderRadius: '50%' } }} />
                 Online
               </Box>
             </Box>
 
-            <Box sx={{ display: 'flex', gap: 4, mt: 2.5, pt: 2, borderTop: '1px solid #e7e8ec', px: 1 }}>
+            <Box sx={{ display: 'flex', gap: 4, mt: 2.5, pt: 2, borderTop: '1px solid', borderColor: 'divider', px: 1 }}>
               <Box sx={{ cursor: 'pointer' }}>
-                <Typography sx={{ fontSize: '19px', color: '#2a5885', fontWeight: 300 }}>
+                <Typography sx={(theme) => ({ fontSize: '19px', color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885', fontWeight: 300 })}>
                   {totalPosts}
                 </Typography>
-                <Typography sx={{ color: '#828282', fontSize: '12px', mt: 0.5 }}>posts</Typography>
+                <Typography sx={{ color: 'text.secondary', fontSize: '12px', mt: 0.5 }}>posts</Typography>
               </Box>
               <Box sx={{ cursor: 'pointer' }}>
-                <Typography sx={{ fontSize: '19px', color: '#2a5885', fontWeight: 300 }}>
+                <Typography sx={(theme) => ({ fontSize: '19px', color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885', fontWeight: 300 })}>
                   {followers.length}
                 </Typography>
-                <Typography sx={{ color: '#828282', fontSize: '12px', mt: 0.5 }}>followers</Typography>
+                <Typography sx={{ color: 'text.secondary', fontSize: '12px', mt: 0.5 }}>followers</Typography>
               </Box>
               <Box sx={{ cursor: 'pointer' }}>
-                <Typography sx={{ fontSize: '19px', color: '#2a5885', fontWeight: 300 }}>
+                <Typography sx={(theme) => ({ fontSize: '19px', color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885', fontWeight: 300 })}>
                   {following.length}
                 </Typography>
-                <Typography sx={{ color: '#828282', fontSize: '12px', mt: 0.5 }}>following</Typography>
+                <Typography sx={{ color: 'text.secondary', fontSize: '12px', mt: 0.5 }}>following</Typography>
               </Box>
             </Box>
           </VkCard>
 
           {!isForeignProfile && <CreatePostBlock onPostCreated={handlePostCreated} />}
 
-          <Box 
-            sx={{ 
-              backgroundColor: '#ffffff',
+          <Box
+            sx={(theme) => ({
+              backgroundColor: theme.palette.background.paper,
               borderRadius: '12px',
-              border: '1px solid #e7e8ec',
+              border: `1px solid ${theme.palette.divider}`,
               boxShadow: '0 1px 2px 0 rgba(0,0,0,0.05)',
-              flex: 1, 
-              display: 'flex', 
-              flexDirection: 'column', 
-              minHeight: 0, 
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              minHeight: 0,
               overflow: 'hidden'
-            }}
+            })}
           >
-            <Box sx={{ borderBottom: '1px solid #e7e8ec', px: 2.5, flexShrink: 0, backgroundColor: '#ffffff' }}>
-              <Tabs 
-                value={activeTab} 
+            <Box sx={(theme) => ({ borderBottom: `1px solid ${theme.palette.divider}`, px: 2.5, flexShrink: 0, backgroundColor: theme.palette.background.paper })}>
+              <Tabs
+                value={activeTab}
                 onChange={(_, newValue) => setActiveTab(newValue)}
-                sx={{
+                sx={(theme) => ({
                   minHeight: '44px',
-                  '& .MuiTabs-indicator': { backgroundColor: '#2a5885', height: '2px' },
+                  '& .MuiTabs-indicator': { backgroundColor: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885', height: '2px' },
                   '& .MuiTab-root': {
                     textTransform: 'none',
                     fontSize: '14px',
@@ -536,38 +537,38 @@ const Profile: React.FC = () => {
                     paddingRight: 1,
                     mr: 3,
                     minHeight: '44px',
-                    color: '#828282',
-                    '&.Mui-selected': { color: '#000000' }
+                    color: theme.palette.text.secondary,
+                    '&.Mui-selected': { color: theme.palette.text.primary }
                   }
-                }}
+                })}
               >
                 <Tab label="Всі записи" />
                 <Tab label="Архіви" />
               </Tabs>
             </Box>
 
-            <Box 
-              sx={{ 
-                p: 1, 
-                backgroundColor: '#f0f2f5', 
-                display: 'flex', 
-                flexDirection: 'column', 
-                gap: 1.5, 
-                overflowY: 'auto', 
-                flex: 1 
-              }}
+            <Box
+              sx={(theme) => ({
+                p: 1,
+                backgroundColor: theme.palette.action.hover,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 1.5,
+                overflowY: 'auto',
+                flex: 1
+              })}
             >
               {activeTab === 0 && (
                 posts.length > 0 ? (
                   <PostList posts={posts} />
                 ) : (
-                  <Box sx={{ backgroundColor: '#fff', borderRadius: '12px', p: 4, textAlign: 'center', color: 'text.secondary', border: '1px solid #e7e8ec', flexShrink: 0 }}>
+                  <Box sx={(theme) => ({ backgroundColor: theme.palette.background.paper, borderRadius: '12px', p: 4, textAlign: 'center', color: 'text.secondary', border: `1px solid ${theme.palette.divider}`, flexShrink: 0 })}>
                     <Typography variant="body1">На стіні ще немає жодного запису.</Typography>
                   </Box>
                 )
               )}
               {activeTab === 1 && (
-                <Box sx={{ backgroundColor: '#fff', borderRadius: '12px', p: 4, textAlign: 'center', color: 'text.secondary', border: '1px solid #e7e8ec', flexShrink: 0 }}>
+                <Box sx={(theme) => ({ backgroundColor: theme.palette.background.paper, borderRadius: '12px', p: 4, textAlign: 'center', color: 'text.secondary', border: `1px solid ${theme.palette.divider}`, flexShrink: 0 })}>
                   <Typography variant="body1">Архів порожній.</Typography>
                 </Box>
               )}
@@ -665,20 +666,20 @@ const Profile: React.FC = () => {
             <Button 
               onClick={handleCloseEdit} 
               disabled={isSaving}
-              sx={{ textTransform: 'none', color: '#656565' }}
+              sx={{ textTransform: 'none', color: 'text.secondary' }}
             >
               Скасувати
             </Button>
-            <Button 
-              type="submit" 
-              variant="contained" 
+            <Button
+              type="submit"
+              variant="contained"
               disabled={isSaving}
-              sx={{ 
-                textTransform: 'none', 
-                backgroundColor: '#2a5885',
-                '&:hover': { backgroundColor: '#244d75' },
+              sx={(theme) => ({
+                textTransform: 'none',
+                backgroundColor: theme.palette.mode === 'dark' ? '#3E6690' : '#2a5885',
+                '&:hover': { backgroundColor: theme.palette.mode === 'dark' ? '#4A76A8' : '#244d75' },
                 boxShadow: 'none'
-              }}
+              })}
             >
               {isSaving ? <CircularProgress size={20} color="inherit" /> : 'Зберегти'}
             </Button>

@@ -15,42 +15,48 @@ const SidebarItem: FC<IProps> = ({ menuItem }) => {
       component={NavLink}
       to={menuItem.path}
       end={menuItem.end}
-      sx={{
-        textDecoration: "none",
-        color: "#4A76A8",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "8px 12px",
-        marginBottom: "4px",
-        borderRadius: "6px",
-        transition: "all 0.2s ease-in-out",
-        "& .MuiSvgIcon-root": {
-          fontSize: "20px",
-          color: alpha("#4A76A8", 0.8),
-          transition: "color 0.2s",
-        },
+      sx={(theme) => {
+        const isDark = theme.palette.mode === "dark";
+        const base = isDark ? "#8FB8E0" : "#4A76A8";
+        const hover = isDark ? "#B7D3EF" : "#2C5380";
 
-        "&:hover": {
-          backgroundColor: alpha("#4A76A8", 0.05),
-          color: "#2C5380",
+        return {
+          textDecoration: "none",
+          color: base,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "8px 12px",
+          marginBottom: "4px",
+          borderRadius: "6px",
+          transition: "all 0.2s ease-in-out",
           "& .MuiSvgIcon-root": {
-            color: "#2C5380",
-          }
-        },
-
-        "&.active": {
-          backgroundColor: alpha("#4A76A8", 0.12),
-          color: "#4A76A8",
-          fontWeight: 700,
-          "& .MuiSvgIcon-root": {
-            color: "#4A76A8",
+            fontSize: "20px",
+            color: alpha(base, 0.8),
+            transition: "color 0.2s",
           },
-          
+
           "&:hover": {
-            backgroundColor: alpha("#4A76A8", 0.2),
-          }
-        },
+            backgroundColor: alpha(base, isDark ? 0.12 : 0.05),
+            color: hover,
+            "& .MuiSvgIcon-root": {
+              color: hover,
+            }
+          },
+
+          "&.active": {
+            backgroundColor: alpha(base, isDark ? 0.24 : 0.12),
+            color: base,
+            fontWeight: 700,
+            "& .MuiSvgIcon-root": {
+              color: base,
+            },
+
+            "&:hover": {
+              backgroundColor: alpha(base, isDark ? 0.34 : 0.2),
+            }
+          },
+        };
       }}
     >
       <Box sx={{ display: "flex", alignItems: "center", gap: "12px", minWidth: 0 }}>

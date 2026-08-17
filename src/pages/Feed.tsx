@@ -234,20 +234,20 @@ const Feed = () => {
         <CreatePostBlock onPostCreated={getPosts} />
 
         <Box
-          sx={{
+          sx={(theme) => ({
             p: '12px 20px',
-            border: '1px solid #DCE1E5',
+            border: `1px solid ${theme.palette.divider}`,
             borderRadius: '8px',
             boxShadow: '0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05)',
-            bgcolor: 'white',
+            bgcolor: theme.palette.background.paper,
             mb: '16px',
             maxWidth: '100%',
             position: 'relative',
             flexShrink: 0,
             '&:hover .story-nav-btn': { opacity: 1 }
-          }}
+          })}
         >
-          <Typography sx={{ fontWeight: 600, fontSize: '14px', mb: 1.5, color: '#222222' }}>
+          <Typography sx={{ fontWeight: 600, fontSize: '14px', mb: 1.5, color: 'text.primary' }}>
             Stories
           </Typography>
 
@@ -255,11 +255,11 @@ const Feed = () => {
             <IconButton
               className="story-nav-btn"
               onClick={() => handleScroll("left")}
-              sx={{
+              sx={(theme) => ({
                 position: 'absolute', left: 8, top: '55%', transform: 'translateY(-50%)', zIndex: 2,
-                bgcolor: 'white', boxShadow: '0 2px 8px rgba(0,0,0,0.15)', border: '1px solid #E1E3E6',
-                width: 32, height: 32, opacity: 0.8, transition: 'all 0.2s', '&:hover': { bgcolor: '#F5F7FA', opacity: 1 }
-              }}
+                bgcolor: theme.palette.background.paper, boxShadow: '0 2px 8px rgba(0,0,0,0.15)', border: `1px solid ${theme.palette.divider}`,
+                width: 32, height: 32, opacity: 0.8, transition: 'all 0.2s', '&:hover': { bgcolor: theme.palette.action.hover, opacity: 1 }
+              })}
             >
               <ChevronLeftIcon />
             </IconButton>
@@ -269,11 +269,11 @@ const Feed = () => {
             <IconButton
               className="story-nav-btn"
               onClick={() => handleScroll("right")}
-              sx={{
+              sx={(theme) => ({
                 position: 'absolute', right: 8, top: '55%', transform: 'translateY(-50%)', zIndex: 2,
-                bgcolor: 'white', boxShadow: '0 2px 8px rgba(0,0,0,0.15)', border: '1px solid #E1E3E6',
-                width: 32, height: 32, opacity: 0.8, transition: 'all 0.2s', '&:hover': { bgcolor: '#F5F7FA', opacity: 1 }
-              }}
+                bgcolor: theme.palette.background.paper, boxShadow: '0 2px 8px rgba(0,0,0,0.15)', border: `1px solid ${theme.palette.divider}`,
+                width: 32, height: 32, opacity: 0.8, transition: 'all 0.2s', '&:hover': { bgcolor: theme.palette.action.hover, opacity: 1 }
+              })}
             >
               <ChevronRightIcon />
             </IconButton>
@@ -301,13 +301,13 @@ const Feed = () => {
               }}
             >
               <Box sx={{ position: 'relative', width: 56, height: 56, mb: 0.5 }}>
-                <Avatar 
-                  src={currentUser?.avatarUrl || undefined} 
-                  sx={{ width: '100%', height: '100%', border: '2px solid white' }}
+                <Avatar
+                  src={currentUser?.avatarUrl || undefined}
+                  sx={(theme) => ({ width: '100%', height: '100%', border: `2px solid ${theme.palette.background.paper}` })}
                 >
                   {currentUser?.username?.substring(0, 2).toUpperCase()}
                 </Avatar>
-                <Box sx={{ position: 'absolute', bottom: -2, right: -2, bgcolor: '#4A76A8', borderRadius: '50%', width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid white', color: 'white' }}>
+                <Box sx={(theme) => ({ position: 'absolute', bottom: -2, right: -2, bgcolor: '#4A76A8', borderRadius: '50%', width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', border: `2px solid ${theme.palette.background.paper}`, color: 'white' })}>
                   {isStoryCreating ? (
                     <CircularProgress size={10} color="inherit" />
                   ) : (
@@ -315,7 +315,7 @@ const Feed = () => {
                   )}
                 </Box>
               </Box>
-              <Typography variant="caption" noWrap sx={{ maxWidth: 64, color: '#65676B', fontSize: '11px' }}>
+              <Typography variant="caption" noWrap sx={{ maxWidth: 64, color: 'text.secondary', fontSize: '11px' }}>
                 {isStoryCreating ? "Uploading..." : "Your story"}
               </Typography>
             </Box>
@@ -331,29 +331,29 @@ const Feed = () => {
                   onClick={() => handleOpenStories(group)}
                   sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '64px', flexShrink: 0, cursor: 'pointer', '&:hover img': { transform: 'scale(1.05)' } }}
                 >
-                  <Box 
-                    sx={{ 
-                      p: '2px', 
-                      borderRadius: '50%', 
-                      background: group.isAllViewed 
-                        ? '#E1E3E6' 
-                        : 'linear-gradient(45deg, #06B6D4 0%, #4F46E5 50%, #FF007A 100%)', 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      justifyContent: 'center', 
-                      mb: 0.5 
-                    }}
+                  <Box
+                    sx={(theme) => ({
+                      p: '2px',
+                      borderRadius: '50%',
+                      background: group.isAllViewed
+                        ? theme.palette.divider
+                        : 'linear-gradient(45deg, #06B6D4 0%, #4F46E5 50%, #FF007A 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      mb: 0.5
+                    })}
                   >
-                    <Avatar src={group.avatarUrl || undefined} sx={{ width: 52, height: 52, border: '2px solid white', transition: 'transform 0.2s ease' }}>
+                    <Avatar src={group.avatarUrl || undefined} sx={(theme) => ({ width: 52, height: 52, border: `2px solid ${theme.palette.background.paper}`, transition: 'transform 0.2s ease' })}>
                       {group.username.substring(0, 2).toUpperCase()}
                     </Avatar>
                   </Box>
-                  <Typography 
-                    variant="caption" 
-                    noWrap 
-                    sx={{ 
-                      maxWidth: 64, 
-                      color: group.isAllViewed ? '#818C99' : '#222222', 
+                  <Typography
+                    variant="caption"
+                    noWrap
+                    sx={{
+                      maxWidth: 64,
+                      color: group.isAllViewed ? 'text.secondary' : 'text.primary',
                       fontSize: '11px',
                       fontWeight: group.isAllViewed ? 400 : 500
                     }}
@@ -380,17 +380,17 @@ const Feed = () => {
       <Box sx={{ width: '280px', flexShrink: 0 }}>
         <FilterMenu selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
         <Box
-          sx={{
+          sx={(theme) => ({
             p: '4px',
-            border: '1px solid #DCE1E5',
+            border: `1px solid ${theme.palette.divider}`,
             borderRadius: '8px',
             boxShadow: '0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05)',
-            bgcolor: 'white',
+            bgcolor: theme.palette.background.paper,
             my: '16px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between'
-          }}
+          })}
         >
           <Typography>🔥 Interesting first</Typography>
           <Switch />

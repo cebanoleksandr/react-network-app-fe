@@ -183,14 +183,14 @@ const PostItem: FC<IProps> = ({ post }) => {
         damping: 30,
         opacity: { duration: 0.2 }
       }}
-      sx={{
+      sx={(theme) => ({
         p: '10px 20px',
-        border: '1px solid #DCE1E5',
+        border: `1px solid ${theme.palette.divider}`,
         borderRadius: '8px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05)',
-        bgcolor: 'white',
+        bgcolor: theme.palette.background.paper,
         mb: '8px',
-      }}
+      })}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2, mb: '12px' }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -209,7 +209,7 @@ const PostItem: FC<IProps> = ({ post }) => {
               {post.user.firstName} {post.user.lastName}
             </Typography>
 
-            <Typography sx={{ color: '#6F7985', fontSize: 12 }}>user profile</Typography>
+            <Typography sx={{ color: 'text.secondary', fontSize: 12 }}>user profile</Typography>
           </Box>
         </Box>
         
@@ -231,12 +231,12 @@ const PostItem: FC<IProps> = ({ post }) => {
           }}
           slotProps={{
             paper: {
-              sx: {
+              sx: (theme) => ({
                 boxShadow: '0px 5px 15px rgba(0,0,0,0.08)',
                 borderRadius: '8px',
-                border: '1px solid #EAEAEA',
+                border: `1px solid ${theme.palette.divider}`,
                 minWidth: '150px'
-              }
+              })
             }
           }}
         >
@@ -290,15 +290,15 @@ const PostItem: FC<IProps> = ({ post }) => {
             return (
               <Box 
                 key={m.id} 
-                sx={{ 
-                  width: '100%', 
-                  height: post.media.length === 1 ? 'auto' : '250px', 
-                  bgcolor: '#f5f5f5',
+                sx={(theme) => ({
+                  width: '100%',
+                  height: post.media.length === 1 ? 'auto' : '250px',
+                  bgcolor: theme.palette.action.hover,
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
                   gridColumn: isLastOdd && post.media.length > 1 ? 'span 2' : 'auto',
-                }}
+                })}
               >
                 {m.type === 'AUDIO' && (
                   <Box sx={{ width: '100%', p: 1 }}>
@@ -337,7 +337,7 @@ const PostItem: FC<IProps> = ({ post }) => {
         </Box>
       )}
 
-      <Box sx={{ pt: 1, borderTop: '1px solid #EAEAEA', display: 'flex', alignItems: 'center', gap: 3 }}>
+      <Box sx={(theme) => ({ pt: 1, borderTop: `1px solid ${theme.palette.divider}`, display: 'flex', alignItems: 'center', gap: 3 })}>
         <IconButton onClick={handleToggleLike} sx={{ color: isLiked ? '#E64646' : '' }}>
           {isLiked ? (
             <FavoriteIcon sx={{ mr: 1 }} />

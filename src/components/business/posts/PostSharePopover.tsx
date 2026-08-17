@@ -62,15 +62,15 @@ const PostSharePopover: FC<IShareProps> = ({ postId, anchorEl, onClose }) => {
         initial={{ opacity: 0, y: 15, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ type: "spring", damping: 20, stiffness: 300 }}
-        sx={{
-          bgcolor: 'white',
+        sx={(theme) => ({
+          bgcolor: theme.palette.background.paper,
           borderRadius: '12px',
           boxShadow: '0px 8px 24px rgba(0,0,0,0.12)',
-          border: '1px solid #EAEAEA',
+          border: `1px solid ${theme.palette.divider}`,
           overflow: 'hidden',
           p: 0.5,
           minWidth: '200px'
-        }}
+        })}
       >
         <MenuList>
           <MenuItem onClick={handleShareToFeed} sx={{ py: 1, borderRadius: '8px' }}>

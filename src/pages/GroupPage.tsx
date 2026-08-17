@@ -117,26 +117,26 @@ export const GroupPage = () => {
     <Container maxWidth="md" sx={{ mt: 3, mb: 4 }}>
       <Grid container spacing={2}>
         <Grid size={{ xs: 12, md: 8 }}>
-          <Card variant="outlined" sx={{ borderRadius: 3, borderColor: '#e7e8ec', mb: 2 }}>
+          <Card variant="outlined" sx={{ borderRadius: 3, borderColor: 'divider', mb: 2 }}>
             <CardContent sx={{ p: 3 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                 <Typography variant="h5" sx={{ fontWeight: 600, fontSize: '21px' }}>
                   {group.name}
                 </Typography>
-                {group.isPrivate && <LockIcon sx={{ fontSize: '18px', color: '#818c99' }} />}
+                {group.isPrivate && <LockIcon sx={{ fontSize: '18px', color: 'text.secondary' }} />}
               </Box>
 
-              <Typography variant="body2" sx={{ color: '#818c99', fontSize: '13px', mb: 2 }}>
+              <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '13px', mb: 2 }}>
                 {group.isPrivate ? 'Закрита спільнота' : 'Відкрита спільнота'}
               </Typography>
 
-              <Divider sx={{ my: 2, borderColor: '#e7e8ec' }} />
+              <Divider sx={{ my: 2, borderColor: 'divider' }} />
 
               <Box sx={{ mb: 1 }}>
                 <Typography variant="subtitle2" sx={{ fontWeight: 600, fontSize: '14px', mb: 0.5 }}>
                   Інформація
                 </Typography>
-                <Typography variant="body2" sx={{ color: '#000000', fontSize: '14px', lineHeight: 1.5 }}>
+                <Typography variant="body2" sx={{ color: 'text.primary', fontSize: '14px', lineHeight: 1.5 }}>
                   {group.description || 'Опис спільноти відсутній.'}
                 </Typography>
               </Box>
@@ -151,15 +151,15 @@ export const GroupPage = () => {
               {/* Список постів */}
               {/* <PostList groupId={group.id} /> */}
               
-              <Card variant="outlined" sx={{ borderRadius: 3, borderColor: '#e7e8ec', p: 3, textCenter: 'center' }}>
+              <Card variant="outlined" sx={{ borderRadius: 3, borderColor: 'divider', p: 3, textCenter: 'center' }}>
                 <Typography color="text.secondary" variant="body2" align="center">
                   Тут будуть відображатися пости спільноти `{group.name}`
                 </Typography>
               </Card>
             </Box>
           ) : (
-            <Card variant="outlined" sx={{ borderRadius: 3, borderColor: '#e7e8ec', p: 4, textAlign: 'center' }}>
-              <LockIcon sx={{ fontSize: 40, color: '#818c99', mb: 1 }} />
+            <Card variant="outlined" sx={{ borderRadius: 3, borderColor: 'divider', p: 4, textAlign: 'center' }}>
+              <LockIcon sx={{ fontSize: 40, color: 'text.secondary', mb: 1 }} />
               <Typography variant="h6" sx={{ fontSize: '16px', fontWeight: 600, mb: 1 }}>
                 Це закрита спільнота
               </Typography>
@@ -172,7 +172,7 @@ export const GroupPage = () => {
 
         <Grid size={{ xs: 12, md: 4 }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Card variant="outlined" sx={{ borderRadius: 3, borderColor: '#e7e8ec', p: 2, textAlign: 'center' }}>
+            <Card variant="outlined" sx={{ borderRadius: 3, borderColor: 'divider', p: 2, textAlign: 'center' }}>
               <Avatar
                 src={group.avatarUrl}
                 alt={group.name}
@@ -182,12 +182,13 @@ export const GroupPage = () => {
                   height: 'auto',
                   aspectRatio: '1/1',
                   borderRadius: '12px',
-                  backgroundColor: '#f0f2f5',
-                  color: '#828282',
+                  backgroundColor: 'action.hover',
+                  color: 'text.secondary',
                   fontSize: '48px',
                   fontWeight: 'bold',
                   mb: 2,
-                  border: '1px solid #e7e8ec'
+                  border: '1px solid',
+                  borderColor: 'divider'
                 }}
               >
                 {group.name.charAt(0).toUpperCase()}
@@ -213,9 +214,9 @@ export const GroupPage = () => {
                     textTransform: 'none',
                     fontWeight: 500,
                     borderRadius: '8px',
-                    backgroundColor: '#f0f2f5',
-                    color: '#2a5885',
-                    '&:hover': { backgroundColor: '#e4e6e9' }
+                    backgroundColor: 'action.hover',
+                    color: 'primary.main',
+                    '&:hover': { backgroundColor: 'action.selected' }
                   }}
                 >
                   Ви учасник (Вийти)
@@ -240,9 +241,9 @@ export const GroupPage = () => {
               )}
             </Card>
 
-            <Card variant="outlined" sx={{ borderRadius: 3, borderColor: '#e7e8ec', p: 2 }}>
+            <Card variant="outlined" sx={{ borderRadius: 3, borderColor: 'divider', p: 2 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5, px: 0.5 }}>
-                <GroupIcon sx={{ color: '#818c99', fontSize: '20px' }} />
+                <GroupIcon sx={{ color: 'text.secondary', fontSize: '20px' }} />
                 <Typography variant="subtitle2" sx={{ fontWeight: 600, fontSize: '14px' }}>
                   Учасники ({memberCount})
                 </Typography>
@@ -266,7 +267,7 @@ export const GroupPage = () => {
                             variant="body2"
                             sx={{
                               fontSize: '13px',
-                              color: '#2a5885',
+                              color: 'primary.main',
                               fontWeight: 500,
                               cursor: 'pointer',
                               '&:hover': { textDecoration: 'underline' }

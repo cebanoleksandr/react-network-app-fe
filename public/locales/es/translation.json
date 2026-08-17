@@ -1,0 +1,125 @@
+{
+  "sidebar": {
+    "profile": "Perfil",
+    "feed": "Inicio",
+    "dialogs": "Mensajes",
+    "people": "Personas",
+    "groups": "Grupos",
+    "photos": "Fotos",
+    "music": "Música",
+    "video": "Vídeo",
+    "games": "Juegos",
+    "settings": "Ajustes"
+  },
+  "header": {
+    "search": "Buscar...",
+    "my_profile": "Mi perfil",
+    "settings": "Ajustes",
+    "logout": "Cerrar sesión",
+    "user_avatar_alt": "Avatar del usuario",
+    "default_user_name": "Alex"
+  },
+  "landing": {
+    "welcome": "Bienvenido a la página principal",
+    "nav": {
+      "login": "Iniciar sesión",
+      "register": "Registrarse"
+    },
+    "hero": {
+      "title": "Conecta con las personas que te importan",
+      "subtitle": "Comparte momentos, chatea en tiempo real y mantente cerca de tus amigos y comunidades — todo en un solo lugar.",
+      "cta_primary": "Comenzar",
+      "cta_secondary": "Ya tengo una cuenta"
+    },
+    "features": {
+      "title": "Todo lo que necesitas para mantenerte conectado",
+      "feed": {
+        "title": "Inicio e historias",
+        "description": "Comparte fotos y vídeos y sigue las historias de las personas que sigues."
+      },
+      "chat": {
+        "title": "Chat en tiempo real",
+        "description": "Envía mensajes a tus amigos al instante con indicadores de escritura y confirmaciones de lectura."
+      },
+      "groups": {
+        "title": "Grupos y comunidades",
+        "description": "Crea o únete a grupos según tus intereses y mantente al día."
+      }
+    },
+    "footer": {
+      "rights": "Todos los derechos reservados."
+    }
+  },
+  "login": {
+    "title": "Página de inicio de sesión"
+  },
+  "register": {
+    "title": "Página de registro"
+  },
+  "pages": {
+    "games": "Juegos",
+    "groups": "Grupos",
+    "music": "Música",
+    "people": "Personas",
+    "photos": "Fotos",
+    "settings": "Ajustes",
+    "video": "Vídeo",
+    "feed": "Inicio",
+    "dialogs": "Mensajes",
+    "chat": "Chat",
+    "search": "Buscar",
+    "not_found": {
+      "title": "404",
+      "subtitle": "Página no encontrada",
+      "description": "La página que buscas no existe o ha sido movida.",
+      "back_home": "Volver al inicio"
+    },
+    "profile": "Perfil"
+  },
+  "settings": {
+    "title": "Ajustes",
+    "profile": {
+      "title": "Perfil",
+      "description": "Actualiza tu información personal.",
+      "first_name": "Nombre",
+      "last_name": "Apellido",
+      "bio": "Biografía",
+      "save": "Guardar cambios",
+      "avatar_upload": "Subir foto",
+      "avatar_delete": "Eliminar foto"
+    },
+    "language": {
+      "title": "Idioma",
+      "description": "Elige el idioma que quieres usar."
+    },
+    "appearance": {
+      "title": "Apariencia",
+      "description": "Elige cómo se ve la aplicación.",
+      "light": "Claro",
+      "dark": "Oscuro"
+    },
+    "account": {
+      "title": "Cuenta",
+      "description": "Gestiona tu sesión.",
+      "logout": "Cerrar sesión"
+    }
+  },
+  "alerts": {
+    "post_created_success": "Publicación creada correctamente",
+    "post_created_error": "No se pudo crear la publicación",
+    "post_updated_success": "Publicación actualizada correctamente",
+    "post_updated_error": "No se pudo actualizar la publicación",
+    "post_deleted_success": "Publicación eliminada correctamente",
+    "post_deleted_error": "No se pudo eliminar la publicación",
+    "comment_added_success": "Comentario añadido",
+    "comment_added_error": "No se pudo añadir el comentario",
+    "story_created_success": "Historia creada correctamente",
+    "story_created_error": "No se pudo crear la historia",
+    "avatar_updated_success": "Avatar actualizado correctamente",
+    "avatar_updated_error": "No se pudo actualizar el avatar",
+    "avatar_deleted_success": "Avatar eliminado correctamente",
+    "avatar_deleted_error": "No se pudo eliminar el avatar",
+    "profile_updated_success": "Perfil actualizado correctamente",
+    "profile_updated_error": "No se pudo actualizar el perfil"
+  }
+}

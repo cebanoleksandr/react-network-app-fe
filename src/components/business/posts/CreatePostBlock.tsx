@@ -67,17 +67,17 @@ const CreatePostBlock: FC<IProps> = ({ onPostCreated }) => {
 
   return (
     <Box
-      sx={{
+      sx={(theme) => ({
         p: '15px 20px',
-        border: '1px solid #DCE1E5',
+        border: `1px solid ${theme.palette.divider}`,
         borderRadius: '8px',
         boxShadow: '0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05)',
-        bgcolor: 'white',
+        bgcolor: theme.palette.background.paper,
         mb: '8px',
         display: 'flex',
         flexDirection: 'column',
         gap: 1.5,
-      }}
+      })}
     >
       <input
         type="file"
@@ -125,25 +125,25 @@ const CreatePostBlock: FC<IProps> = ({ onPostCreated }) => {
               size="small"
               onDelete={() => handleRemoveFile(index)}
               deleteIcon={<CloseIcon sx={{ fontSize: '14px !important' }} />}
-              sx={{
+              sx={(theme) => ({
                 maxWidth: '220px',
-                borderColor: '#E7E8EC',
-                bgcolor: '#F5F6F8',
-              }}
+                borderColor: theme.palette.divider,
+                bgcolor: theme.palette.mode === 'dark' ? theme.palette.action.hover : '#F5F6F8',
+              })}
             />
           ))}
         </Box>
       )}
 
-      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pt: 1, borderTop: '1px solid #F0F2F5' }}>
+      <Box sx={(theme) => ({ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pt: 1, borderTop: `1px solid ${theme.palette.divider}` })}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, pl: '40px' }}>
-          <IconButton onClick={() => triggerFileInput('image/*')} disabled={isLoading} size="small" sx={{ color: '#828282' }}>
+          <IconButton onClick={() => triggerFileInput('image/*')} disabled={isLoading} size="small" sx={(theme) => ({ color: theme.palette.text.secondary })}>
             <AddAPhotoIcon fontSize="small" />
           </IconButton>
-          <IconButton onClick={() => triggerFileInput('video/*')} disabled={isLoading} size="small" sx={{ color: '#828282' }}>
+          <IconButton onClick={() => triggerFileInput('video/*')} disabled={isLoading} size="small" sx={(theme) => ({ color: theme.palette.text.secondary })}>
             <VideoCallIcon fontSize="small" />
           </IconButton>
-          <IconButton onClick={() => triggerFileInput('audio/*')} disabled={isLoading} size="small" sx={{ color: '#828282' }}>
+          <IconButton onClick={() => triggerFileInput('audio/*')} disabled={isLoading} size="small" sx={(theme) => ({ color: theme.palette.text.secondary })}>
             <LibraryMusicIcon fontSize="small" />
           </IconButton>
         </Box>

@@ -77,16 +77,17 @@ const Header = () => {
   return (
     <Box
       component="header"
-      sx={{
-        backgroundColor: alpha("#4A76A8", 0.8),
-        color: "white", 
-        px: 2, 
+      sx={(theme) => ({
+        backgroundColor: theme.palette.mode === "dark" ? alpha("#0f1115", 0.9) : alpha("#4A76A8", 0.8),
+        color: "white",
+        px: 2,
         position: "sticky",
-        top: 0, 
+        top: 0,
         zIndex: 1,
-        backdropFilter: "blur(5px)", 
+        backdropFilter: "blur(5px)",
         height: "60px",
-      }}
+        borderBottom: theme.palette.mode === "dark" ? `1px solid ${theme.palette.divider}` : "none",
+      })}
     >
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", maxWidth: "1200px", mx: "auto", height: "100%" }}>
         <Box sx={{ width: '200px' }}>

@@ -100,7 +100,7 @@ const Groups = () => {
 
   return (
     <Container maxWidth="md" sx={{ mt: 3, mb: 4 }}>
-      <Card variant="outlined" sx={{ borderRadius: 3, mb: 2, borderColor: '#e7e8ec' }}>
+      <Card variant="outlined" sx={{ borderRadius: 3, mb: 2, borderColor: 'divider' }}>
         <Tabs
           value={activeTab}
           onChange={handleTabChange}
@@ -124,7 +124,7 @@ const Groups = () => {
       </Card>
 
       {(activeTab === 0 || activeTab === 1) && (
-        <Card variant="outlined" sx={{ borderRadius: 3, borderColor: '#e7e8ec' }}>
+        <Card variant="outlined" sx={{ borderRadius: 3, borderColor: 'divider' }}>
           <CardContent sx={{ p: 3 }}>
             <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
               {activeTab === 0 ? 'Все доступные сообщества' : 'Мои сообщества'}
@@ -144,7 +144,7 @@ const Groups = () => {
               <List disablePadding>
                 {groups.map((group, index) => (
                   <React.Fragment key={group.id}>
-                    {index > 0 && <Divider component="li" sx={{ borderColor: '#e7e8ec' }} />}
+                    {index > 0 && <Divider component="li" sx={{ borderColor: 'divider' }} />}
                     <ListItem
                       sx={{ px: 0, py: 1.5 }}
                       secondaryAction={
@@ -153,13 +153,13 @@ const Groups = () => {
                           disableElevation
                           href={`/app/groups/${group.slug}`}
                           sx={{
-                            backgroundColor: '#f0f2f5',
-                            color: '#2a5885',
+                            backgroundColor: 'action.hover',
+                            color: 'primary.main',
                             textTransform: 'none',
                             fontWeight: 500,
                             fontSize: '13px',
                             borderRadius: '8px',
-                            '&:hover': { backgroundColor: '#e4e6e9' },
+                            '&:hover': { backgroundColor: 'action.selected' },
                           }}
                         >
                           Перейти
@@ -173,10 +173,11 @@ const Groups = () => {
                           sx={{
                             width: 48,
                             height: 48,
-                            backgroundColor: '#f0f2f5',
-                            color: '#828282',
+                            backgroundColor: 'action.hover',
+                            color: 'text.secondary',
                             fontWeight: 'bold',
-                            border: '1px solid #e7e8ec'
+                            border: '1px solid',
+                            borderColor: 'divider'
                           }}
                         >
                           {group.name.charAt(0).toUpperCase()}
@@ -188,7 +189,7 @@ const Groups = () => {
                             component="a"
                             href={`/app/groups/${group.slug}`}
                             sx={{
-                              color: '#2a5885',
+                              color: 'primary.main',
                               textDecoration: 'none',
                               fontWeight: 500,
                               fontSize: '14px',
@@ -204,7 +205,7 @@ const Groups = () => {
                             noWrap: true,
                             sx: { 
                               fontSize: '12px',
-                              color: '#818c99',
+                              color: 'text.secondary',
                               maxWidth: '80%' 
                             }
                           }
@@ -221,7 +222,7 @@ const Groups = () => {
 
       {activeTab === 2 && (
         <Box sx={{ maxWidth: 600, mx: 'auto' }}>
-          <Card variant="outlined" sx={{ borderRadius: 3, borderColor: '#e7e8ec', p: 2 }}>
+          <Card variant="outlined" sx={{ borderRadius: 3, borderColor: 'divider', p: 2 }}>
             <CardContent>
               <Typography variant="h6" align="center" sx={{ fontWeight: 600, mb: 3 }}>
                 Создание сообщества
@@ -235,7 +236,7 @@ const Groups = () => {
 
               <Box component="form" onSubmit={handleCreateGroup} sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
                 <Box>
-                  <Typography variant="body2" sx={{ color: '#656975', mb: 0.5, fontSize: '13px', fontWeight: 500 }}>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5, fontSize: '13px', fontWeight: 500 }}>
                     Название сообщества
                   </Typography>
                   <TextField
@@ -247,11 +248,11 @@ const Groups = () => {
                     required
                     sx={{
                       '& .MuiOutlinedInput-root': {
-                        backgroundColor: '#f2f3f5',
+                        backgroundColor: 'action.hover',
                         '& fieldset': { borderColor: 'transparent' },
                         '&:hover fieldset': { borderColor: 'transparent' },
                         '&.Mui-focused fieldset': { borderColor: 'primary.main' },
-                        '&.Mui-focused': { backgroundColor: '#fff' },
+                        '&.Mui-focused': { backgroundColor: 'background.paper' },
                         borderRadius: '8px',
                       },
                       '& input': { fontSize: '14px' }
@@ -260,7 +261,7 @@ const Groups = () => {
                 </Box>
 
                 <Box>
-                  <Typography variant="body2" sx={{ color: '#656975', mb: 0.5, fontSize: '13px', fontWeight: 500 }}>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5, fontSize: '13px', fontWeight: 500 }}>
                     Короткий адрес страницы (slug)
                   </Typography>
                   <TextField
@@ -273,7 +274,7 @@ const Groups = () => {
                     slotProps={{
                       input: {
                         startAdornment: (
-                          <Typography variant="body2" sx={{ color: '#818c99', mr: 0.5, userSelect: 'none', fontSize: '14px' }}>
+                          <Typography variant="body2" sx={{ color: 'text.secondary', mr: 0.5, userSelect: 'none', fontSize: '14px' }}>
                             network/groups/
                           </Typography>
                         ),
@@ -281,23 +282,23 @@ const Groups = () => {
                     }}
                     sx={{
                       '& .MuiOutlinedInput-root': {
-                        backgroundColor: '#f2f3f5',
+                        backgroundColor: 'action.hover',
                         '& fieldset': { borderColor: 'transparent' },
                         '&:hover fieldset': { borderColor: 'transparent' },
                         '&.Mui-focused fieldset': { borderColor: 'primary.main' },
-                        '&.Mui-focused': { backgroundColor: '#fff' },
+                        '&.Mui-focused': { backgroundColor: 'background.paper' },
                         borderRadius: '8px',
                       },
                       '& input': { fontSize: '14px' }
                     }}
                   />
-                  <Typography variant="caption" sx={{ color: '#818c99', mt: 0.5, display: 'block', fontSize: '11px' }}>
+                  <Typography variant="caption" sx={{ color: 'text.secondary', mt: 0.5, display: 'block', fontSize: '11px' }}>
                     Можно использовать латиницу, цифры, дефис и нижнее подчеркивание.
                   </Typography>
                 </Box>
 
                 <Box>
-                  <Typography variant="body2" sx={{ color: '#656975', mb: 0.5, fontSize: '13px', fontWeight: 500 }}>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5, fontSize: '13px', fontWeight: 500 }}>
                     Описание сообщества (необязательно)
                   </Typography>
                   <TextField
@@ -309,11 +310,11 @@ const Groups = () => {
                     placeholder="Добавьте информацию о вашей группе..."
                     sx={{
                       '& .MuiOutlinedInput-root': {
-                        backgroundColor: '#f2f3f5',
+                        backgroundColor: 'action.hover',
                         '& fieldset': { borderColor: 'transparent' },
                         '&:hover fieldset': { borderColor: 'transparent' },
                         '&.Mui-focused fieldset': { borderColor: 'primary.main' },
-                        '&.Mui-focused': { backgroundColor: '#fff' },
+                        '&.Mui-focused': { backgroundColor: 'background.paper' },
                         borderRadius: '8px',
                       },
                       '& textarea': { fontSize: '14px' }

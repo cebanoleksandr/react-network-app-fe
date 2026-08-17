@@ -8,8 +8,8 @@ const MainLayout = () => {
   return (
     <Box 
       sx={{ 
-        height: "100vh", 
-        bgcolor: '#EDEEF0',
+        height: "100vh",
+        bgcolor: 'background.default',
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden'

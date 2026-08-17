@@ -1,8 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import { ThemeProvider } from '@mui/material/styles'
-import { theme } from './theme.ts'
+import AppThemeProvider from './components/providers/AppThemeProvider.tsx'
 import './services/interceptors.ts'
 import { RouterProvider } from 'react-router-dom'
 import router from './router/index.tsx'
@@ -13,9 +12,9 @@ import { store } from './store/store.ts'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <Provider store={store}>
-      <ThemeProvider theme={theme}>
+      <AppThemeProvider>
         <RouterProvider router={router} />
-      </ThemeProvider>
+      </AppThemeProvider>
     </Provider>
   </StrictMode>,
 )

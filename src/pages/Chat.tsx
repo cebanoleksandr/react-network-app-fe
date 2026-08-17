@@ -8,7 +8,8 @@ import {
   Avatar, 
   TextField, 
   InputAdornment,
-  CircularProgress
+  CircularProgress,
+  alpha
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SendIcon from '@mui/icons-material/Send';
@@ -162,38 +163,38 @@ export const Chat: React.FC = () => {
     <Box sx={{ maxWidth: '600px', margin: '0 auto', padding: '16px', height: 'calc(100vh - 100px)' }}>
       <Paper 
         elevation={0} 
-        sx={{ 
-          border: '1px solid #e7e8ec', 
-          borderRadius: '8px', 
-          display: 'flex', 
+        sx={(theme) => ({
+          border: `1px solid ${theme.palette.divider}`,
+          borderRadius: '8px',
+          display: 'flex',
           flexDirection: 'column',
           height: '100%',
           overflow: 'hidden',
-          backgroundColor: '#ebedf0'
-        }}
+          backgroundColor: theme.palette.mode === 'dark' ? theme.palette.background.default : '#ebedf0'
+        })}
       >
-        <Box 
-          sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            padding: '8px 12px', 
-            backgroundColor: '#fff', 
-            borderBottom: '1px solid #e7e8ec' 
-          }}
+        <Box
+          sx={(theme) => ({
+            display: 'flex',
+            alignItems: 'center',
+            padding: '8px 12px',
+            backgroundColor: theme.palette.background.paper,
+            borderBottom: `1px solid ${theme.palette.divider}`
+          })}
         >
-          <IconButton onClick={() => navigate('/app/dialogs')} sx={{ color: '#2a5885', mr: 1 }}>
+          <IconButton onClick={() => navigate('/app/dialogs')} sx={(theme) => ({ color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885', mr: 1 })}>
             <ArrowBackIcon />
           </IconButton>
           <Avatar src={recipient?.avatarUrl} sx={{ width: 36, height: 36, mr: 1.5 }} />
           <Box>
-            <Typography variant="body2" sx={{ fontWeight: 600, color: '#000' }}>
+            <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.primary' }}>
               {recipientName}
             </Typography>
-            <Typography 
-              variant="caption" 
-              sx={{ 
-                color: isRecipientTyping ? '#2688eb' : '#818c99', 
-                fontWeight: isRecipientTyping ? 500 : 400 
+            <Typography
+              variant="caption"
+              sx={{
+                color: isRecipientTyping ? '#2688eb' : 'text.secondary',
+                fontWeight: isRecipientTyping ? 500 : 400
               }}
             >
               {isRecipientTyping ? 'typing...' : 'online'}
@@ -224,21 +225,25 @@ export const Chat: React.FC = () => {
                 }}
               >
                 {!isMe && <Avatar src={msg.sender.avatarUrl} sx={{ width: 32, height: 32 }} />}
-                <Box 
-                  sx={{ 
-                    backgroundColor: isMe ? '#e2f0ff' : '#fff', 
-                    color: '#000',
-                    padding: '8px 12px', 
+                <Box
+                  sx={(theme) => ({
+                    backgroundColor: isMe
+                      ? (theme.palette.mode === 'dark' ? alpha('#2688eb', 0.25) : '#e2f0ff')
+                      : theme.palette.background.paper,
+                    color: theme.palette.text.primary,
+                    padding: '8px 12px',
                     borderRadius: isMe ? '12px 12px 2px 12px' : '12px 12px 12px 2px',
-                    border: isMe ? '1px solid #cce4ff' : '1px solid #e7e8ec',
+                    border: isMe
+                      ? `1px solid ${theme.palette.mode === 'dark' ? alpha('#2688eb', 0.4) : '#cce4ff'}`
+                      : `1px solid ${theme.palette.divider}`,
                     boxShadow: '0 1px 2px rgba(0,0,0,0.05)'
-                  }}
+                  })}
                 >
                   <Typography variant="body2" sx={{ fontSize: '0.9rem', lineHeight: '1.4', wordBreak: 'break-word' }}>
                     {msg.content}
                   </Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', mt: 0.5, mb: -0.5, gap: 0.5 }}>
-                    <Typography variant="caption" sx={{ color: '#818c99', fontSize: '0.7rem' }}>
+                    <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.7rem' }}>
                       {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </Typography>
                     {isMe && (
@@ -246,7 +251,7 @@ export const Chat: React.FC = () => {
                         {msg.isRead ? (
                           <DoneAllIcon sx={{ fontSize: '14px', color: '#2688eb' }} />
                         ) : (
-                          <DoneIcon sx={{ fontSize: '14px', color: '#99a2ad' }} />
+                          <DoneIcon sx={{ fontSize: '14px', color: 'text.disabled' }} />
                         )}
                       </Box>
                     )}
@@ -258,7 +263,7 @@ export const Chat: React.FC = () => {
           <div ref={messagesEndRef} />
         </Box>
 
-        <Box sx={{ padding: '12px', backgroundColor: '#fff', borderTop: '1px solid #e7e8ec' }}>
+        <Box sx={(theme) => ({ padding: '12px', backgroundColor: theme.palette.background.paper, borderTop: `1px solid ${theme.palette.divider}` })}>
           <TextField
             fullWidth
             multiline
@@ -276,7 +281,7 @@ export const Chat: React.FC = () => {
                     <IconButton 
                       onClick={handleSend} 
                       disabled={!text.trim()}
-                      sx={{ color: text.trim() ? '#2688eb' : '#99a2ad' }}
+                      sx={{ color: text.trim() ? '#2688eb' : 'text.disabled' }}
                     >
                       <SendIcon />
                     </IconButton>

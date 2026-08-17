@@ -5,11 +5,7 @@ import {
   RssFeed, 
   Chat, 
   People, 
-  Group, 
-  PhotoCamera, 
-  MusicNote, 
-  VideoLibrary, 
-  SportsEsports,
+  Group,
   Settings as SettingsIcon,
 } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
@@ -84,10 +80,10 @@ const Sidebar = () => {
     { label: t("sidebar.dialogs"), path: "/app/dialogs", icon: Chat, badge: totalUnread },
     { label: t("sidebar.people"), path: "/app/people", icon: People },
     { label: t("sidebar.groups"), path: "/app/groups", icon: Group },
-    { label: t("sidebar.photos"), path: "/app/photos", icon: PhotoCamera },
-    { label: t("sidebar.music"), path: "/app/music", icon: MusicNote },
-    { label: t("sidebar.video"), path: "/app/video", icon: VideoLibrary },
-    { label: t("sidebar.games"), path: "/app/games", icon: SportsEsports },
+    // { label: t("sidebar.photos"), path: "/app/photos", icon: PhotoCamera },
+    // { label: t("sidebar.music"), path: "/app/music", icon: MusicNote },
+    // { label: t("sidebar.video"), path: "/app/video", icon: VideoLibrary },
+    // { label: t("sidebar.games"), path: "/app/games", icon: SportsEsports },
   ];
 
   return (

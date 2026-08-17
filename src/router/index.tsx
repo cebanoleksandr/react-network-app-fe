@@ -15,10 +15,6 @@ import LandingLayout from '../components/layouts/LandingLayout';
 import Landing from '../pages/Landing';
 import People from '../pages/People';
 import Groups from '../pages/Groups';
-import Photos from '../pages/Photos';
-import Music from '../pages/Music';
-import Video from '../pages/Video';
-import Games from '../pages/Games';
 import Settings from '../pages/Settings';
 import ResetPassword from '../pages/auth/ResetPassword';
 import GroupPage from '../pages/GroupPage';
@@ -73,22 +69,6 @@ export const routes: RouteObject[] = [
           {
             path: 'groups/:slug',
             Component: GroupPage,
-          },
-          {
-            path: 'photos',
-            Component: Photos,
-          },
-          {
-            path: 'music',
-            Component: Music,
-          },
-          {
-            path: 'video',
-            Component: Video,
-          },
-          {
-            path: 'games',
-            Component: Games,
           },
           {
             path: 'settings',

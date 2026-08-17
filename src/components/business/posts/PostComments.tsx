@@ -68,12 +68,12 @@ const PostComments: FC<ICommentsProps> = ({ postId }) => {
       animate={{ height: "auto", opacity: 1 }}
       exit={{ height: 0, opacity: 0 }}
       transition={{ duration: 0.3, ease: "easeInOut" }}
-      sx={{ 
+      sx={(theme) => ({
         overflow: "hidden",
-        borderTop: "1px solid #EAEAEA",
+        borderTop: `1px solid ${theme.palette.divider}`,
         mt: 1,
-        pt: 2 
-      }}
+        pt: 2
+      })}
     >
       <Box sx={{ display: "flex", gap: 1, mb: 2 }}>
         <TextField
@@ -118,11 +118,11 @@ const PostComments: FC<ICommentsProps> = ({ postId }) => {
           comments.map((comment) => (
             <Box key={comment.id} sx={{ display: "flex", gap: 1.5, alignItems: "flex-start" }}>
               <Avatar src={comment.user?.avatarUrl} sx={{ width: 32, height: 32 }} />
-              <Box sx={{ bgcolor: "#F0F2F5", p: "8px 12px", borderRadius: "12px", maxWidth: "85%" }}>
+              <Box sx={(theme) => ({ bgcolor: theme.palette.action.hover, p: "8px 12px", borderRadius: "12px", maxWidth: "85%" })}>
                 <Typography sx={{ fontSize: 13, fontWeight: 600 }}>
                   {comment.user?.firstName} {comment.user?.lastName}
                 </Typography>
-                <Typography sx={{ fontSize: 13, color: "#1C1F23" }}>
+                <Typography sx={{ fontSize: 13, color: "text.primary" }}>
                   {comment.text}
                 </Typography>
               </Box>
