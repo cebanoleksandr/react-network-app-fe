@@ -56,7 +56,7 @@ const UpdatePostPopup: FC<IProps> = ({ isVisible, post, onClose, onUpdate }) => 
       
       await PostsService.updatePost(
         post.id, 
-        caption, 
+        caption ?? undefined, 
         changeMedia ? files : undefined
       );
 
@@ -196,7 +196,7 @@ const UpdatePostPopup: FC<IProps> = ({ isVisible, post, onClose, onUpdate }) => 
               variant="contained"
               size="small"
               onClick={handleUpdatePost}
-              disabled={isLoading || (!caption.trim() && changeMedia && files.length === 0)}
+              disabled={isLoading || (!caption?.trim() && changeMedia && files.length === 0)}
               endIcon={isLoading ? <CircularProgress size={16} color="inherit" /> : <SendIcon fontSize="small" />}
               sx={{
                 bgcolor: '#4973a5',

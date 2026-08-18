@@ -605,7 +605,7 @@ const Profile: React.FC = () => {
         >
           <Box
             component="img"
-            src={profileUser.avatarUrl}
+            src={profileUser.avatarUrl || 'https://placehold.co/230x230?text=No+Avatar'}
             alt={fullName}
             onClick={(e) => e.stopPropagation()}
             sx={{ 

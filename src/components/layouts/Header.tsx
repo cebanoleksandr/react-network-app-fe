@@ -22,7 +22,7 @@ import { setUserAC } from "../../store/userSlice";
 
 const Header = () => {
   const { t } = useTranslation();
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isLogoutPopupOpen, setIsLogoutPopupOpen] = useState(false);
 
   const { item: me } = useAppSelector(state => state.user);

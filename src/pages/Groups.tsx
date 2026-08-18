@@ -92,7 +92,7 @@ const Groups = () => {
       alert('Сообщество успешно создано!');
     } catch (err) {
       console.error(err);
-      setError(err?.response?.data?.message || 'Не удалось создать сообщество. Возможно, этот адрес уже занят.');
+      setError('Не удалось создать сообщество. Возможно, этот адрес уже занят.');
     } finally {
       setIsSubmitting(false);
     }
