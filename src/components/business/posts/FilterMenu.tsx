@@ -11,7 +11,7 @@ interface IProps {
 
 const FilterMenu: FC<IProps> = ({ selectedFilter, setSelectedFilter }) => {
   return (
-    <Box sx={{ position: { xs: 'static', md: 'sticky', top: '76px' } }}>
+    <Box sx={{ position: { xs: 'static', md: 'sticky' }, top: '76px' }}>
     <Box
       sx={(theme) => ({
         p: '4px',
