@@ -51,10 +51,40 @@
     }
   },
   "login": {
-    "title": "Сторінка входу"
+    "title": "Сторінка входу",
+    "email_label": "Електронна пошта",
+    "password_label": "Пароль",
+    "submit": "Увійти",
+    "submitting": "Вхід...",
+    "forgot_password": "Забули пароль?",
+    "register_link": "Реєстрація"
   },
   "register": {
-    "title": "Сторінка реєстрації"
+    "title": "Сторінка реєстрації",
+    "username_label": "Юзернейм",
+    "first_name_label": "Ім'я",
+    "last_name_label": "Прізвище",
+    "email_label": "Електронна пошта",
+    "password_label": "Пароль",
+    "confirm_password_label": "Підтвердіть пароль",
+    "terms_prefix": "Я згоден з",
+    "terms_link": "умовами використання",
+    "submit": "Зареєструватися",
+    "submitting": "Реєстрація...",
+    "have_account": "Вже маєте акаунт?",
+    "login_link": "Увійти"
+  },
+  "reset_password": {
+    "title": "Відновлення пароля",
+    "subtitle": "Введіть вашу електронну пошту, і ми надішлемо вам посилання для зміни пароля.",
+    "email_label": "Електронна пошта",
+    "submit": "Надіслати посилання",
+    "submitting": "Надсилання...",
+    "back_to_login": "Повернутися до входу",
+    "success_title": "Лист надіслано!",
+    "success_message": "Ми відправили інструкції для відновлення пароля на вашу електронну адресу. Будь ласка, перевірте пошту.",
+    "remembered_password": "Згадали пароль?",
+    "login_link": "Увійти"
   },
   "pages": {
     "games": "Ігри",

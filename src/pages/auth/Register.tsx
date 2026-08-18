@@ -20,7 +20,7 @@ import { Visibility, VisibilityOff, PersonAddOutlined as PersonAddOutlinedIcon }
 import { useTranslation } from "react-i18next";
 import { registerSchema, type RegisterFormData } from "./registerSchema";
 import { AuthService } from "../../services/auth.service";
-import { useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const { t } = useTranslation();
@@ -108,7 +108,7 @@ const RegisterPage = () => {
                   required
                   fullWidth
                   id="username"
-                  label="Юзернейм"
+                  label={t("register.username_label")}
                   autoComplete="username"
                   autoFocus
                   error={!!errors.username}
@@ -132,7 +132,7 @@ const RegisterPage = () => {
                     required
                     fullWidth
                     id="firstName"
-                    label="Ім'я"
+                    label={t("register.first_name_label")}
                     autoComplete="given-name"
                     error={!!errors.firstName}
                     helperText={errors.firstName?.message}
@@ -153,7 +153,7 @@ const RegisterPage = () => {
                     required
                     fullWidth
                     id="lastName"
-                    label="Прізвище"
+                    label={t("register.last_name_label")}
                     autoComplete="family-name"
                     error={!!errors.lastName}
                     helperText={errors.lastName?.message}
@@ -176,7 +176,7 @@ const RegisterPage = () => {
                   required
                   fullWidth
                   id="email"
-                  label="Електронна пошта"
+                  label={t("register.email_label")}
                   autoComplete="email"
                   error={!!errors.email}
                   helperText={errors.email?.message}
@@ -197,7 +197,7 @@ const RegisterPage = () => {
                   margin="normal"
                   required
                   fullWidth
-                  label="Пароль"
+                  label={t("register.password_label")}
                   type={showPassword ? "text" : "password"}
                   id="password"
                   autoComplete="new-password"
@@ -229,7 +229,7 @@ const RegisterPage = () => {
                   margin="normal"
                   required
                   fullWidth
-                  label="Підтвердіть пароль"
+                  label={t("register.confirm_password_label")}
                   type={showConfirmPassword ? "text" : "password"}
                   id="confirmPassword"
                   autoComplete="new-password"
@@ -268,9 +268,9 @@ const RegisterPage = () => {
                     }
                     label={
                       <Typography sx={{ fontSize: 14 }}>
-                        Я згоден з {" "}
+                        {t("register.terms_prefix")}{" "}
                         <Link href="#" sx={{ underline: "none" }}>
-                          умовами використання
+                          {t("register.terms_link")}
                         </Link>
                       </Typography>
                     }
@@ -294,15 +294,15 @@ const RegisterPage = () => {
               disabled={isSubmitting}
               sx={{ mt: 3, mb: 2, py: 1.2, borderRadius: "8px", textTransform: "none", fontSize: "16px", fontWeight: 600 }}
             >
-              {isSubmitting ? "Реєстрація..." : "Зареєструватися"}
+              {isSubmitting ? t("register.submitting") : t("register.submit")}
             </Button>
 
             {/* Посилання на вхід */}
             <Box sx={{ display: "flex", justifyContent: "center", mt: 1 }}>
               <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                Вже маєте акаунт?{" "}
-                <Link href="/auth/login" sx={{ underline: "none", fontWeight: 600, color: "success.main" }}>
-                  Увійти
+                {t("register.have_account")}{" "}
+                <Link component={RouterLink} to="/auth/login" sx={{ underline: "none", fontWeight: 600, color: "success.main" }}>
+                  {t("register.login_link")}
                 </Link>
               </Typography>
             </Box>

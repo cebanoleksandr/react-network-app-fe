@@ -17,7 +17,7 @@ import { Visibility, VisibilityOff, LockOutlined as LockOutlinedIcon } from "@mu
 import { useTranslation } from "react-i18next";
 import { loginSchema, type LoginFormData } from "./loginSchema";
 import { AuthService } from "../../services/auth.service";
-import { useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -92,7 +92,7 @@ const LoginPage = () => {
                   required
                   fullWidth
                   id="email"
-                  label="Електронна пошта"
+                  label={t("login.email_label")}
                   autoComplete="email"
                   autoFocus
                   error={!!errors.email}
@@ -113,7 +113,7 @@ const LoginPage = () => {
                   margin="normal"
                   required
                   fullWidth
-                  label="Пароль"
+                  label={t("login.password_label")}
                   type={showPassword ? "text" : "password"}
                   id="password"
                   autoComplete="current-password"
@@ -142,15 +142,15 @@ const LoginPage = () => {
               disabled={isSubmitting}
               sx={{ mt: 3, mb: 2, py: 1.2, borderRadius: "8px", textTransform: "none", fontSize: "16px", fontWeight: 600 }}
             >
-              {isSubmitting ? "Вхід..." : "Увійти"}
+              {isSubmitting ? t("login.submitting") : t("login.submit")}
             </Button>
 
             <Box sx={{ display: "flex", justifyContent: "space-between", mt: 1 }}>
-              <Link href="/auth/reset-password" variant="body2" sx={{ underline: "none", color: "text.secondary" }}>
-                Забули пароль?
+              <Link component={RouterLink} to="/auth/reset-password" variant="body2" sx={{ underline: "none", color: "text.secondary" }}>
+                {t("login.forgot_password")}
               </Link>
-              <Link href="/auth/register" variant="body2" sx={{ underline: "none", fontWeight: 500 }}>
-                Реєстрація
+              <Link component={RouterLink} to="/auth/register" variant="body2" sx={{ underline: "none", fontWeight: 500 }}>
+                {t("login.register_link")}
               </Link>
             </Box>
           </Box>

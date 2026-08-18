@@ -15,9 +15,12 @@ import {
   LockResetOutlined as LockResetOutlinedIcon, 
   MarkEmailReadOutlined as MarkEmailReadOutlinedIcon 
 } from "@mui/icons-material";
+import { Link as RouterLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { resetPasswordSchema, type ResetPasswordFormData } from "./resetPasswordSchema";
 
 const ResetPassword = () => {
+  const { t } = useTranslation();
   const [isSuccess, setIsSuccess] = useState(false);
 
   const {
@@ -71,15 +74,15 @@ const ResetPassword = () => {
               </Box>
               
               <Typography component="h1" variant="h5" sx={{ mb: 1, fontWeight: 600 }}>
-                Лист надіслано!
-              </Typography>
-              
-              <Typography variant="body2" sx={{ color: "text.secondary", mb: 3 }}>
-                Ми відправили інструкції для відновлення пароля на вашу електронну адресу. Будь ласка, перевірте пошту.
+                {t("reset_password.success_title")}
               </Typography>
 
-              <Link href="/auth/login" variant="body2" sx={{ underline: "none", fontWeight: 600 }}>
-                Повернутися до входу
+              <Typography variant="body2" sx={{ color: "text.secondary", mb: 3 }}>
+                {t("reset_password.success_message")}
+              </Typography>
+
+              <Link component={RouterLink} to="/auth/login" variant="body2" sx={{ underline: "none", fontWeight: 600 }}>
+                {t("reset_password.back_to_login")}
               </Link>
             </Box>
           ) : (
@@ -104,11 +107,11 @@ const ResetPassword = () => {
               </Box>
 
               <Typography component="h1" variant="h5" sx={{ mb: 1, fontWeight: 600, textAlign: "center" }}>
-                Відновлення пароля
+                {t("reset_password.title")}
               </Typography>
 
               <Typography variant="body2" sx={{ color: "text.secondary", mb: 3, textAlign: "center" }}>
-                Введіть вашу електронну пошту, і ми надішлемо вам посилання для зміни пароля.
+                {t("reset_password.subtitle")}
               </Typography>
 
               {/* Поле Email */}
@@ -122,7 +125,7 @@ const ResetPassword = () => {
                     required
                     fullWidth
                     id="email"
-                    label="Електронна пошта"
+                    label={t("reset_password.email_label")}
                     autoComplete="email"
                     autoFocus
                     error={!!errors.email}
@@ -143,13 +146,13 @@ const ResetPassword = () => {
                 disabled={isSubmitting}
                 sx={{ mt: 3, mb: 2, py: 1.2, borderRadius: "8px", textTransform: "none", fontSize: "16px", fontWeight: 600 }}
               >
-                {isSubmitting ? "Надсилання..." : "Надіслати посилання"}
+                {isSubmitting ? t("reset_password.submitting") : t("reset_password.submit")}
               </Button>
 
               {/* Посилання назад на логін */}
               <Box sx={{ display: "flex", justifyContent: "center", mt: 1 }}>
-                <Link href="#" variant="body2" sx={{ underline: "none", fontWeight: 500, color: "text.secondary" }}>
-                  Згадали пароль? <Box component="span" sx={{ color: "warning.main", fontWeight: 600 }}>Увійти</Box>
+                <Link component={RouterLink} to="/auth/login" variant="body2" sx={{ underline: "none", fontWeight: 500, color: "text.secondary" }}>
+                  {t("reset_password.remembered_password")} <Box component="span" sx={{ color: "warning.main", fontWeight: 600 }}>{t("reset_password.login_link")}</Box>
                 </Link>
               </Box>
             </Box>
