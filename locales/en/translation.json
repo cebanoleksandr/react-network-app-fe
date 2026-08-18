@@ -1,0 +1,125 @@
+{
+  "sidebar": {
+    "profile": "Profile",
+    "feed": "Feed",
+    "dialogs": "Dialogs",
+    "people": "People",
+    "groups": "Groups",
+    "photos": "Photos",
+    "music": "Music",
+    "video": "Video",
+    "games": "Games",
+    "settings": "Settings"
+  },
+  "header": {
+    "search": "Search...",
+    "my_profile": "My Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "user_avatar_alt": "User Avatar",
+    "default_user_name": "Alex"
+  },
+  "landing": {
+    "welcome": "Welcome to the Landing Page",
+    "nav": {
+      "login": "Log in",
+      "register": "Sign up"
+    },
+    "hero": {
+      "title": "Connect with people who matter",
+      "subtitle": "Share moments, chat in real time, and stay close to your friends and communities — all in one place.",
+      "cta_primary": "Get started",
+      "cta_secondary": "I already have an account"
+    },
+    "features": {
+      "title": "Everything you need to stay connected",
+      "feed": {
+        "title": "Feed & Stories",
+        "description": "Share photos and videos, and keep up with stories from people you follow."
+      },
+      "chat": {
+        "title": "Real-time chat",
+        "description": "Message your friends instantly with live typing indicators and read receipts."
+      },
+      "groups": {
+        "title": "Groups & Communities",
+        "description": "Create or join groups around your interests and stay in the loop."
+      }
+    },
+    "footer": {
+      "rights": "All rights reserved."
+    }
+  },
+  "login": {
+    "title": "Login Page"
+  },
+  "register": {
+    "title": "Register Page"
+  },
+  "pages": {
+    "games": "Games",
+    "groups": "Groups",
+    "music": "Music",
+    "people": "People",
+    "photos": "Photos",
+    "settings": "Settings",
+    "video": "Video",
+    "feed": "Feed Page",
+    "dialogs": "Dialogs Page",
+    "chat": "Chat Page",
+    "search": "Search Page",
+    "not_found": {
+      "title": "404",
+      "subtitle": "Page not found",
+      "description": "The page you're looking for doesn't exist or has been moved.",
+      "back_home": "Back to home"
+    },
+    "profile": "Profile Page"
+  },
+  "settings": {
+    "title": "Settings",
+    "profile": {
+      "title": "Profile",
+      "description": "Update your personal information.",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "bio": "Bio",
+      "save": "Save changes",
+      "avatar_upload": "Upload photo",
+      "avatar_delete": "Delete photo"
+    },
+    "language": {
+      "title": "Language",
+      "description": "Choose the language you want to use."
+    },
+    "appearance": {
+      "title": "Appearance",
+      "description": "Choose how the app looks.",
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "account": {
+      "title": "Account",
+      "description": "Manage your session.",
+      "logout": "Log out"
+    }
+  },
+  "alerts": {
+    "post_created_success": "Post created successfully",
+    "post_created_error": "Failed to create post",
+    "post_updated_success": "Post updated successfully",
+    "post_updated_error": "Failed to update post",
+    "post_deleted_success": "Post deleted successfully",
+    "post_deleted_error": "Failed to delete post",
+    "comment_added_success": "Comment added successfully",
+    "comment_added_error": "Failed to add comment",
+    "story_created_success": "Story created successfully",
+    "story_created_error": "Failed to create story",
+    "avatar_updated_success": "Avatar updated successfully",
+    "avatar_updated_error": "Failed to update avatar",
+    "avatar_deleted_success": "Avatar deleted successfully",
+    "avatar_deleted_error": "Failed to delete avatar",
+    "profile_updated_success": "Profile updated successfully",
+    "profile_updated_error": "Failed to update profile"
+  }
+}

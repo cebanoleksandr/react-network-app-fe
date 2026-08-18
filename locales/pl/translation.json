@@ -1,0 +1,125 @@
+{
+  "sidebar": {
+    "profile": "Profil",
+    "feed": "Aktualności",
+    "dialogs": "Wiadomości",
+    "people": "Ludzie",
+    "groups": "Grupy",
+    "photos": "Zdjęcia",
+    "music": "Muzyka",
+    "video": "Wideo",
+    "games": "Gry",
+    "settings": "Ustawienia"
+  },
+  "header": {
+    "search": "Szukaj...",
+    "my_profile": "Mój profil",
+    "settings": "Ustawienia",
+    "logout": "Wyloguj się",
+    "user_avatar_alt": "Awatar użytkownika",
+    "default_user_name": "Alex"
+  },
+  "landing": {
+    "welcome": "Witamy na stronie głównej",
+    "nav": {
+      "login": "Zaloguj się",
+      "register": "Zarejestruj się"
+    },
+    "hero": {
+      "title": "Łącz się z ludźmi, na których Ci zależy",
+      "subtitle": "Dziel się chwilami, rozmawiaj na żywo i bądź blisko znajomych oraz społeczności — wszystko w jednym miejscu.",
+      "cta_primary": "Zacznij teraz",
+      "cta_secondary": "Mam już konto"
+    },
+    "features": {
+      "title": "Wszystko, czego potrzebujesz, by być na bieżąco",
+      "feed": {
+        "title": "Aktualności i relacje",
+        "description": "Udostępniaj zdjęcia i filmy oraz śledź relacje osób, które obserwujesz."
+      },
+      "chat": {
+        "title": "Czat na żywo",
+        "description": "Pisz do znajomych błyskawicznie, z powiadomieniami o pisaniu i potwierdzeniami odczytu."
+      },
+      "groups": {
+        "title": "Grupy i społeczności",
+        "description": "Twórz lub dołączaj do grup związanych z Twoimi zainteresowaniami."
+      }
+    },
+    "footer": {
+      "rights": "Wszelkie prawa zastrzeżone."
+    }
+  },
+  "login": {
+    "title": "Strona logowania"
+  },
+  "register": {
+    "title": "Strona rejestracji"
+  },
+  "pages": {
+    "games": "Gry",
+    "groups": "Grupy",
+    "music": "Muzyka",
+    "people": "Ludzie",
+    "photos": "Zdjęcia",
+    "settings": "Ustawienia",
+    "video": "Wideo",
+    "feed": "Aktualności",
+    "dialogs": "Wiadomości",
+    "chat": "Czat",
+    "search": "Szukaj",
+    "not_found": {
+      "title": "404",
+      "subtitle": "Nie znaleziono strony",
+      "description": "Strona, której szukasz, nie istnieje lub została przeniesiona.",
+      "back_home": "Wróć na stronę główną"
+    },
+    "profile": "Profil"
+  },
+  "settings": {
+    "title": "Ustawienia",
+    "profile": {
+      "title": "Profil",
+      "description": "Zaktualizuj swoje dane osobowe.",
+      "first_name": "Imię",
+      "last_name": "Nazwisko",
+      "bio": "O mnie",
+      "save": "Zapisz zmiany",
+      "avatar_upload": "Prześlij zdjęcie",
+      "avatar_delete": "Usuń zdjęcie"
+    },
+    "language": {
+      "title": "Język",
+      "description": "Wybierz język, którego chcesz używać."
+    },
+    "appearance": {
+      "title": "Wygląd",
+      "description": "Wybierz, jak ma wyglądać aplikacja.",
+      "light": "Jasny",
+      "dark": "Ciemny"
+    },
+    "account": {
+      "title": "Konto",
+      "description": "Zarządzaj swoją sesją.",
+      "logout": "Wyloguj się"
+    }
+  },
+  "alerts": {
+    "post_created_success": "Post został utworzony",
+    "post_created_error": "Nie udało się utworzyć posta",
+    "post_updated_success": "Post został zaktualizowany",
+    "post_updated_error": "Nie udało się zaktualizować posta",
+    "post_deleted_success": "Post został usunięty",
+    "post_deleted_error": "Nie udało się usunąć posta",
+    "comment_added_success": "Komentarz został dodany",
+    "comment_added_error": "Nie udało się dodać komentarza",
+    "story_created_success": "Relacja została utworzona",
+    "story_created_error": "Nie udało się utworzyć relacji",
+    "avatar_updated_success": "Awatar został zaktualizowany",
+    "avatar_updated_error": "Nie udało się zaktualizować awatara",
+    "avatar_deleted_success": "Awatar został usunięty",
+    "avatar_deleted_error": "Nie udało się usunąć awatara",
+    "profile_updated_success": "Profil został zaktualizowany",
+    "profile_updated_error": "Nie udało się zaktualizować profilu"
+  }
+}
