@@ -106,7 +106,10 @@
       "description": "La página que buscas no existe o ha sido movida.",
       "back_home": "Volver al inicio"
     },
-    "profile": "Perfil"
+    "profile": "Perfil",
+    "stories": "Historias",
+    "uploading": "Subiendo...",
+    "your_story": "Tu historia"
   },
   "settings": {
     "title": "Ajustes",
@@ -153,5 +156,167 @@
     "avatar_deleted_error": "No se pudo eliminar el avatar",
     "profile_updated_success": "Perfil actualizado correctamente",
     "profile_updated_error": "No se pudo actualizar el perfil"
+  },
+  "posts": {
+    "create": {
+      "placeholder": "¿Qué hay de nuevo?",
+      "publish": "Publicar"
+    },
+    "filter": {
+      "feed": "Inicio",
+      "saved": "Guardadas",
+      "favorite": "Favoritas",
+      "interesting_first": "🔥 Lo más interesante primero"
+    },
+    "empty": {
+      "title": "Todavía no hay publicaciones",
+      "description": "Parece que aquí aún no se ha publicado nada. ¡Vuelve más tarde!"
+    },
+    "item": {
+      "user_profile": "perfil de usuario",
+      "save": "Guardar",
+      "unsave": "Quitar de guardadas",
+      "enable_notifications": "Activar notificaciones",
+      "hide_from_feed": "Ocultar del feed",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "complain": "Denunciar",
+      "attachment_alt": "Archivo adjunto de la publicación",
+      "enlarged_alt": "Vista ampliada"
+    },
+    "comments": {
+      "placeholder": "Escribe un comentario...",
+      "submit": "OK",
+      "empty": "Aún no hay comentarios. ¡Sé el primero!"
+    },
+    "share": {
+      "to_feed": "Compartir en el feed",
+      "direct": "Enviar como mensaje",
+      "copy_link": "Copiar enlace"
+    },
+    "media": {
+      "image": "Imagen",
+      "video": "Video",
+      "audio": "Audio"
+    },
+    "update": {
+      "title": "Editar publicación",
+      "current_media": "Archivos multimedia actuales:",
+      "replace_all": "Reemplazar todos los archivos",
+      "cancel": "Cancelar",
+      "save": "Actualizar"
+    }
+  },
+  "popups": {
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "delete_post": {
+      "title": "Eliminar publicación",
+      "message": "¿Estás seguro de que quieres eliminar esta publicación?"
+    },
+    "logout": {
+      "title": "Cerrar sesión",
+      "message": "¿Estás seguro de que quieres cerrar sesión?"
+    },
+    "delete_avatar": {
+      "title": "Eliminar avatar",
+      "message": "¿Estás seguro de que quieres eliminar tu avatar?"
+    }
+  },
+  "chat": {
+    "typing": "escribiendo...",
+    "online": "en línea",
+    "placeholder": "Escribe un mensaje...",
+    "default_title": "Chat"
+  },
+  "dialogs": {
+    "empty": "Todavía no tienes conversaciones activas",
+    "no_messages": "No hay mensajes",
+    "you_prefix": "Tú:"
+  },
+  "people": {
+    "not_found": "No se encontraron usuarios",
+    "follow": "Seguir",
+    "unfollow": "Dejar de seguir",
+    "you_suffix": "Tú"
+  },
+  "groups": {
+    "tabs": {
+      "all": "Todas las comunidades",
+      "mine": "Mis comunidades",
+      "create": "Crear comunidad"
+    },
+    "all_available": "Todas las comunidades disponibles",
+    "my_communities": "Mis comunidades",
+    "empty_all": "Todavía no hay ninguna comunidad pública en el sistema.",
+    "empty_mine": "Aún no te has unido a ninguna comunidad. Puedes encontrarlas en la pestaña «Todas las comunidades» o crear la tuya propia.",
+    "go_to": "Ir",
+    "no_description": "Sin descripción",
+    "create": {
+      "title": "Crear comunidad",
+      "name_label": "Nombre de la comunidad",
+      "name_placeholder": "Por ejemplo, Amantes de React",
+      "slug_label": "Dirección corta de la página (slug)",
+      "slug_placeholder": "my_community",
+      "slug_hint": "Puedes usar letras latinas, números, guiones y guiones bajos.",
+      "description_label": "Descripción de la comunidad (opcional)",
+      "description_placeholder": "Añade información sobre tu grupo...",
+      "private_label": "Hacer la comunidad privada (unirse solo con aprobación)",
+      "submit": "Crear comunidad",
+      "submitting": "Creando...",
+      "name_slug_required": "El nombre de la comunidad y la dirección corta son obligatorios",
+      "success": "¡Comunidad creada correctamente!",
+      "error": "No se pudo crear la comunidad. Puede que esa dirección ya esté ocupada."
+    }
+  },
+  "group_page": {
+    "load_error": "No se pudo cargar la comunidad",
+    "not_found": "Comunidad no encontrada",
+    "back_to_groups": "Volver a la lista de grupos",
+    "private": "Comunidad privada",
+    "public": "Comunidad pública",
+    "info": "Información",
+    "no_description": "No se ha proporcionado descripción.",
+    "posts_placeholder": "Aquí aparecerán las publicaciones de la comunidad «{{name}}»",
+    "private_title": "Esta es una comunidad privada",
+    "private_description": "Únete a la comunidad para acceder a sus publicaciones y materiales.",
+    "manage": "Gestionar comunidad",
+    "member_leave": "Eres miembro (Salir)",
+    "join": "Unirse a la comunidad",
+    "join_error": "No se pudo unir al grupo",
+    "leave_error": "No se pudo salir del grupo",
+    "owner_cannot_leave": "¡El propietario no puede salir del grupo!",
+    "members": "Miembros ({{count}})",
+    "no_members": "Todavía no hay miembros"
+  },
+  "profile": {
+    "loading": "Cargando...",
+    "not_found": "Usuario no encontrado",
+    "no_status": "Sin estado",
+    "online": "En línea",
+    "send_message": "Enviar mensaje",
+    "opening_chat": "Abriendo el chat...",
+    "edit_profile": "Editar perfil",
+    "followers": "Seguidores",
+    "following": "Siguiendo",
+    "all": "todos",
+    "posts": "publicaciones",
+    "followers_count": "seguidores",
+    "following_count": "seguidos",
+    "tabs": {
+      "all_posts": "Todas las publicaciones",
+      "archive": "Archivo"
+    },
+    "empty_wall": "Todavía no hay publicaciones en el muro.",
+    "empty_archive": "El archivo está vacío.",
+    "invalid_image": "Por favor, elige una imagen.",
+    "edit_dialog": {
+      "title": "Editar perfil",
+      "first_name": "Nombre",
+      "last_name": "Apellido",
+      "bio": "Sobre mí (Estado)",
+      "cancel": "Cancelar",
+      "save": "Guardar"
+    }
   }
 }
