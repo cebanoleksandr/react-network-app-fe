@@ -51,10 +51,40 @@
     }
   },
   "login": {
-    "title": "Strona logowania"
+    "title": "Strona logowania",
+    "email_label": "Email",
+    "password_label": "Hasło",
+    "submit": "Zaloguj się",
+    "submitting": "Logowanie...",
+    "forgot_password": "Zapomniałeś hasła?",
+    "register_link": "Zarejestruj się"
   },
   "register": {
-    "title": "Strona rejestracji"
+    "title": "Strona rejestracji",
+    "username_label": "Nazwa użytkownika",
+    "first_name_label": "Imię",
+    "last_name_label": "Nazwisko",
+    "email_label": "Email",
+    "password_label": "Hasło",
+    "confirm_password_label": "Potwierdź hasło",
+    "terms_prefix": "Akceptuję",
+    "terms_link": "warunki korzystania",
+    "submit": "Zarejestruj się",
+    "submitting": "Rejestracja...",
+    "have_account": "Masz już konto?",
+    "login_link": "Zaloguj się"
+  },
+  "reset_password": {
+    "title": "Odzyskiwanie hasła",
+    "subtitle": "Wprowadź swój adres e-mail, a wyślemy Ci link do zresetowania hasła.",
+    "email_label": "Email",
+    "submit": "Wyślij link",
+    "submitting": "Wysyłanie...",
+    "back_to_login": "Powrót do logowania",
+    "success_title": "Wiadomość wysłana!",
+    "success_message": "Wysłaliśmy instrukcje resetowania hasła na Twój adres e-mail. Sprawdź swoją skrzynkę.",
+    "remembered_password": "Przypomniałeś sobie hasło?",
+    "login_link": "Zaloguj się"
   },
   "pages": {
     "games": "Gry",

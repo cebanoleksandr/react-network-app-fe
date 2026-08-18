@@ -51,10 +51,40 @@
     }
   },
   "login": {
-    "title": "Página de inicio de sesión"
+    "title": "Página de inicio de sesión",
+    "email_label": "Correo electrónico",
+    "password_label": "Contraseña",
+    "submit": "Iniciar sesión",
+    "submitting": "Iniciando sesión...",
+    "forgot_password": "¿Olvidaste tu contraseña?",
+    "register_link": "Registrarse"
   },
   "register": {
-    "title": "Página de registro"
+    "title": "Página de registro",
+    "username_label": "Nombre de usuario",
+    "first_name_label": "Nombre",
+    "last_name_label": "Apellido",
+    "email_label": "Correo electrónico",
+    "password_label": "Contraseña",
+    "confirm_password_label": "Confirmar contraseña",
+    "terms_prefix": "Acepto los",
+    "terms_link": "términos de uso",
+    "submit": "Registrarse",
+    "submitting": "Registrando...",
+    "have_account": "¿Ya tienes una cuenta?",
+    "login_link": "Iniciar sesión"
+  },
+  "reset_password": {
+    "title": "Restablecer contraseña",
+    "subtitle": "Introduce tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.",
+    "email_label": "Correo electrónico",
+    "submit": "Enviar enlace",
+    "submitting": "Enviando...",
+    "back_to_login": "Volver al inicio de sesión",
+    "success_title": "¡Correo enviado!",
+    "success_message": "Hemos enviado instrucciones para restablecer tu contraseña a tu correo electrónico. Por favor revisa tu bandeja de entrada.",
+    "remembered_password": "¿Recordaste tu contraseña?",
+    "login_link": "Iniciar sesión"
   },
   "pages": {
     "games": "Juegos",

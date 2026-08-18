@@ -51,10 +51,40 @@
     }
   },
   "login": {
-    "title": "Login Page"
+    "title": "Login Page",
+    "email_label": "Email",
+    "password_label": "Password",
+    "submit": "Log in",
+    "submitting": "Logging in...",
+    "forgot_password": "Forgot password?",
+    "register_link": "Sign up"
   },
   "register": {
-    "title": "Register Page"
+    "title": "Register Page",
+    "username_label": "Username",
+    "first_name_label": "First name",
+    "last_name_label": "Last name",
+    "email_label": "Email",
+    "password_label": "Password",
+    "confirm_password_label": "Confirm password",
+    "terms_prefix": "I agree to the",
+    "terms_link": "terms of use",
+    "submit": "Sign up",
+    "submitting": "Signing up...",
+    "have_account": "Already have an account?",
+    "login_link": "Log in"
+  },
+  "reset_password": {
+    "title": "Reset password",
+    "subtitle": "Enter your email and we'll send you a link to reset your password.",
+    "email_label": "Email",
+    "submit": "Send link",
+    "submitting": "Sending...",
+    "back_to_login": "Back to login",
+    "success_title": "Email sent!",
+    "success_message": "We've sent password reset instructions to your email. Please check your inbox.",
+    "remembered_password": "Remembered your password?",
+    "login_link": "Log in"
   },
   "pages": {
     "games": "Games",
