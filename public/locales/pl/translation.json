@@ -106,7 +106,10 @@
       "description": "Strona, której szukasz, nie istnieje lub została przeniesiona.",
       "back_home": "Wróć na stronę główną"
     },
-    "profile": "Profil"
+    "profile": "Profil",
+    "stories": "Relacje",
+    "uploading": "Przesyłanie...",
+    "your_story": "Twoja relacja"
   },
   "settings": {
     "title": "Ustawienia",
@@ -153,5 +156,167 @@
     "avatar_deleted_error": "Nie udało się usunąć awatara",
     "profile_updated_success": "Profil został zaktualizowany",
     "profile_updated_error": "Nie udało się zaktualizować profilu"
+  },
+  "posts": {
+    "create": {
+      "placeholder": "Co słychać?",
+      "publish": "Opublikuj"
+    },
+    "filter": {
+      "feed": "Aktualności",
+      "saved": "Zapisane",
+      "favorite": "Ulubione",
+      "interesting_first": "🔥 Najpierw ciekawe"
+    },
+    "empty": {
+      "title": "Nie ma jeszcze żadnych postów",
+      "description": "Wygląda na to, że nikt jeszcze nic tu nie opublikował. Zajrzyj później!"
+    },
+    "item": {
+      "user_profile": "profil użytkownika",
+      "save": "Zapisz",
+      "unsave": "Usuń z zapisanych",
+      "enable_notifications": "Włącz powiadomienia",
+      "hide_from_feed": "Ukryj z aktualności",
+      "edit": "Edytuj",
+      "delete": "Usuń",
+      "complain": "Zgłoś",
+      "attachment_alt": "Załącznik posta",
+      "enlarged_alt": "Powiększony widok"
+    },
+    "comments": {
+      "placeholder": "Napisz komentarz...",
+      "submit": "OK",
+      "empty": "Brak komentarzy. Bądź pierwszy!"
+    },
+    "share": {
+      "to_feed": "Udostępnij w aktualnościach",
+      "direct": "Wyślij jako wiadomość",
+      "copy_link": "Skopiuj link"
+    },
+    "media": {
+      "image": "Zdjęcie",
+      "video": "Wideo",
+      "audio": "Audio"
+    },
+    "update": {
+      "title": "Edytuj post",
+      "current_media": "Bieżące pliki multimedialne:",
+      "replace_all": "Zamień wszystkie pliki",
+      "cancel": "Anuluj",
+      "save": "Zaktualizuj"
+    }
+  },
+  "popups": {
+    "cancel": "Anuluj",
+    "confirm": "Potwierdź",
+    "delete_post": {
+      "title": "Usuń post",
+      "message": "Czy na pewno chcesz usunąć ten post?"
+    },
+    "logout": {
+      "title": "Wylogowanie",
+      "message": "Czy na pewno chcesz się wylogować?"
+    },
+    "delete_avatar": {
+      "title": "Usuń awatar",
+      "message": "Czy na pewno chcesz usunąć swój awatar?"
+    }
+  },
+  "chat": {
+    "typing": "pisze...",
+    "online": "online",
+    "placeholder": "Napisz wiadomość...",
+    "default_title": "Czat"
+  },
+  "dialogs": {
+    "empty": "Nie masz jeszcze żadnych aktywnych rozmów",
+    "no_messages": "Brak wiadomości",
+    "you_prefix": "Ty:"
+  },
+  "people": {
+    "not_found": "Nie znaleziono użytkowników",
+    "follow": "Obserwuj",
+    "unfollow": "Przestań obserwować",
+    "you_suffix": "Ty"
+  },
+  "groups": {
+    "tabs": {
+      "all": "Wszystkie społeczności",
+      "mine": "Moje społeczności",
+      "create": "Utwórz społeczność"
+    },
+    "all_available": "Wszystkie dostępne społeczności",
+    "my_communities": "Moje społeczności",
+    "empty_all": "W systemie nie ma jeszcze żadnej publicznej społeczności.",
+    "empty_mine": "Nie jesteś jeszcze subskrybentem żadnej społeczności. Możesz je znaleźć w zakładce „Wszystkie społeczności” lub utworzyć własną!",
+    "go_to": "Przejdź",
+    "no_description": "Brak opisu",
+    "create": {
+      "title": "Tworzenie społeczności",
+      "name_label": "Nazwa społeczności",
+      "name_placeholder": "np. Miłośnicy React",
+      "slug_label": "Krótki adres strony (slug)",
+      "slug_placeholder": "my_community",
+      "slug_hint": "Możesz używać liter łacińskich, cyfr, myślnika i podkreślenia.",
+      "description_label": "Opis społeczności (opcjonalnie)",
+      "description_placeholder": "Dodaj informacje o swojej grupie...",
+      "private_label": "Uczyń grupę prywatną (dołączenie tylko po zatwierdzeniu)",
+      "submit": "Utwórz społeczność",
+      "submitting": "Tworzenie...",
+      "name_slug_required": "Nazwa społeczności i krótki adres są wymagane",
+      "success": "Społeczność została utworzona!",
+      "error": "Nie udało się utworzyć społeczności. Ten adres może być już zajęty."
+    }
+  },
+  "group_page": {
+    "load_error": "Nie udało się załadować społeczności",
+    "not_found": "Nie znaleziono społeczności",
+    "back_to_groups": "Powrót do listy grup",
+    "private": "Społeczność prywatna",
+    "public": "Społeczność publiczna",
+    "info": "Informacje",
+    "no_description": "Brak opisu społeczności.",
+    "posts_placeholder": "Tutaj będą wyświetlane posty społeczności „{{name}}”",
+    "private_title": "To jest prywatna społeczność",
+    "private_description": "Dołącz do społeczności, aby uzyskać dostęp do jej postów i materiałów.",
+    "manage": "Zarządzaj społecznością",
+    "member_leave": "Jesteś członkiem (Opuść)",
+    "join": "Dołącz do społeczności",
+    "join_error": "Nie udało się dołączyć do grupy",
+    "leave_error": "Nie udało się opuścić grupy",
+    "owner_cannot_leave": "Właściciel nie może opuścić grupy!",
+    "members": "Członkowie ({{count}})",
+    "no_members": "Brak jeszcze członków"
+  },
+  "profile": {
+    "loading": "Ładowanie...",
+    "not_found": "Nie znaleziono użytkownika",
+    "no_status": "Brak statusu",
+    "online": "Online",
+    "send_message": "Wyślij wiadomość",
+    "opening_chat": "Otwieranie czatu...",
+    "edit_profile": "Edytuj profil",
+    "followers": "Obserwujący",
+    "following": "Obserwowani",
+    "all": "wszyscy",
+    "posts": "posty",
+    "followers_count": "obserwujących",
+    "following_count": "obserwowanych",
+    "tabs": {
+      "all_posts": "Wszystkie posty",
+      "archive": "Archiwum"
+    },
+    "empty_wall": "Na tablicy nie ma jeszcze żadnego wpisu.",
+    "empty_archive": "Archiwum jest puste.",
+    "invalid_image": "Wybierz plik graficzny.",
+    "edit_dialog": {
+      "title": "Edycja profilu",
+      "first_name": "Imię",
+      "last_name": "Nazwisko",
+      "bio": "O mnie (Status)",
+      "cancel": "Anuluj",
+      "save": "Zapisz"
+    }
   }
 }

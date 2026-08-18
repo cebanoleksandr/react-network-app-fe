@@ -143,7 +143,7 @@ const Profile: React.FC = () => {
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      alert('Будь ласка, оберіть зображення.');
+      alert(t('profile.invalid_image'));
       return;
     }
 
@@ -250,7 +250,7 @@ const Profile: React.FC = () => {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '64vh', color: 'text.secondary' }}>
         <CircularProgress size={40} sx={(theme) => ({ color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885', mr: 2 })} />
-        <Typography variant="body1">{t('common.loading', 'Loading...')}</Typography>
+        <Typography variant="body1">{t('profile.loading')}</Typography>
       </Box>
     );
   }
@@ -258,7 +258,7 @@ const Profile: React.FC = () => {
   if (!profileUser) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '64vh', color: 'error.main' }}>
-        <Typography variant="h6">User not found</Typography>
+        <Typography variant="h6">{t('profile.not_found')}</Typography>
       </Box>
     );
   }
@@ -335,24 +335,24 @@ const Profile: React.FC = () => {
                       zIndex: 1
                     }}
                   >
-                    <IconButton 
-                      size="small" 
-                      sx={{ color: '#fff' }} 
-                      title="Оновити фото"
+                    <IconButton
+                      size="small"
+                      sx={{ color: '#fff' }}
+                      title={t('settings.profile.avatar_upload')}
                       onClick={handleUploadClick}
                     >
                       <CloudUploadIcon fontSize="small" />
                     </IconButton>
-                    
+
                     {profileUser.avatarUrl && (
-                      <IconButton 
-                        size="small" 
-                        sx={{ color: '#ff4d4d' }} 
+                      <IconButton
+                        size="small"
+                        sx={{ color: '#ff4d4d' }}
                         onClick={(e) => {
                           e.stopPropagation();
                           setIsDeleteAvaPopupVisible(true);
                         }}
-                        title="Видалити фото"
+                        title={t('settings.profile.avatar_delete')}
                       >
                         <DeleteIcon fontSize="small" />
                       </IconButton>
@@ -379,7 +379,7 @@ const Profile: React.FC = () => {
                     '&:hover': { backgroundColor: theme.palette.mode === 'dark' ? '#4A76A8' : '#244d75', boxShadow: 'none' }
                   })}
                 >
-                  {creatingChat ? 'Opening the chat...' : 'Send a message'}
+                  {creatingChat ? t('profile.opening_chat') : t('profile.send_message')}
                 </Button>
               ) : (
                 <Button
@@ -397,7 +397,7 @@ const Profile: React.FC = () => {
                     '&:hover': { backgroundColor: theme.palette.action.hover, boxShadow: 'none' }
                   })}
                 >
-                  Edit profile
+                  {t('profile.edit_profile')}
                 </Button>
               )}
             </VkCard>
@@ -405,9 +405,9 @@ const Profile: React.FC = () => {
             <VkCard>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
                 <Typography sx={{ fontSize: '14px', fontWeight: 500 }}>
-                  Followers <Box component="span" sx={{ color: 'text.secondary', ml: 0.5 }}>{followers.length}</Box>
+                  {t('profile.followers')} <Box component="span" sx={{ color: 'text.secondary', ml: 0.5 }}>{followers.length}</Box>
                 </Typography>
-                <Link href="#followers" underline="hover" sx={(theme) => ({ color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885', fontSize: '13px' })}>all</Link>
+                <Link href="#followers" underline="hover" sx={(theme) => ({ color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885', fontSize: '13px' })}>{t('profile.all')}</Link>
               </Box>
               
               <Grid container spacing={1} sx={{ textAlign: 'center', mb: 3 }}>
@@ -435,9 +435,9 @@ const Profile: React.FC = () => {
 
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1.5 }}>
                 <Typography sx={{ fontSize: '14px', fontWeight: 500 }}>
-                  Following <Box component="span" sx={{ color: 'text.secondary', ml: 0.5 }}>{following.length}</Box>
+                  {t('profile.following')} <Box component="span" sx={{ color: 'text.secondary', ml: 0.5 }}>{following.length}</Box>
                 </Typography>
-                <Link href="#following" underline="hover" sx={(theme) => ({ color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885', fontSize: '13px' })}>all</Link>
+                <Link href="#following" underline="hover" sx={(theme) => ({ color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885', fontSize: '13px' })}>{t('profile.all')}</Link>
               </Box>
               
               <Grid container spacing={1} sx={{ textAlign: 'center' }}>
@@ -474,12 +474,12 @@ const Profile: React.FC = () => {
                   {fullName}
                 </Typography>
                 <Typography sx={{ color: 'text.secondary', fontSize: '13px' }}>
-                  {profileUser.bio || 'Статус відсутній'}
+                  {profileUser.bio || t('profile.no_status')}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', fontSize: '12px', color: 'text.secondary' }}>
                 <Badge variant="dot" color="success" sx={{ mr: 1, '& .MuiBadge-badge': { width: 8, height: 8, borderRadius: '50%' } }} />
-                Online
+                {t('profile.online')}
               </Box>
             </Box>
 
@@ -488,19 +488,19 @@ const Profile: React.FC = () => {
                 <Typography sx={(theme) => ({ fontSize: '19px', color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885', fontWeight: 300 })}>
                   {totalPosts}
                 </Typography>
-                <Typography sx={{ color: 'text.secondary', fontSize: '12px', mt: 0.5 }}>posts</Typography>
+                <Typography sx={{ color: 'text.secondary', fontSize: '12px', mt: 0.5 }}>{t('profile.posts')}</Typography>
               </Box>
               <Box sx={{ cursor: 'pointer' }}>
                 <Typography sx={(theme) => ({ fontSize: '19px', color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885', fontWeight: 300 })}>
                   {followers.length}
                 </Typography>
-                <Typography sx={{ color: 'text.secondary', fontSize: '12px', mt: 0.5 }}>followers</Typography>
+                <Typography sx={{ color: 'text.secondary', fontSize: '12px', mt: 0.5 }}>{t('profile.followers_count')}</Typography>
               </Box>
               <Box sx={{ cursor: 'pointer' }}>
                 <Typography sx={(theme) => ({ fontSize: '19px', color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885', fontWeight: 300 })}>
                   {following.length}
                 </Typography>
-                <Typography sx={{ color: 'text.secondary', fontSize: '12px', mt: 0.5 }}>following</Typography>
+                <Typography sx={{ color: 'text.secondary', fontSize: '12px', mt: 0.5 }}>{t('profile.following_count')}</Typography>
               </Box>
             </Box>
           </VkCard>
@@ -538,8 +538,8 @@ const Profile: React.FC = () => {
                   }
                 })}
               >
-                <Tab label="Всі записи" />
-                <Tab label="Архіви" />
+                <Tab label={t('profile.tabs.all_posts')} />
+                <Tab label={t('profile.tabs.archive')} />
               </Tabs>
             </Box>
 
@@ -557,13 +557,13 @@ const Profile: React.FC = () => {
                   <PostList posts={posts} />
                 ) : (
                   <Box sx={(theme) => ({ backgroundColor: theme.palette.background.paper, borderRadius: '12px', p: 4, textAlign: 'center', color: 'text.secondary', border: `1px solid ${theme.palette.divider}`, flexShrink: 0 })}>
-                    <Typography variant="body1">На стіні ще немає жодного запису.</Typography>
+                    <Typography variant="body1">{t('profile.empty_wall')}</Typography>
                   </Box>
                 )
               )}
               {activeTab === 1 && (
                 <Box sx={(theme) => ({ backgroundColor: theme.palette.background.paper, borderRadius: '12px', p: 4, textAlign: 'center', color: 'text.secondary', border: `1px solid ${theme.palette.divider}`, flexShrink: 0 })}>
-                  <Typography variant="body1">Архів порожній.</Typography>
+                  <Typography variant="body1">{t('profile.empty_archive')}</Typography>
                 </Box>
               )}
             </Box>
@@ -625,12 +625,12 @@ const Profile: React.FC = () => {
         }}
       >
         <DialogTitle sx={{ pb: 1, fontSize: '18px', fontWeight: 500 }}>
-          Редагування профілю
+          {t('profile.edit_dialog.title')}
         </DialogTitle>
         <form onSubmit={handleSaveProfile}>
           <DialogContent sx={{ py: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
             <TextField
-              label="Ім'я"
+              label={t('profile.edit_dialog.first_name')}
               name="firstName"
               fullWidth
               size="small"
@@ -638,7 +638,7 @@ const Profile: React.FC = () => {
               onChange={handleInputChange}
             />
             <TextField
-              label="Прізвище"
+              label={t('profile.edit_dialog.last_name')}
               name="lastName"
               fullWidth
               size="small"
@@ -646,7 +646,7 @@ const Profile: React.FC = () => {
               onChange={handleInputChange}
             />
             <TextField
-              label="Про себе (Статус)"
+              label={t('profile.edit_dialog.bio')}
               name="bio"
               fullWidth
               multiline
@@ -662,7 +662,7 @@ const Profile: React.FC = () => {
               disabled={isSaving}
               sx={{ textTransform: 'none', color: 'text.secondary' }}
             >
-              Скасувати
+              {t('profile.edit_dialog.cancel')}
             </Button>
             <Button
               type="submit"
@@ -675,7 +675,7 @@ const Profile: React.FC = () => {
                 boxShadow: 'none'
               })}
             >
-              {isSaving ? <CircularProgress size={20} color="inherit" /> : 'Зберегти'}
+              {isSaving ? <CircularProgress size={20} color="inherit" /> : t('profile.edit_dialog.save')}
             </Button>
           </DialogActions>
         </form>

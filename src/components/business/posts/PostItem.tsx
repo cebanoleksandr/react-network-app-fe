@@ -209,7 +209,7 @@ const PostItem: FC<IProps> = ({ post }) => {
               {post.user.firstName} {post.user.lastName}
             </Typography>
 
-            <Typography sx={{ color: 'text.secondary', fontSize: 12 }}>user profile</Typography>
+            <Typography sx={{ color: 'text.secondary', fontSize: 12 }}>{t('posts.item.user_profile')}</Typography>
           </Box>
         </Box>
         
@@ -243,31 +243,31 @@ const PostItem: FC<IProps> = ({ post }) => {
           <MenuItem onClick={handleSave} sx={{ fontSize: 14 }}>
             {post.isBookmarked ? (
               <>
-                <BookmarkIcon sx={{ mr: 2, color: 'yellow' }} /> Unsave
+                <BookmarkIcon sx={{ mr: 2, color: 'yellow' }} /> {t('posts.item.unsave')}
               </>
             ) : (
               <>
-                <BookmarkBorderOutlinedIcon sx={{ mr: 2 }} /> Save
+                <BookmarkBorderOutlinedIcon sx={{ mr: 2 }} /> {t('posts.item.save')}
               </>
             )}
           </MenuItem>
-          <MenuItem onClick={handleEnableТotifications} sx={{ fontSize: 14 }}><NotificationsOutlinedIcon sx={{ mr: 2 }} /> Enable notifications</MenuItem>
-          <MenuItem onClick={handleHideFromFeed} sx={{ fontSize: 14 }}><VisibilityOffOutlinedIcon sx={{ mr: 2 }} /> Hide from feed</MenuItem>
+          <MenuItem onClick={handleEnableТotifications} sx={{ fontSize: 14 }}><NotificationsOutlinedIcon sx={{ mr: 2 }} /> {t('posts.item.enable_notifications')}</MenuItem>
+          <MenuItem onClick={handleHideFromFeed} sx={{ fontSize: 14 }}><VisibilityOffOutlinedIcon sx={{ mr: 2 }} /> {t('posts.item.hide_from_feed')}</MenuItem>
           {currentUser?.id === post.user.id && (
             <>
               <MenuItem onClick={onUpdatePostPopupOpen} sx={{ fontSize: 14 }}>
-                <EditOutlinedIcon sx={{ mr: 2 }} /> Edit
+                <EditOutlinedIcon sx={{ mr: 2 }} /> {t('posts.item.edit')}
               </MenuItem>
 
-              <MenuItem 
-                onClick={openDeletePostPopup} 
+              <MenuItem
+                onClick={openDeletePostPopup}
                 sx={{ fontSize: 14, color: '#FF3B30' }}
               >
-                <DeleteForeverOutlinedIcon sx={{ mr: 2 }} /> Delete
+                <DeleteForeverOutlinedIcon sx={{ mr: 2 }} /> {t('posts.item.delete')}
               </MenuItem>
             </>
           )}
-          <MenuItem onClick={handleMenuClose} sx={{ fontSize: 14 }}><ErrorOutlineOutlinedIcon sx={{ mr: 2 }} /> Complain</MenuItem>
+          <MenuItem onClick={handleMenuClose} sx={{ fontSize: 14 }}><ErrorOutlineOutlinedIcon sx={{ mr: 2 }} /> {t('posts.item.complain')}</MenuItem>
         </Menu>
       </Box>
 
@@ -319,9 +319,9 @@ const PostItem: FC<IProps> = ({ post }) => {
                 )}
                 
                 {m.type === 'IMAGE' && (
-                  <img 
-                    src={m.url} 
-                    alt="Post attachment" 
+                  <img
+                    src={m.url}
+                    alt={t('posts.item.attachment_alt')}
                     onClick={() => setActiveImgUrl(m.url)}
                     style={{ 
                       width: '100%', 
@@ -423,7 +423,7 @@ const PostItem: FC<IProps> = ({ post }) => {
                 <Box
                   component="img"
                   src={activeImgUrl}
-                  alt="Enlarged view"
+                  alt={t('posts.item.enlarged_alt')}
                   sx={{
                     maxWidth: '100%',
                     maxHeight: '85vh',

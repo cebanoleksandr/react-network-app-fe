@@ -79,7 +79,7 @@ const PostComments: FC<ICommentsProps> = ({ postId }) => {
         <TextField
           fullWidth
           size="small"
-          placeholder="Напишіть коментар..."
+          placeholder={t('posts.comments.placeholder')}
           variant="outlined"
           value={commentText}
           onChange={(e) => setCommentText(e.target.value)}
@@ -94,7 +94,7 @@ const PostComments: FC<ICommentsProps> = ({ postId }) => {
           disabled={isSubmitting || !commentText.trim()}
           sx={{ borderRadius: '20px', textTransform: 'none', minWidth: '60px' }}
         >
-          {isSubmitting ? <CircularProgress size={20} color="inherit" /> : "OK"}
+          {isSubmitting ? <CircularProgress size={20} color="inherit" /> : t('posts.comments.submit')}
         </Button>
       </Box>
 
@@ -112,7 +112,7 @@ const PostComments: FC<ICommentsProps> = ({ postId }) => {
           </Box>
         ) : comments.length === 0 ? (
           <Typography variant="body2" color="text.secondary" sx={{ textAlign: "center", py: 1 }}>
-            Коментарів поки немає. Будьте першим!
+            {t('posts.comments.empty')}
           </Typography>
         ) : (
           comments.map((comment) => (

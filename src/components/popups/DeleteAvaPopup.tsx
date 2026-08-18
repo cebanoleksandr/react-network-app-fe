@@ -4,6 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Button, IconButton, Typography, Box } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
   isVisible: boolean;
@@ -12,6 +13,8 @@ interface IProps {
 }
 
 const DeleteAvaPopup: FC<IProps> = ({ isVisible, onClose, onDelete }) => {
+  const { t } = useTranslation();
+
   return (
     <BasePopup isVisible={isVisible} onClose={onClose}>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignContent: 'center' }}>
@@ -30,11 +33,11 @@ const DeleteAvaPopup: FC<IProps> = ({ isVisible, onClose, onDelete }) => {
           align='center'
           sx={(theme) => ({ fontWeight: 500, color: theme.palette.text.primary, mb: '8px' })}
         >
-          Delete avatar
+          {t('popups.delete_avatar.title')}
         </Typography>
 
         <Typography variant="body2" align="center" sx={(theme) => ({ color: theme.palette.text.secondary, mb: '24px' })}>
-          Are you sure that you want to delete your avatar?
+          {t('popups.delete_avatar.message')}
         </Typography>
 
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 3 }}>
@@ -49,7 +52,7 @@ const DeleteAvaPopup: FC<IProps> = ({ isVisible, onClose, onDelete }) => {
             })}
             startIcon={<ArrowBackIcon />}
           >
-            Cancel
+            {t('popups.cancel')}
           </Button>
 
           <Button
@@ -62,7 +65,7 @@ const DeleteAvaPopup: FC<IProps> = ({ isVisible, onClose, onDelete }) => {
             }}
             endIcon={<ArrowForwardIcon />}
           >
-            Confirm
+            {t('popups.confirm')}
           </Button>
         </Box>
       </Box>

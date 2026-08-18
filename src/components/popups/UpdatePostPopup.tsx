@@ -8,6 +8,7 @@ import {
   Send as SendIcon
 } from '@mui/icons-material';
 import { Button, IconButton, Typography, Box, TextField, Chip, CircularProgress } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import type { Post } from '../../services/interfaces';
 import { PostsService } from '../../services/posts.service';
 
@@ -19,6 +20,7 @@ interface IProps {
 }
 
 const UpdatePostPopup: FC<IProps> = ({ isVisible, post, onClose, onUpdate }) => {
+  const { t } = useTranslation();
   const [caption, setCaption] = useState(post.caption);
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -64,7 +66,7 @@ const UpdatePostPopup: FC<IProps> = ({ isVisible, post, onClose, onUpdate }) => 
       onClose();
     } catch (error) {
       console.error("Помилка при оновленні поста:", error);
-      alert("Не вдалося оновити пост.");
+      alert(t('alerts.post_updated_error'));
     } finally {
       setIsLoading(false);
     }
@@ -82,7 +84,7 @@ const UpdatePostPopup: FC<IProps> = ({ isVisible, post, onClose, onUpdate }) => 
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: 1, minWidth: { xs: '100%', sm: '450px' } }}>
         <Box sx={(theme) => ({ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: `1px solid ${theme.palette.divider}`, pb: 1 })}>
           <Typography variant="h6" sx={(theme) => ({ fontWeight: 600, color: theme.palette.text.primary })}>
-            Edit post
+            {t('posts.update.title')}
           </Typography>
           <IconButton onClick={handleCancel} disabled={isLoading} sx={(theme) => ({ color: theme.palette.text.secondary })}>
             <CloseIcon />
@@ -103,7 +105,7 @@ const UpdatePostPopup: FC<IProps> = ({ isVisible, post, onClose, onUpdate }) => 
           multiline
           maxRows={4}
           variant="outlined"
-          placeholder="Що нового?"
+          placeholder={t('posts.create.placeholder')}
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
           disabled={isLoading}
@@ -119,24 +121,24 @@ const UpdatePostPopup: FC<IProps> = ({ isVisible, post, onClose, onUpdate }) => 
 
         {!changeMedia && post.media.length > 0 && (
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            <Typography variant="caption" color="textSecondary">Current mediafiles:</Typography>
+            <Typography variant="caption" color="textSecondary">{t('posts.update.current_media')}</Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
               {post.media.map((m) => (
                 <Chip
                   key={m.id}
-                  label={m.type === 'IMAGE' ? 'Зображення' : m.type === 'VIDEO' ? 'Відео' : 'Аудіо'}
+                  label={m.type === 'IMAGE' ? t('posts.media.image') : m.type === 'VIDEO' ? t('posts.media.video') : t('posts.media.audio')}
                   variant="outlined"
                   size="small"
                   sx={(theme) => ({ borderColor: theme.palette.divider, bgcolor: theme.palette.mode === 'dark' ? theme.palette.action.hover : '#F5F6F8' })}
                 />
               ))}
-              <Button 
-                size="small" 
-                variant="text" 
+              <Button
+                size="small"
+                variant="text"
                 onClick={() => { setChangeMedia(true); setFiles([]); }}
                 sx={{ textTransform: 'none', color: '#FF3B30' }}
               >
-                Replace all files
+                {t('posts.update.replace_all')}
               </Button>
             </Box>
           </Box>
@@ -189,7 +191,7 @@ const UpdatePostPopup: FC<IProps> = ({ isVisible, post, onClose, onUpdate }) => 
                 '&:hover': { bgcolor: theme.palette.action.hover, borderColor: theme.palette.text.secondary }
               })}
             >
-              Cancel
+              {t('posts.update.cancel')}
             </Button>
 
             <Button
@@ -206,7 +208,7 @@ const UpdatePostPopup: FC<IProps> = ({ isVisible, post, onClose, onUpdate }) => 
                 '&:hover': { bgcolor: '#3b618c', boxShadow: 'none' }
               }}
             >
-              Update
+              {t('posts.update.save')}
             </Button>
           </Box>
         </Box>

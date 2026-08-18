@@ -4,6 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Button, IconButton, Typography, Box } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 interface IProps {
   isVisible: boolean;
@@ -12,6 +13,8 @@ interface IProps {
 }
 
 const LogoutPopup: FC<IProps> = ({ isVisible, onClose, onLogout }) => {
+  const { t } = useTranslation();
+
   return (
     <BasePopup isVisible={isVisible} onClose={onClose}>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignContent: 'center' }}>
@@ -30,11 +33,11 @@ const LogoutPopup: FC<IProps> = ({ isVisible, onClose, onLogout }) => {
           align='center'
           sx={(theme) => ({ fontWeight: 500, color: theme.palette.text.primary, mb: '8px' })}
         >
-          Logout
+          {t('popups.logout.title')}
         </Typography>
 
         <Typography variant="body2" align="center" sx={(theme) => ({ color: theme.palette.text.secondary, mb: '24px' })}>
-          Are you sure that you want to logout?
+          {t('popups.logout.message')}
         </Typography>
 
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 3 }}>
@@ -49,7 +52,7 @@ const LogoutPopup: FC<IProps> = ({ isVisible, onClose, onLogout }) => {
             })}
             startIcon={<ArrowBackIcon />}
           >
-            Cancel
+            {t('popups.cancel')}
           </Button>
 
           <Button
@@ -62,7 +65,7 @@ const LogoutPopup: FC<IProps> = ({ isVisible, onClose, onLogout }) => {
             }}
             endIcon={<ArrowForwardIcon />}
           >
-            Confirm
+            {t('popups.confirm')}
           </Button>
         </Box>
       </Box>

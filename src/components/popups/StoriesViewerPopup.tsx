@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, IconButton, Avatar, Typography, LinearProgress } from "@mui/material";
 import { Close as CloseIcon, ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 import { type IStory } from "../../services/interfaces";
 import { StoriesService } from "../../services/storyService"; // Імпортуємо сервіс історій
 
@@ -21,6 +22,7 @@ export const StoriesViewerPopup: React.FC<StoriesViewerPopupProps> = ({
   avatarUrl,
   stories,
 }) => {
+  const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [progress, setProgress] = useState(0);
 
@@ -162,7 +164,7 @@ export const StoriesViewerPopup: React.FC<StoriesViewerPopupProps> = ({
           ) : (
             <img
               src={currentStory.mediaUrl}
-              alt="Story content"
+              alt={t('posts.item.attachment_alt')}
               style={{ width: "100%", height: "100%", objectFit: "contain" }}
             />
           )}

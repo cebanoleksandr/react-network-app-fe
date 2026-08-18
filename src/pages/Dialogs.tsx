@@ -102,7 +102,7 @@ export const Dialogs: React.FC = () => {
         <List sx={{ padding: 0, backgroundColor: 'background.paper' }}>
           {rooms.length === 0 ? (
             <Box sx={{ p: 3, textAlign: 'center', color: 'text.secondary' }}>
-              <Typography variant="body2">У вас поки немає активних діалогів</Typography>
+              <Typography variant="body2">{t('dialogs.empty')}</Typography>
             </Box>
           ) : (
             rooms.map((room: ChatRoom, index: number) => {
@@ -123,11 +123,11 @@ export const Dialogs: React.FC = () => {
                           <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.85rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'flex', gap: '4px' }}>
                             {room.lastMessage ? (
                               <>
-                                {isLastMessageFromMe && <Box component="span" sx={{ color: 'text.secondary', fontWeight: 500 }}>Ви:</Box>}
+                                {isLastMessageFromMe && <Box component="span" sx={{ color: 'text.secondary', fontWeight: 500 }}>{t('dialogs.you_prefix')}</Box>}
                                 <Box component="span" sx={{ color: isLastMessageFromMe ? 'text.secondary' : 'text.primary' }}>{room.lastMessage.content}</Box>
                               </>
                             ) : (
-                              <Box component="span" sx={{ color: 'text.secondary' }}>Повідомлень немає</Box>
+                              <Box component="span" sx={{ color: 'text.secondary' }}>{t('dialogs.no_messages')}</Box>
                             )}
                           </Typography>
                         }

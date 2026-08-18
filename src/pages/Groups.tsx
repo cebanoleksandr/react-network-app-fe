@@ -20,10 +20,12 @@ import {
   Alert,
   CircularProgress
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import type { IGroup } from '../services/interfaces';
 import { groupsService } from '../services/groupsService';
 
 const Groups = () => {
+  const { t } = useTranslation();
   const [groups, setGroups] = useState<IGroup[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [activeTab, setActiveTab] = useState<number>(0);
@@ -70,7 +72,7 @@ const Groups = () => {
     setIsSubmitting(true);
 
     if (!name.trim() || !slug.trim()) {
-      setError('Название сообщества и короткий адрес обязательны для заполнения');
+      setError(t('groups.create.name_slug_required'));
       setIsSubmitting(false);
       return;
     }
@@ -89,10 +91,10 @@ const Groups = () => {
       setDescription('');
       setIsPrivate(false);
       setActiveTab(1);
-      alert('Сообщество успешно создано!');
+      alert(t('groups.create.success'));
     } catch (err) {
       console.error(err);
-      setError('Не удалось создать сообщество. Возможно, этот адрес уже занят.');
+      setError(t('groups.create.error'));
     } finally {
       setIsSubmitting(false);
     }
@@ -117,9 +119,9 @@ const Groups = () => {
             },
           }}
         >
-          <Tab label="Все сообщества" />
-          <Tab label="Мои сообщества" />
-          <Tab label="Создать сообщество" />
+          <Tab label={t('groups.tabs.all')} />
+          <Tab label={t('groups.tabs.mine')} />
+          <Tab label={t('groups.tabs.create')} />
         </Tabs>
       </Card>
 
@@ -127,7 +129,7 @@ const Groups = () => {
         <Card variant="outlined" sx={{ borderRadius: 3, borderColor: 'divider' }}>
           <CardContent sx={{ p: 3 }}>
             <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
-              {activeTab === 0 ? 'Все доступные сообщества' : 'Мои сообщества'}
+              {activeTab === 0 ? t('groups.all_available') : t('groups.my_communities')}
             </Typography>
 
             {loading ? (
@@ -136,9 +138,9 @@ const Groups = () => {
               </Box>
             ) : groups.length === 0 ? (
               <Typography variant="body2" color="text.secondary" align="center" sx={{ py: 6 }}>
-                {activeTab === 0 
-                  ? 'В системе пока нет ни одного публичного сообщества.' 
-                  : 'Вы еще не подписаны ни на одно сообщество. Вы можете найти их во вкладке "Все сообщества" или создать своё!'}
+                {activeTab === 0
+                  ? t('groups.empty_all')
+                  : t('groups.empty_mine')}
               </Typography>
             ) : (
               <List disablePadding>
@@ -162,7 +164,7 @@ const Groups = () => {
                             '&:hover': { backgroundColor: 'action.selected' },
                           }}
                         >
-                          Перейти
+                          {t('groups.go_to')}
                         </Button>
                       }
                     >
@@ -199,7 +201,7 @@ const Groups = () => {
                             {group.name}
                           </Typography>
                         }
-                        secondary={group.description || 'Описание отсутствует'}
+                        secondary={group.description || t('groups.no_description')}
                         slotProps={{
                           secondary: {
                             noWrap: true,
@@ -225,7 +227,7 @@ const Groups = () => {
           <Card variant="outlined" sx={{ borderRadius: 3, borderColor: 'divider', p: 2 }}>
             <CardContent>
               <Typography variant="h6" align="center" sx={{ fontWeight: 600, mb: 3 }}>
-                Создание сообщества
+                {t('groups.create.title')}
               </Typography>
 
               {error && (
@@ -237,14 +239,14 @@ const Groups = () => {
               <Box component="form" onSubmit={handleCreateGroup} sx={{ display: 'flex', flexDirection: 'column', gap: 2.5 }}>
                 <Box>
                   <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5, fontSize: '13px', fontWeight: 500 }}>
-                    Название сообщества
+                    {t('groups.create.name_label')}
                   </Typography>
                   <TextField
                     fullWidth
                     size="small"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Например, Любители React"
+                    placeholder={t('groups.create.name_placeholder')}
                     required
                     sx={{
                       '& .MuiOutlinedInput-root': {
@@ -262,7 +264,7 @@ const Groups = () => {
 
                 <Box>
                   <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5, fontSize: '13px', fontWeight: 500 }}>
-                    Короткий адрес страницы (slug)
+                    {t('groups.create.slug_label')}
                   </Typography>
                   <TextField
                     fullWidth
@@ -293,13 +295,13 @@ const Groups = () => {
                     }}
                   />
                   <Typography variant="caption" sx={{ color: 'text.secondary', mt: 0.5, display: 'block', fontSize: '11px' }}>
-                    Можно использовать латиницу, цифры, дефис и нижнее подчеркивание.
+                    {t('groups.create.slug_hint')}
                   </Typography>
                 </Box>
 
                 <Box>
                   <Typography variant="body2" sx={{ color: 'text.secondary', mb: 0.5, fontSize: '13px', fontWeight: 500 }}>
-                    Описание сообщества (необязательно)
+                    {t('groups.create.description_label')}
                   </Typography>
                   <TextField
                     fullWidth
@@ -307,7 +309,7 @@ const Groups = () => {
                     rows={4}
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    placeholder="Добавьте информацию о вашей группе..."
+                    placeholder={t('groups.create.description_placeholder')}
                     sx={{
                       '& .MuiOutlinedInput-root': {
                         backgroundColor: 'action.hover',
@@ -333,7 +335,7 @@ const Groups = () => {
                   }
                   label={
                     <Typography sx={{ fontSize: '14px', userSelect: 'none' }}>
-                      Сделать группу закрытой (вступление только по одобрению)
+                      {t('groups.create.private_label')}
                     </Typography>
                   }
                 />
@@ -354,7 +356,7 @@ const Groups = () => {
                     '&:hover': { backgroundColor: '#227ad2' }
                   }}
                 >
-                  {isSubmitting ? 'Создание...' : 'Создать сообщество'}
+                  {isSubmitting ? t('groups.create.submitting') : t('groups.create.submit')}
                 </Button>
               </Box>
             </CardContent>

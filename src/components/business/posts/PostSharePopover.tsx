@@ -1,11 +1,12 @@
 import type { FC } from "react";
 import { Popover, Box, MenuItem, ListItemIcon, ListItemText, MenuList, Typography } from "@mui/material";
-import { 
-  ContentCopy as ContentCopyIcon, 
-  Send as SendIcon, 
-  Campaign as CampaignIcon 
+import {
+  ContentCopy as ContentCopyIcon,
+  Send as SendIcon,
+  Campaign as CampaignIcon
 } from '@mui/icons-material';
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 interface IShareProps {
   postId: string;
@@ -14,6 +15,7 @@ interface IShareProps {
 }
 
 const PostSharePopover: FC<IShareProps> = ({ postId, anchorEl, onClose }) => {
+  const { t } = useTranslation();
   const isOpen = Boolean(anchorEl);
 
   const handleCopyLink = () => {
@@ -75,17 +77,17 @@ const PostSharePopover: FC<IShareProps> = ({ postId, anchorEl, onClose }) => {
         <MenuList>
           <MenuItem onClick={handleShareToFeed} sx={{ py: 1, borderRadius: '8px' }}>
             <ListItemIcon><CampaignIcon fontSize="small" /></ListItemIcon>
-            <ListItemText primary={<Typography sx={{ fontSize: 14 }}>Поділитись у стрічці</Typography>} />
+            <ListItemText primary={<Typography sx={{ fontSize: 14 }}>{t('posts.share.to_feed')}</Typography>} />
           </MenuItem>
-          
+
           <MenuItem onClick={handleSendDirect} sx={{ py: 1, borderRadius: '8px' }}>
             <ListItemIcon><SendIcon fontSize="small" /></ListItemIcon>
-            <ListItemText primary={<Typography sx={{ fontSize: 14 }}>Надіслати в ПП</Typography>} />
+            <ListItemText primary={<Typography sx={{ fontSize: 14 }}>{t('posts.share.direct')}</Typography>} />
           </MenuItem>
 
           <MenuItem onClick={handleCopyLink} sx={{ py: 1, borderRadius: '8px' }}>
             <ListItemIcon><ContentCopyIcon fontSize="small" /></ListItemIcon>
-            <ListItemText primary={<Typography sx={{ fontSize: 14 }}>Скопіювати посилання</Typography>} />
+            <ListItemText primary={<Typography sx={{ fontSize: 14 }}>{t('posts.share.copy_link')}</Typography>} />
           </MenuItem>
         </MenuList>
       </Box>

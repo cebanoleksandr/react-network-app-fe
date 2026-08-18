@@ -254,7 +254,7 @@ const Feed = () => {
           })}
         >
           <Typography sx={{ fontWeight: 600, fontSize: '14px', mb: 1.5, color: 'text.primary' }}>
-            Stories
+            {t('pages.stories', 'Stories')}
           </Typography>
 
           {showLeftBtn && (
@@ -322,7 +322,7 @@ const Feed = () => {
                 </Box>
               </Box>
               <Typography variant="caption" noWrap sx={{ maxWidth: 64, color: 'text.secondary', fontSize: '11px' }}>
-                {isStoryCreating ? "Uploading..." : "Your story"}
+                {isStoryCreating ? t('pages.uploading', 'Uploading...') : t('pages.your_story', 'Your story')}
               </Typography>
             </Box>
 

@@ -1,6 +1,7 @@
-import { 
+import {
   Box, List, ListItem, ListItemButton, ListItemText, Switch, Typography,
 } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { FEED_FILTERS, type FeedFilter } from './types';
 import type { FC } from 'react';
 
@@ -10,6 +11,8 @@ interface IProps {
 }
 
 const FilterMenu: FC<IProps> = ({ selectedFilter, setSelectedFilter }) => {
+  const { t } = useTranslation();
+
   return (
     <Box sx={{ position: { xs: 'static', md: 'sticky' }, top: '76px' }}>
     <Box
@@ -37,7 +40,7 @@ const FilterMenu: FC<IProps> = ({ selectedFilter, setSelectedFilter }) => {
         >
           <ListItemButton dense sx={{ p: '8px 16px', borderRadius: '8px' }} onClick={() => setSelectedFilter(FEED_FILTERS.FEED)}>
             <ListItemText
-              primary={<Typography sx={{ fontSize: '14px', fontWeight: 500, color: 'text.primary' }}>Feed</Typography>}
+              primary={<Typography sx={{ fontSize: '14px', fontWeight: 500, color: 'text.primary' }}>{t('posts.filter.feed')}</Typography>}
             />
           </ListItemButton>
         </ListItem>
@@ -52,7 +55,7 @@ const FilterMenu: FC<IProps> = ({ selectedFilter, setSelectedFilter }) => {
         >
           <ListItemButton dense sx={{ p: '8px 16px', borderRadius: '8px' }} onClick={() => setSelectedFilter(FEED_FILTERS.SAVED)}>
             <ListItemText
-              primary={<Typography sx={{ fontSize: '14px', fontWeight: 500, color: 'text.primary' }}>Saved</Typography>}
+              primary={<Typography sx={{ fontSize: '14px', fontWeight: 500, color: 'text.primary' }}>{t('posts.filter.saved')}</Typography>}
             />
           </ListItemButton>
         </ListItem>
@@ -67,7 +70,7 @@ const FilterMenu: FC<IProps> = ({ selectedFilter, setSelectedFilter }) => {
         >
           <ListItemButton dense sx={{ p: '8px 16px', borderRadius: '8px' }} onClick={() => setSelectedFilter(FEED_FILTERS.FAVORITE)}>
             <ListItemText
-              primary={<Typography sx={{ fontSize: '14px', fontWeight: 500, color: 'text.primary' }}>Favorite</Typography>}
+              primary={<Typography sx={{ fontSize: '14px', fontWeight: 500, color: 'text.primary' }}>{t('posts.filter.favorite')}</Typography>}
             />
           </ListItemButton>
         </ListItem>
@@ -86,7 +89,7 @@ const FilterMenu: FC<IProps> = ({ selectedFilter, setSelectedFilter }) => {
         justifyContent: 'space-between'
       })}
     >
-      <Typography>🔥 Interesting first</Typography>
+      <Typography>{t('posts.filter.interesting_first')}</Typography>
       <Switch />
     </Box>
     </Box>

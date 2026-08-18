@@ -106,7 +106,10 @@
       "description": "The page you're looking for doesn't exist or has been moved.",
       "back_home": "Back to home"
     },
-    "profile": "Profile Page"
+    "profile": "Profile Page",
+    "stories": "Stories",
+    "uploading": "Uploading...",
+    "your_story": "Your story"
   },
   "settings": {
     "title": "Settings",
@@ -153,5 +156,167 @@
     "avatar_deleted_error": "Failed to delete avatar",
     "profile_updated_success": "Profile updated successfully",
     "profile_updated_error": "Failed to update profile"
+  },
+  "posts": {
+    "create": {
+      "placeholder": "What's new?",
+      "publish": "Publish"
+    },
+    "filter": {
+      "feed": "Feed",
+      "saved": "Saved",
+      "favorite": "Favorite",
+      "interesting_first": "🔥 Interesting first"
+    },
+    "empty": {
+      "title": "There are no posts yet",
+      "description": "It looks like nothing has been posted here yet. Check back later!"
+    },
+    "item": {
+      "user_profile": "user profile",
+      "save": "Save",
+      "unsave": "Unsave",
+      "enable_notifications": "Enable notifications",
+      "hide_from_feed": "Hide from feed",
+      "edit": "Edit",
+      "delete": "Delete",
+      "complain": "Complain",
+      "attachment_alt": "Post attachment",
+      "enlarged_alt": "Enlarged view"
+    },
+    "comments": {
+      "placeholder": "Write a comment...",
+      "submit": "OK",
+      "empty": "No comments yet. Be the first!"
+    },
+    "share": {
+      "to_feed": "Share to feed",
+      "direct": "Send as a message",
+      "copy_link": "Copy link"
+    },
+    "media": {
+      "image": "Image",
+      "video": "Video",
+      "audio": "Audio"
+    },
+    "update": {
+      "title": "Edit post",
+      "current_media": "Current media files:",
+      "replace_all": "Replace all files",
+      "cancel": "Cancel",
+      "save": "Update"
+    }
+  },
+  "popups": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "delete_post": {
+      "title": "Delete post",
+      "message": "Are you sure that you want to delete this post?"
+    },
+    "logout": {
+      "title": "Logout",
+      "message": "Are you sure that you want to logout?"
+    },
+    "delete_avatar": {
+      "title": "Delete avatar",
+      "message": "Are you sure that you want to delete your avatar?"
+    }
+  },
+  "chat": {
+    "typing": "typing...",
+    "online": "online",
+    "placeholder": "Write a message...",
+    "default_title": "Chat"
+  },
+  "dialogs": {
+    "empty": "You don't have any active dialogs yet",
+    "no_messages": "No messages yet",
+    "you_prefix": "You:"
+  },
+  "people": {
+    "not_found": "Users not found",
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "you_suffix": "You"
+  },
+  "groups": {
+    "tabs": {
+      "all": "All communities",
+      "mine": "My communities",
+      "create": "Create community"
+    },
+    "all_available": "All available communities",
+    "my_communities": "My communities",
+    "empty_all": "There are no public communities in the system yet.",
+    "empty_mine": "You are not subscribed to any community yet. You can find one in the \"All communities\" tab or create your own!",
+    "go_to": "Go to",
+    "no_description": "No description",
+    "create": {
+      "title": "Create community",
+      "name_label": "Community name",
+      "name_placeholder": "e.g., React lovers",
+      "slug_label": "Page short address (slug)",
+      "slug_placeholder": "my_community",
+      "slug_hint": "You can use Latin letters, digits, hyphens and underscores.",
+      "description_label": "Community description (optional)",
+      "description_placeholder": "Add some info about your group...",
+      "private_label": "Make the group private (join by approval only)",
+      "submit": "Create community",
+      "submitting": "Creating...",
+      "name_slug_required": "Community name and short address are required",
+      "success": "Community created successfully!",
+      "error": "Failed to create community. This address may already be taken."
+    }
+  },
+  "group_page": {
+    "load_error": "Failed to load the community",
+    "not_found": "Community not found",
+    "back_to_groups": "Back to groups list",
+    "private": "Private community",
+    "public": "Public community",
+    "info": "Information",
+    "no_description": "No description provided.",
+    "posts_placeholder": "Posts of the \"{{name}}\" community will appear here",
+    "private_title": "This is a private community",
+    "private_description": "Join the community to access its posts and materials.",
+    "manage": "Manage community",
+    "member_leave": "You're a member (Leave)",
+    "join": "Join community",
+    "join_error": "Failed to join the group",
+    "leave_error": "Failed to leave the group",
+    "owner_cannot_leave": "The owner cannot leave the group!",
+    "members": "Members ({{count}})",
+    "no_members": "No members yet"
+  },
+  "profile": {
+    "loading": "Loading...",
+    "not_found": "User not found",
+    "no_status": "No status",
+    "online": "Online",
+    "send_message": "Send a message",
+    "opening_chat": "Opening the chat...",
+    "edit_profile": "Edit profile",
+    "followers": "Followers",
+    "following": "Following",
+    "all": "all",
+    "posts": "posts",
+    "followers_count": "followers",
+    "following_count": "following",
+    "tabs": {
+      "all_posts": "All posts",
+      "archive": "Archive"
+    },
+    "empty_wall": "There are no posts on the wall yet.",
+    "empty_archive": "Archive is empty.",
+    "invalid_image": "Please choose an image file.",
+    "edit_dialog": {
+      "title": "Edit profile",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "bio": "About (Status)",
+      "cancel": "Cancel",
+      "save": "Save"
+    }
   }
 }

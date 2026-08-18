@@ -15,12 +15,14 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import SendIcon from '@mui/icons-material/Send';
 import DoneIcon from '@mui/icons-material/Done'; 
 import DoneAllIcon from '@mui/icons-material/DoneAll'; 
+import { useTranslation } from 'react-i18next';
 import { ChatsService } from '../services/chats.service';
 import { socketService } from '../services/socket';
 import type { Message, ChatRoom } from '../services/interfaces';
 import { useAppSelector } from '../store/hooks';
 
 export const Chat: React.FC = () => {
+  const { t } = useTranslation();
   const { chatId } = useParams<{ chatId: string }>();
   const navigate = useNavigate();
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
@@ -157,7 +159,7 @@ export const Chat: React.FC = () => {
   }
 
   const recipient = roomInfo?.participants.find(p => p.id !== currentUser?.id) || roomInfo?.participants[0];
-  const recipientName = recipient ? `${recipient.firstName || ''} ${recipient.lastName || ''}`.trim() || recipient.username : 'Chat';
+  const recipientName = recipient ? `${recipient.firstName || ''} ${recipient.lastName || ''}`.trim() || recipient.username : t('chat.default_title');
 
   return (
     <Box sx={{ maxWidth: '600px', margin: '0 auto', padding: '16px', height: 'calc(100vh - 100px)' }}>
@@ -197,7 +199,7 @@ export const Chat: React.FC = () => {
                 fontWeight: isRecipientTyping ? 500 : 400
               }}
             >
-              {isRecipientTyping ? 'typing...' : 'online'}
+              {isRecipientTyping ? t('chat.typing') : t('chat.online')}
             </Typography>
           </Box>
         </Box>
@@ -268,7 +270,7 @@ export const Chat: React.FC = () => {
             fullWidth
             multiline
             maxRows={4}
-            placeholder="Напишіть повідомлення..."
+            placeholder={t('chat.placeholder')}
             value={text}
             onChange={handleInputChange}
             onKeyDown={handleKeyDown}

@@ -7,8 +7,9 @@ import {
   Close as CloseIcon,
   Send as SendIcon
 } from '@mui/icons-material';
+import { useTranslation } from 'react-i18next';
 import { PostsService } from '../../../services/posts.service';
-import { useAppDispatch } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { setAlertAC } from '../../../store/alertSlice';
 
 interface IProps {
@@ -16,11 +17,13 @@ interface IProps {
 }
 
 const CreatePostBlock: FC<IProps> = ({ onPostCreated }) => {
+  const { t } = useTranslation();
   const [caption, setCaption] = useState('');
   const [files, setFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useAppDispatch();
-  
+  const { item: currentUser } = useAppSelector(state => state.user);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [acceptType, setAcceptType] = useState('*');
@@ -55,11 +58,11 @@ const CreatePostBlock: FC<IProps> = ({ onPostCreated }) => {
       setCaption('');
       setFiles([]);
       
-      dispatch(setAlertAC({ text: 'alerts.post_created_success', mode: 'success' }));
+      dispatch(setAlertAC({ text: t('alerts.post_created_success'), mode: 'success' }));
       if (onPostCreated) onPostCreated();
     } catch (error) {
       console.error("Помилка при створенні поста:", error);
-      dispatch(setAlertAC({ text: 'alerts.post_created_error', mode: 'error' }));
+      dispatch(setAlertAC({ text: t('alerts.post_created_error'), mode: 'error' }));
     } finally {
       setIsLoading(false);
     }
@@ -92,18 +95,20 @@ const CreatePostBlock: FC<IProps> = ({ onPostCreated }) => {
       />
 
       <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
-        <Avatar 
-          alt='User Avatar'
-          src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80"
+        <Avatar
+          alt={currentUser?.username || 'User Avatar'}
+          src={currentUser?.avatarUrl || undefined}
           sx={{ width: 32, height: 32, mt: 0.5 }}
-        />
+        >
+          {currentUser?.username?.substring(0, 2).toUpperCase()}
+        </Avatar>
         <TextField
           fullWidth
           multiline
           maxRows={4}
           variant="outlined"
           size="small"
-          placeholder='What is new?'
+          placeholder={t('posts.create.placeholder')}
           value={caption}
           onChange={(e) => setCaption(e.target.value)}
           disabled={isLoading}
@@ -167,7 +172,7 @@ const CreatePostBlock: FC<IProps> = ({ onPostCreated }) => {
                 '&:hover': { bgcolor: '#3b618c', boxShadow: 'none' }
               }}
             >
-              Опубликовать
+              {t('posts.create.publish')}
             </Button>
           )}
         </Box>

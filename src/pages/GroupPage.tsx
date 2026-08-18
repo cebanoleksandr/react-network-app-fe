@@ -19,11 +19,13 @@ import {
 } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import GroupIcon from '@mui/icons-material/Group';
+import { useTranslation } from 'react-i18next';
 import { groupsService } from '../services/groupsService';
 import type { IGroup } from '../services/interfaces';
 import { useAppSelector } from '../store/hooks';
 
 export const GroupPage = () => {
+  const { t } = useTranslation();
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
 
@@ -45,7 +47,7 @@ export const GroupPage = () => {
         setGroup(data);
       } catch (err) {
         console.error(err);
-        setError('Не вдалося завантажити спільноту');
+        setError(t('group_page.load_error'));
       } finally {
         setLoading(false);
       }
@@ -66,10 +68,10 @@ export const GroupPage = () => {
     return (
       <Container maxWidth="md" sx={{ mt: 4 }}>
         <Alert severity="error" variant="outlined" sx={{ borderRadius: '8px' }}>
-          {error || 'Спільноту не знайдено'}
+          {error || t('group_page.not_found')}
         </Alert>
         <Button onClick={() => navigate('/groups')} sx={{ mt: 2, textTransform: 'none' }}>
-          Назад до списку груп
+          {t('group_page.back_to_groups')}
         </Button>
       </Container>
     );
@@ -88,7 +90,7 @@ export const GroupPage = () => {
       setGroup(updatedGroup);
     } catch (err) {
       console.error(err);
-      alert('Не вдалося вступити в групу');
+      alert(t('group_page.join_error'));
     } finally {
       setIsActionLoading(false);
     }
@@ -97,7 +99,7 @@ export const GroupPage = () => {
   const handleLeave = async () => {
     if (!slug) return;
     if (isOwner) {
-      alert('Власник не може залишити групу!');
+      alert(t('group_page.owner_cannot_leave'));
       return;
     }
     try {
@@ -107,7 +109,7 @@ export const GroupPage = () => {
       setGroup(updatedGroup);
     } catch (err) {
       console.error(err);
-      alert('Не вдалося вийти з групи');
+      alert(t('group_page.leave_error'));
     } finally {
       setIsActionLoading(false);
     }
@@ -127,17 +129,17 @@ export const GroupPage = () => {
               </Box>
 
               <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '13px', mb: 2 }}>
-                {group.isPrivate ? 'Закрита спільнота' : 'Відкрита спільнота'}
+                {group.isPrivate ? t('group_page.private') : t('group_page.public')}
               </Typography>
 
               <Divider sx={{ my: 2, borderColor: 'divider' }} />
 
               <Box sx={{ mb: 1 }}>
                 <Typography variant="subtitle2" sx={{ fontWeight: 600, fontSize: '14px', mb: 0.5 }}>
-                  Інформація
+                  {t('group_page.info')}
                 </Typography>
                 <Typography variant="body2" sx={{ color: 'text.primary', fontSize: '14px', lineHeight: 1.5 }}>
-                  {group.description || 'Опис спільноти відсутній.'}
+                  {group.description || t('group_page.no_description')}
                 </Typography>
               </Box>
             </CardContent>
@@ -153,7 +155,7 @@ export const GroupPage = () => {
               
               <Card variant="outlined" sx={{ borderRadius: 3, borderColor: 'divider', p: 3, textCenter: 'center' }}>
                 <Typography color="text.secondary" variant="body2" align="center">
-                  Тут будуть відображатися пости спільноти `{group.name}`
+                  {t('group_page.posts_placeholder', { name: group.name })}
                 </Typography>
               </Card>
             </Box>
@@ -161,10 +163,10 @@ export const GroupPage = () => {
             <Card variant="outlined" sx={{ borderRadius: 3, borderColor: 'divider', p: 4, textAlign: 'center' }}>
               <LockIcon sx={{ fontSize: 40, color: 'text.secondary', mb: 1 }} />
               <Typography variant="h6" sx={{ fontSize: '16px', fontWeight: 600, mb: 1 }}>
-                Це закрита спільнота
+                {t('group_page.private_title')}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                Вступіть до спільноти, щоб отримати доступ к її публікаціям та матеріалам.
+                {t('group_page.private_description')}
               </Typography>
             </Card>
           )}
@@ -201,7 +203,7 @@ export const GroupPage = () => {
                   onClick={() => navigate(`/groups/${group.slug}/edit`)}
                   sx={{ textTransform: 'none', fontWeight: 500, borderRadius: '8px' }}
                 >
-                  Керування спільнотою
+                  {t('group_page.manage')}
                 </Button>
               ) : isMember ? (
                 <Button
@@ -219,7 +221,7 @@ export const GroupPage = () => {
                     '&:hover': { backgroundColor: 'action.selected' }
                   }}
                 >
-                  Ви учасник (Вийти)
+                  {t('group_page.member_leave')}
                 </Button>
               ) : (
                 <Button
@@ -236,7 +238,7 @@ export const GroupPage = () => {
                     '&:hover': { backgroundColor: '#227ad2' }
                   }}
                 >
-                  Вступити до спільноти
+                  {t('group_page.join')}
                 </Button>
               )}
             </Card>
@@ -245,7 +247,7 @@ export const GroupPage = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1.5, px: 0.5 }}>
                 <GroupIcon sx={{ color: 'text.secondary', fontSize: '20px' }} />
                 <Typography variant="subtitle2" sx={{ fontWeight: 600, fontSize: '14px' }}>
-                  Учасники ({memberCount})
+                  {t('group_page.members', { count: memberCount })}
                 </Typography>
               </Box>
 
@@ -284,7 +286,7 @@ export const GroupPage = () => {
                 </List>
               ) : (
                 <Typography variant="caption" color="text.secondary" sx={{ display: 'block', textCenter: 'center', py: 1 }}>
-                  Учасників ще немає
+                  {t('group_page.no_members')}
                 </Typography>
               )}
             </Card>

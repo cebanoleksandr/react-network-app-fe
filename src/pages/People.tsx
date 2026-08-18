@@ -222,7 +222,7 @@ const People = () => {
               </Box>
             ) : displayedUsers.length === 0 ? (
               <Typography align="center" sx={{ color: "text.secondary", py: 4, fontSize: "14px" }}>
-                Users not found
+                {t('people.not_found')}
               </Typography>
             ) : (
               displayedUsers.map((user, index) => {
@@ -265,7 +265,7 @@ const People = () => {
                             {user.firstName || user.lastName
                               ? `${user.firstName || ""} ${user.lastName || ""}`.trim()
                               : `@${user.username}`}
-                            {isMe && ` (${t("Перегляд профілю") || "Ви"})`}
+                            {isMe && ` (${t('people.you_suffix')})`}
                           </Typography>
                           {user.firstName && user.lastName && (
                             <Typography sx={{ color: "text.secondary", fontSize: "12px" }}>
@@ -324,7 +324,7 @@ const People = () => {
                                   }),
                             }}
                           >
-                            {amIFollowing ? "Unfollow" : "Follow"}
+                            {amIFollowing ? t('people.unfollow') : t('people.follow')}
                           </Button>
                         </Box>
                       )}
