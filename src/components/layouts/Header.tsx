@@ -1,4 +1,4 @@
-import { useEffect, useState, type MouseEvent } from "react";
+import { useEffect, useState, type KeyboardEvent, type MouseEvent } from "react";
 import {
   alpha,
   Box,
@@ -16,7 +16,7 @@ import { Search as SearchIcon, KeyboardArrowDown as ArrowDownIcon, Menu as MenuI
 import { useTranslation } from "react-i18next";
 import FaviconIcon from '../../assets/icons/gemini-svg.svg?react';
 import LogoutPopup from "../popups/LogoutPopup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { UsersService } from "../../services/users.service";
 import { setUserAC } from "../../store/userSlice";
@@ -35,6 +35,21 @@ const Header = ({ onMenuClick }: IProps) => {
   const isMenuOpen = Boolean(anchorEl);
 
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const urlQuery = searchParams.get("q") || "";
+  const [searchValue, setSearchValue] = useState(urlQuery);
+  const [prevUrlQuery, setPrevUrlQuery] = useState(urlQuery);
+
+  if (urlQuery !== prevUrlQuery) {
+    setPrevUrlQuery(urlQuery);
+    setSearchValue(urlQuery);
+  }
+
+  const handleSearchKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter" && searchValue.trim()) {
+      navigate(`/app/search?q=${encodeURIComponent(searchValue.trim())}`);
+    }
+  };
     
   const dispatch = useAppDispatch();
     
@@ -116,6 +131,9 @@ const Header = ({ onMenuClick }: IProps) => {
             size="small"
             placeholder={t("header.search")}
             fullWidth
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onKeyDown={handleSearchKeyDown}
             slotProps={{
               input: {
                 startAdornment: (

@@ -240,6 +240,12 @@
     "unfollow": "Przestań obserwować",
     "you_suffix": "Ty"
   },
+  "search": {
+    "prompt": "Wpisz zapytanie w wyszukiwarce i naciśnij Enter, aby znaleźć osoby."
+  },
+  "actions": {
+    "search": "Szukaj..."
+  },
   "groups": {
     "tabs": {
       "all": "Wszystkie społeczności",

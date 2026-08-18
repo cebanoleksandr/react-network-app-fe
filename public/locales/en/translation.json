@@ -240,6 +240,12 @@
     "unfollow": "Unfollow",
     "you_suffix": "You"
   },
+  "search": {
+    "prompt": "Type something in the search bar and press Enter to find people."
+  },
+  "actions": {
+    "search": "Search..."
+  },
   "groups": {
     "tabs": {
       "all": "All communities",

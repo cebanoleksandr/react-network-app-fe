@@ -240,6 +240,12 @@
     "unfollow": "Dejar de seguir",
     "you_suffix": "Tú"
   },
+  "search": {
+    "prompt": "Escribe algo en la barra de búsqueda y pulsa Enter para encontrar personas."
+  },
+  "actions": {
+    "search": "Buscar..."
+  },
   "groups": {
     "tabs": {
       "all": "Todas las comunidades",
