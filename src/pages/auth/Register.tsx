@@ -21,6 +21,9 @@ import { useTranslation } from "react-i18next";
 import { registerSchema, type RegisterFormData } from "./registerSchema";
 import { AuthService } from "../../services/auth.service";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../store/hooks";
+import { setAlertAC } from "../../store/alertSlice";
+import { getErrorMessage } from "../../utils/getErrorMessage";
 
 const RegisterPage = () => {
   const { t } = useTranslation();
@@ -28,6 +31,7 @@ const RegisterPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const {
     control,
@@ -60,6 +64,7 @@ const RegisterPage = () => {
       navigate('/app');
     } catch (error) {
       console.error(error);
+      dispatch(setAlertAC({ text: getErrorMessage(error, t("register.error")), mode: "error" }));
     }
   };
 

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Box } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
@@ -5,44 +6,38 @@ import Sidebar from "./Sidebar";
 import CustomAlert from "../UI/CustomAlert";
 
 const MainLayout = () => {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   return (
-    <Box 
-      sx={{ 
-        height: "100vh",
+    <Box
+      sx={{
+        minHeight: "100vh",
         bgcolor: 'background.default',
         display: 'flex',
         flexDirection: 'column',
-        overflow: 'hidden'
       }}
     >
-      <Header />
+      <Header onMenuClick={() => setMobileOpen((prev) => !prev)} />
 
-      <Box 
-        component="main" 
-        sx={{ 
-          p: 2, 
+      <Box
+        component="main"
+        sx={{
+          p: { xs: 1, sm: 2 },
           flex: 1,
-          minHeight: 0,
-          overflow: 'hidden'
         }}
       >
-        <Box 
-          sx={{ 
-            height: '100%',
-            maxWidth: "1200px", 
-            mx: "auto", 
-            position: "relative" 
+        <Box
+          sx={{
+            maxWidth: "1200px",
+            mx: "auto",
+            display: 'flex',
+            alignItems: 'flex-start',
+            gap: 2,
           }}
         >
-          <Sidebar />
+          <Sidebar mobileOpen={mobileOpen} onMobileClose={() => setMobileOpen(false)} />
 
-          <Box 
-            sx={{ 
-              pl: '220px', 
-              height: '100%',
-              overflow: 'hidden'
-            }}
-          >
+          <Box sx={{ flex: 1, minWidth: 0 }}>
             <Outlet />
           </Box>
         </Box>

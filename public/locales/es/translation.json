@@ -57,7 +57,8 @@
     "submit": "Iniciar sesión",
     "submitting": "Iniciando sesión...",
     "forgot_password": "¿Olvidaste tu contraseña?",
-    "register_link": "Registrarse"
+    "register_link": "Registrarse",
+    "error": "No se pudo iniciar sesión. Inténtalo de nuevo."
   },
   "register": {
     "title": "Página de registro",
@@ -72,7 +73,8 @@
     "submit": "Registrarse",
     "submitting": "Registrando...",
     "have_account": "¿Ya tienes una cuenta?",
-    "login_link": "Iniciar sesión"
+    "login_link": "Iniciar sesión",
+    "error": "No se pudo registrar. Inténtalo de nuevo."
   },
   "reset_password": {
     "title": "Restablecer contraseña",

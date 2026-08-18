@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { Box } from "@mui/material";
+import { Box, Drawer } from "@mui/material";
 import { 
   AccountCircle, 
   RssFeed, 
@@ -16,7 +16,12 @@ import { ChatsService } from "../../services/chats.service";
 import { socketService } from "../../services/socket";
 import type { ChatRoom, Message } from "../../services/interfaces";
 
-const Sidebar = () => {
+interface IProps {
+  mobileOpen?: boolean;
+  onMobileClose?: () => void;
+}
+
+const Sidebar = ({ mobileOpen = false, onMobileClose }: IProps) => {
   const { t } = useTranslation();
   const { item: currentUser } = useAppSelector(state => state.user);
   const token = localStorage.getItem('network-token') || '';
@@ -86,16 +91,8 @@ const Sidebar = () => {
     // { label: t("sidebar.games"), path: "/app/games", icon: SportsEsports },
   ];
 
-  return (
-    <Box
-      sx={{
-        width: 200,
-        position: "absolute",
-        top: 0,
-        left: 0,
-        bottom: 0,
-      }}
-    >
+  const menuContent = (
+    <>
       {menuItems.map((item) => (
         <SidebarItem key={item.path} menuItem={item} />
       ))}
@@ -103,7 +100,40 @@ const Sidebar = () => {
       <Box sx={{ height: '1px', bgcolor: 'divider', my: 2 }}></Box>
 
       <SidebarItem menuItem={{ label: t("sidebar.settings"), path: "/app/settings", icon: SettingsIcon }} />
-    </Box>
+    </>
+  );
+
+  return (
+    <>
+      <Box
+        sx={{
+          width: 200,
+          flexShrink: 0,
+          position: "sticky",
+          top: '76px',
+          maxHeight: 'calc(100vh - 92px)',
+          overflowY: 'auto',
+          display: { xs: 'none', md: 'block' },
+        }}
+      >
+        {menuContent}
+      </Box>
+
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={onMobileClose}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          display: { xs: 'block', md: 'none' },
+          '& .MuiDrawer-paper': { width: 240, boxSizing: 'border-box', p: 2 },
+        }}
+      >
+        <Box onClick={onMobileClose}>
+          {menuContent}
+        </Box>
+      </Drawer>
+    </>
   );
 };
 

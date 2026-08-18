@@ -1,5 +1,5 @@
 import { 
-  Box, List, ListItem, ListItemButton, ListItemText, Typography,
+  Box, List, ListItem, ListItemButton, ListItemText, Switch, Typography,
 } from '@mui/material';
 import { FEED_FILTERS, type FeedFilter } from './types';
 import type { FC } from 'react';
@@ -11,6 +11,7 @@ interface IProps {
 
 const FilterMenu: FC<IProps> = ({ selectedFilter, setSelectedFilter }) => {
   return (
+    <Box sx={{ position: { xs: 'static', md: 'sticky', top: '76px' } }}>
     <Box
       sx={(theme) => ({
         p: '4px',
@@ -19,6 +20,10 @@ const FilterMenu: FC<IProps> = ({ selectedFilter, setSelectedFilter }) => {
         boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
         bgcolor: theme.palette.background.paper,
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '12px',
+        mb: '8px',
       })}
     >
       <List disablePadding>
@@ -67,6 +72,23 @@ const FilterMenu: FC<IProps> = ({ selectedFilter, setSelectedFilter }) => {
           </ListItemButton>
         </ListItem>
       </List>
+    </Box>
+
+    <Box
+      sx={(theme) => ({
+        p: '4px',
+        border: `1px solid ${theme.palette.divider}`,
+        borderRadius: '8px',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05)',
+        bgcolor: theme.palette.background.paper,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+      })}
+    >
+      <Typography>🔥 Interesting first</Typography>
+      <Switch />
+    </Box>
     </Box>
   );
 };

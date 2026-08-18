@@ -272,10 +272,9 @@ const Profile: React.FC = () => {
   return (
     <Container 
       maxWidth="md" 
-      sx={{ 
-        maxWidth: '960px !important', 
-        height: '100%', 
-        px: { xs: 2, sm: 2 }, 
+      sx={{
+        maxWidth: '960px !important',
+        px: { xs: 2, sm: 2 },
         py: 2,
         fontFamily: 'sans-serif',
         color: 'text.primary'
@@ -289,7 +288,7 @@ const Profile: React.FC = () => {
         style={{ display: 'none' }}
       />
 
-      <Grid container spacing={2.5} sx={{ height: '100%', alignItems: 'flex-start' }}>
+      <Grid container spacing={2.5} sx={{ alignItems: 'flex-start' }}>
         <Grid size={{ xs: 12, md: 'auto' }} sx={{ width: { md: '230px' } }}>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <VkCard>
@@ -467,7 +466,7 @@ const Profile: React.FC = () => {
           </Box>
         </Grid>
 
-        <Grid size={{ xs: 12, md: 'grow' }} sx={{ maxHeight: '100%', height: '100%', display: 'flex', flexDirection: 'column', gap: 1 }}>
+        <Grid size={{ xs: 12, md: 'grow' }} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
           <VkCard sx={{ p: 2.5, flexShrink: 0 }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', pb: 1.5, mb: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
               <Box>
@@ -514,11 +513,8 @@ const Profile: React.FC = () => {
               borderRadius: '12px',
               border: `1px solid ${theme.palette.divider}`,
               boxShadow: '0 1px 2px 0 rgba(0,0,0,0.05)',
-              flex: 1,
               display: 'flex',
               flexDirection: 'column',
-              minHeight: 0,
-              overflow: 'hidden'
             })}
           >
             <Box sx={(theme) => ({ borderBottom: `1px solid ${theme.palette.divider}`, px: 2.5, flexShrink: 0, backgroundColor: theme.palette.background.paper })}>
@@ -554,8 +550,6 @@ const Profile: React.FC = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 1.5,
-                overflowY: 'auto',
-                flex: 1
               })}
             >
               {activeTab === 0 && (

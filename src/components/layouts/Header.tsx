@@ -1,17 +1,18 @@
 import { useEffect, useState, type MouseEvent } from "react";
-import { 
-  alpha, 
-  Box, 
-  InputAdornment, 
-  SvgIcon, 
-  TextField, 
-  Avatar, 
-  Menu, 
-  MenuItem, 
+import {
+  alpha,
+  Box,
+  InputAdornment,
+  SvgIcon,
+  TextField,
+  Avatar,
+  Menu,
+  MenuItem,
   Button,
-  Typography
+  Typography,
+  IconButton
 } from "@mui/material";
-import { Search as SearchIcon, KeyboardArrowDown as ArrowDownIcon } from "@mui/icons-material";
+import { Search as SearchIcon, KeyboardArrowDown as ArrowDownIcon, Menu as MenuIcon } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import FaviconIcon from '../../assets/icons/gemini-svg.svg?react';
 import LogoutPopup from "../popups/LogoutPopup";
@@ -20,7 +21,11 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { UsersService } from "../../services/users.service";
 import { setUserAC } from "../../store/userSlice";
 
-const Header = () => {
+interface IProps {
+  onMenuClick?: () => void;
+}
+
+const Header = ({ onMenuClick }: IProps) => {
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isLogoutPopupOpen, setIsLogoutPopupOpen] = useState(false);
@@ -80,7 +85,7 @@ const Header = () => {
       sx={(theme) => ({
         backgroundColor: theme.palette.mode === "dark" ? alpha("#0f1115", 0.9) : alpha("#4A76A8", 0.8),
         color: "white",
-        px: 2,
+        px: { xs: 1, sm: 2 },
         position: "sticky",
         top: 0,
         zIndex: 1,
@@ -90,7 +95,14 @@ const Header = () => {
       })}
     >
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", maxWidth: "1200px", mx: "auto", height: "100%" }}>
-        <Box sx={{ width: '200px' }}>
+        <Box sx={{ width: { xs: 'auto', md: '200px' }, display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <IconButton
+            onClick={onMenuClick}
+            sx={{ display: { xs: 'inline-flex', md: 'none' }, color: 'white' }}
+            aria-label="menu"
+          >
+            <MenuIcon />
+          </IconButton>
           <SvgIcon
             component={FaviconIcon}
             inheritViewBox
@@ -98,11 +110,12 @@ const Header = () => {
           />
         </Box>
 
-        <Box sx={{ flexGrow: 1, mx: 2, display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <Box sx={{ flexGrow: 1, mx: { xs: 1, sm: 2 }, display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
           <TextField
             variant="outlined"
             size="small"
             placeholder={t("header.search")}
+            fullWidth
             slotProps={{
               input: {
                 startAdornment: (

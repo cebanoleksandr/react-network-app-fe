@@ -1,5 +1,6 @@
 import { AxiosError, type InternalAxiosRequestConfig } from 'axios';
 import { api } from './';
+import router from '../router';
 
 interface FailedRequest {
   resolve: (token: string | null) => void;
@@ -39,6 +40,15 @@ api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
+    const isRefreshCall = originalRequest?.url?.includes('/auth/refresh');
+
+    if (error.response?.status === 401 && isRefreshCall) {
+      localStorage.removeItem('network-token');
+      if (!router.state.location.pathname.startsWith('/auth')) {
+        void router.navigate('/auth/login');
+      }
+      return Promise.reject(error);
+    }
 
     if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
       if (isRefreshing) {
@@ -72,8 +82,8 @@ api.interceptors.response.use(
         const axiosError = refreshError as AxiosError;
         processQueue(axiosError, null);
         localStorage.removeItem('network-token');
-        if (!window.location.pathname.startsWith('/auth')) {
-          window.location.href = '/auth/login';
+        if (!router.state.location.pathname.startsWith('/auth')) {
+          void router.navigate('/auth/login');
         }
         return Promise.reject(refreshError);
       } finally {
@@ -83,8 +93,8 @@ api.interceptors.response.use(
 
     if (error.response?.status === 401 && originalRequest?._retry) {
       localStorage.removeItem('network-token');
-      if (!window.location.pathname.startsWith('/auth')) {
-        window.location.href = '/auth/login';
+      if (!router.state.location.pathname.startsWith('/auth')) {
+        void router.navigate('/auth/login');
       }
     }
 

@@ -77,6 +77,9 @@ const CreatePostBlock: FC<IProps> = ({ onPostCreated }) => {
         display: 'flex',
         flexDirection: 'column',
         gap: 1.5,
+        position: { xs: 'static', md: 'sticky' },
+        top: '76px',
+        zIndex: 1,
       })}
     >
       <input

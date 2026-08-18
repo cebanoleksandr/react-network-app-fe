@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, type ChangeEvent } from "react";
-import { Avatar, Box, IconButton, Typography, Switch, CircularProgress } from "@mui/material";
+import { Avatar, Box, IconButton, Typography, CircularProgress } from "@mui/material";
 import {
   Add as AddIcon,
   ChevronLeft as ChevronLeftIcon,
@@ -213,7 +213,14 @@ const Feed = () => {
   };
 
   return (
-    <Box sx={{ display: 'flex', gap: 2, maxWidth: '100%', overflow: 'hidden', height: '100%' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+        gap: 2,
+        maxWidth: '100%',
+      }}
+    >
       <input
         type="file"
         ref={fileInputRef}
@@ -222,11 +229,10 @@ const Feed = () => {
         style={{ display: "none" }}
       />
 
-      <Box 
-        sx={{ 
-          flexGrow: 1, 
-          minWidth: 0, 
-          height: '100%',
+      <Box
+        sx={{
+          flexGrow: 1,
+          minWidth: 0,
           display: 'flex',
           flexDirection: 'column'
         }}
@@ -366,9 +372,9 @@ const Feed = () => {
           </Box>
         </Box>
 
-        <Box sx={{ flexGrow: 1, minHeight: 0 }}>
+        <Box sx={{ flexGrow: 1 }}>
           {isLoading ? (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%', minHeight: '200px' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}>
               <CircularProgress />
             </Box>
           ) : (
@@ -377,24 +383,8 @@ const Feed = () => {
         </Box>
       </Box>
 
-      <Box sx={{ width: '280px', flexShrink: 0 }}>
+      <Box sx={{ width: { xs: '100%', md: '280px' }, flexShrink: 0, order: { xs: -1, md: 0 } }}>
         <FilterMenu selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
-        <Box
-          sx={(theme) => ({
-            p: '4px',
-            border: `1px solid ${theme.palette.divider}`,
-            borderRadius: '8px',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.05)',
-            bgcolor: theme.palette.background.paper,
-            my: '16px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-          })}
-        >
-          <Typography>🔥 Interesting first</Typography>
-          <Switch />
-        </Box>
       </Box>
 
       {selectedGroup && (

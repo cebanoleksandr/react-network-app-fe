@@ -18,12 +18,16 @@ import { useTranslation } from "react-i18next";
 import { loginSchema, type LoginFormData } from "./loginSchema";
 import { AuthService } from "../../services/auth.service";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../store/hooks";
+import { setAlertAC } from "../../store/alertSlice";
+import { getErrorMessage } from "../../utils/getErrorMessage";
 
 const LoginPage = () => {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const { 
     control, 
@@ -48,6 +52,7 @@ const LoginPage = () => {
       navigate('/app');
     } catch (error) {
       console.error(error);
+      dispatch(setAlertAC({ text: getErrorMessage(error, t("login.error")), mode: "error" }));
     }
   };
 

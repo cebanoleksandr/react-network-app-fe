@@ -150,24 +150,7 @@ const Settings = () => {
     <Container
       maxWidth="sm"
       sx={{
-        height: "100%",
-        overflowY: "auto",
         py: 3,
-        "&::-webkit-scrollbar": {
-          width: "6px",
-        },
-        "&::-webkit-scrollbar-track": {
-          backgroundColor: "transparent",
-        },
-        "&::-webkit-scrollbar-thumb": {
-          backgroundColor: "rgba(0, 0, 0, 0.15)",
-          borderRadius: "10px",
-          "&:hover": {
-            backgroundColor: "rgba(0, 0, 0, 0.25)",
-          },
-        },
-        scrollbarWidth: "thin",
-        scrollbarColor: "rgba(0, 0, 0, 0.15) transparent",
       }}
     >
       <Typography variant="h5" sx={{ fontWeight: 600, mb: 3 }}>
