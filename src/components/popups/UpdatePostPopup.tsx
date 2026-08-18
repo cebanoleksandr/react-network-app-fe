@@ -48,8 +48,8 @@ const UpdatePostPopup: FC<IProps> = ({ isVisible, post, onClose, onUpdate }) => 
   };
 
   const handleUpdatePost = async () => {
-    if (!caption.trim() && !changeMedia && post.media.length === 0) return;
-    if (changeMedia && !caption.trim() && files.length === 0) return;
+    if (!caption?.trim() && !changeMedia && post.media.length === 0) return;
+    if (changeMedia && !caption?.trim() && files.length === 0) return;
 
     try {
       setIsLoading(true);
@@ -60,7 +60,7 @@ const UpdatePostPopup: FC<IProps> = ({ isVisible, post, onClose, onUpdate }) => 
         changeMedia ? files : undefined
       );
 
-      await onUpdate(caption, files);
+      await onUpdate(caption as string, files);
       onClose();
     } catch (error) {
       console.error("Помилка при оновленні поста:", error);

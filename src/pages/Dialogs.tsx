@@ -115,7 +115,7 @@ export const Dialogs: React.FC = () => {
                   <ListItem onClick={() => navigate(`/app/chat/${room.id}`)} sx={(theme) => ({ padding: '12px 16px', cursor: 'pointer', '&:hover': { backgroundColor: theme.palette.action.hover }, transition: 'background-color 0.1s ease', display: 'flex', alignItems: 'center', justifyContent: 'space-between' })}>
                     <Box sx={{ display: 'flex', alignItems: 'center', flexGrow: 1, minWidth: 0 }}>
                       <ListItemAvatar sx={{ minWidth: '60px' }}>
-                        <Avatar src={recipient.avatarUrl} alt={fullName} sx={{ width: 48, height: 48 }} />
+                        <Avatar src={recipient.avatarUrl || undefined} alt={fullName} sx={{ width: 48, height: 48 }} />
                       </ListItemAvatar>
                       <ListItemText
                         primary={<Typography variant="body2" sx={(theme) => ({ fontWeight: 500, color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885', fontSize: '0.9rem' })}>{fullName}</Typography>}

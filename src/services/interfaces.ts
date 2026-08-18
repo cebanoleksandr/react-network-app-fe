@@ -61,16 +61,16 @@ export interface UpdateProfileDto {
 }
 
 export class RegisterCredentials {
-  email: string;
-  username: string;
-  password: string;
+  email?: string;
+  username?: string;
+  password?: string;
   firstName?: string;
   lastName?: string;
 }
 
 export class LoginCredentials {
-  email: string;
-  password: string;
+  email?: string;
+  password?: string;
 }
 
 export interface ToggleBookmarkResponse {

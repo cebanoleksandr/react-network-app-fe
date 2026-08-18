@@ -420,7 +420,7 @@ const Profile: React.FC = () => {
                     onClick={() => navigate(`/app/profile/${friend.id}`)}
                   >
                     <Avatar 
-                      src={friend.avatarUrl} 
+                      src={friend.avatarUrl || 'https://placehold.co/48x48?text=No+Avatar'} 
                       alt={friend.username} 
                       sx={{ width: 48, height: 48, mb: 0.5, '&:hover': { opacity: 0.9 } }} 
                     />
@@ -450,7 +450,7 @@ const Profile: React.FC = () => {
                     onClick={() => navigate(`/app/profile/${friend.id}`)}
                   >
                     <Avatar 
-                      src={friend.avatarUrl} 
+                      src={friend.avatarUrl || 'https://placehold.co/48x48?text=No+Avatar'} 
                       alt={friend.username} 
                       sx={{ width: 48, height: 48, mb: 0.5, '&:hover': { opacity: 0.9 } }} 
                     />

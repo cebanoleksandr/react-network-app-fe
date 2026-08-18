@@ -185,7 +185,7 @@ export const Chat: React.FC = () => {
           <IconButton onClick={() => navigate('/app/dialogs')} sx={(theme) => ({ color: theme.palette.mode === 'dark' ? '#8FB8E0' : '#2a5885', mr: 1 })}>
             <ArrowBackIcon />
           </IconButton>
-          <Avatar src={recipient?.avatarUrl} sx={{ width: 36, height: 36, mr: 1.5 }} />
+          <Avatar src={recipient?.avatarUrl || undefined} sx={{ width: 36, height: 36, mr: 1.5 }} />
           <Box>
             <Typography variant="body2" sx={{ fontWeight: 600, color: 'text.primary' }}>
               {recipientName}
@@ -224,7 +224,7 @@ export const Chat: React.FC = () => {
                   maxWidth: '80%'
                 }}
               >
-                {!isMe && <Avatar src={msg.sender.avatarUrl} sx={{ width: 32, height: 32 }} />}
+                {!isMe && <Avatar src={msg.sender.avatarUrl || undefined} sx={{ width: 32, height: 32 }} />}
                 <Box
                   sx={(theme) => ({
                     backgroundColor: isMe

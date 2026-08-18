@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type MouseEvent } from "react";
 import { 
   alpha, 
   Box, 
@@ -46,7 +46,7 @@ const Header = () => {
     getMe();
   }, []);
 
-  const handleMenuOpen = (event) => {
+  const handleMenuOpen = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -66,7 +66,7 @@ const Header = () => {
 
   const handleGoToProfile = () => {
     handleMenuClose();
-    navigate(`/app/profile/${me.id}`);
+    navigate(`/app/profile/${me?.id}`);
   }
 
   const handleGoToSettings = () => {
@@ -151,7 +151,7 @@ const Header = () => {
           >
             <Avatar 
               alt={t("header.user_avatar_alt")} 
-              src={me?.avatarUrl}
+              src={me?.avatarUrl || undefined}
               sx={{ width: 32, height: 32 }}
             />
             <Typography variant="body2" sx={{ display: { xs: 'none', sm: 'block' } }}>

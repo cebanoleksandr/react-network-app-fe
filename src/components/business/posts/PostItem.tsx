@@ -139,7 +139,7 @@ const PostItem: FC<IProps> = ({ post }) => {
   }
 
   const handleDelete = async () => {
-    if (currentUser.id !== post.user.id) return;
+    if (currentUser?.id !== post.user.id) return;
 
     try {
       await PostsService.deletePost(post.id);
@@ -196,7 +196,7 @@ const PostItem: FC<IProps> = ({ post }) => {
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Avatar
             alt={`${post.user.firstName} ${post.user.lastName}`}
-            src={post.user.avatarUrl}
+            src={post.user.avatarUrl || undefined}
             sx={{ width: 50, height: 50, cursor: 'pointer' }}
             onClick={() => onOpenProfile(post.user.id)}
           />
@@ -253,7 +253,7 @@ const PostItem: FC<IProps> = ({ post }) => {
           </MenuItem>
           <MenuItem onClick={handleEnableТotifications} sx={{ fontSize: 14 }}><NotificationsOutlinedIcon sx={{ mr: 2 }} /> Enable notifications</MenuItem>
           <MenuItem onClick={handleHideFromFeed} sx={{ fontSize: 14 }}><VisibilityOffOutlinedIcon sx={{ mr: 2 }} /> Hide from feed</MenuItem>
-          {currentUser.id === post.user.id && (
+          {currentUser?.id === post.user.id && (
             <>
               <MenuItem onClick={onUpdatePostPopupOpen} sx={{ fontSize: 14 }}>
                 <EditOutlinedIcon sx={{ mr: 2 }} /> Edit

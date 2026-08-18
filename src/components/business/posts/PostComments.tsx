@@ -117,7 +117,7 @@ const PostComments: FC<ICommentsProps> = ({ postId }) => {
         ) : (
           comments.map((comment) => (
             <Box key={comment.id} sx={{ display: "flex", gap: 1.5, alignItems: "flex-start" }}>
-              <Avatar src={comment.user?.avatarUrl} sx={{ width: 32, height: 32 }} />
+              <Avatar src={comment.user?.avatarUrl || undefined} sx={{ width: 32, height: 32 }} />
               <Box sx={(theme) => ({ bgcolor: theme.palette.action.hover, p: "8px 12px", borderRadius: "12px", maxWidth: "85%" })}>
                 <Typography sx={{ fontSize: 13, fontWeight: 600 }}>
                   {comment.user?.firstName} {comment.user?.lastName}

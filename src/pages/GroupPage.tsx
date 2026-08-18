@@ -45,7 +45,7 @@ export const GroupPage = () => {
         setGroup(data);
       } catch (err) {
         console.error(err);
-        setError(err?.response?.data?.message || 'Не вдалося завантажити спільноту');
+        setError('Не вдалося завантажити спільноту');
       } finally {
         setLoading(false);
       }

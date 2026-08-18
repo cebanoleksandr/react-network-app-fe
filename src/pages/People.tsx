@@ -244,7 +244,8 @@ const People = () => {
                     >
                       <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
                         <Avatar
-                          src={user.avatarUrl}
+                          src={user.avatarUrl || undefined}
+                          alt={user.username}
                           onClick={() => handleNavigateToProfile(user.id)}
                           sx={{ width: 60, height: 60, bgcolor: "#447bba", cursor: "pointer" }}
                         >
